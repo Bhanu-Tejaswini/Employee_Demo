@@ -8,10 +8,10 @@
 		<version>2.4.4</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>auth-server</artifactId>
+	<groupId>com.arraign</groupId>
+	<artifactId>vstreem</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>auth-server</name>
+	<name>vstreem</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
@@ -92,7 +92,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>user-registration</finalName>
+		<finalName>vstreem</finalName>
 	</build>
 
 </project>

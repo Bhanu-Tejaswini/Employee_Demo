@@ -1,4 +1,4 @@
-FROM openjdk:latest
-EXPOSE 8080 5432
-ADD target/user-registration.jar user-registration.jar
-ENTRYPOINT ["java","-jar","user-registration.jar"]
+FROM adoptopenjdk/openjdk11
+EXPOSE 8080
+ADD target/vstreem.jar vstreem.jar
+ENTRYPOINT ["java","-jar","vstreem.jar"]
