@@ -1,0 +1,15 @@
+mongo:
+  image: mongo:3.2.11
+  volumes:
+    - /data/db/mongo
+  ports:
+    - "27017:27017"
+postgres:
+  image: postgres
+  ports:
+    - "5432:5432"
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: admin
+    POSTGRES_DB: vstreem
+    PGDATA: /data/db/postgres
