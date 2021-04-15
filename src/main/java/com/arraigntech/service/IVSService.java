@@ -1,11 +1,11 @@
-package com.example.demo.service;
+package com.arraigntech.service;
 
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 
-import com.example.demo.Exception.DataExistsException;
-import com.example.demo.Exception.DataNotFoundException;
+import com.arraigntech.Exception.DataExistsException;
+import com.arraigntech.Exception.DataNotFoundException;
 
 public interface IVSService<T, ID> {
 

@@ -1,4 +1,4 @@
-package com.example.demo.utility;
+package com.arraigntech.utility;
 
 import java.util.Date;
 import java.util.HashMap;

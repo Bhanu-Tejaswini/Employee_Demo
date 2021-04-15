@@ -1,4 +1,4 @@
-package com.example.demo.Exception;
+package com.arraigntech.Exception;
 
 import java.util.Date;
 

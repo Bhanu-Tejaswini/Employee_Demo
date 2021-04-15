@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.arraigntech.model;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.arraigntech.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,9 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.Exception.DataNotFoundException;
-import com.example.demo.entity.Permission;
-import com.example.demo.repository.PermissionRepository;
+import com.arraigntech.Exception.DataNotFoundException;
+import com.arraigntech.entity.Permission;
+import com.arraigntech.repository.PermissionRepository;
 
 @Service
 public class PermissionService implements IVSService<Permission, String> {

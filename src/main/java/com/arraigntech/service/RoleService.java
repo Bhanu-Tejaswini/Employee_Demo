@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.arraigntech.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,12 +8,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.Exception.DataNotFoundException;
-import com.example.demo.entity.Permission;
-import com.example.demo.entity.Role;
-import com.example.demo.model.RoleDTO;
-import com.example.demo.repository.PermissionRepository;
-import com.example.demo.repository.RoleRepository;
+import com.arraigntech.Exception.DataNotFoundException;
+import com.arraigntech.entity.Permission;
+import com.arraigntech.entity.Role;
+import com.arraigntech.model.RoleDTO;
+import com.arraigntech.repository.PermissionRepository;
+import com.arraigntech.repository.RoleRepository;
 
 @Service
 public class RoleService implements IVSService<Role, String> {

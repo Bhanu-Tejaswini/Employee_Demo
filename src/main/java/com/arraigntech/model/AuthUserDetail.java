@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.arraigntech.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.demo.entity.User;
+import com.arraigntech.entity.User;
 
 public class AuthUserDetail extends User implements UserDetails {
 	private static final long serialVersionUID = 1L;

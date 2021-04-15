@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.arraigntech.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,14 +12,14 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import com.example.demo.entity.Streams;
-import com.example.demo.entity.User;
-import com.example.demo.model.IVSLiveStream;
-import com.example.demo.model.IVSLiveStreamResponse;
-import com.example.demo.model.LiveStreamState;
-import com.example.demo.mongorepos.StreamResponseRepository;
-import com.example.demo.repository.StreamRepository;
-import com.example.demo.repository.UserRespository;
+import com.arraigntech.entity.Streams;
+import com.arraigntech.entity.User;
+import com.arraigntech.model.IVSLiveStream;
+import com.arraigntech.model.IVSLiveStreamResponse;
+import com.arraigntech.model.LiveStreamState;
+import com.arraigntech.mongorepos.StreamResponseRepository;
+import com.arraigntech.repository.StreamRepository;
+import com.arraigntech.repository.UserRespository;
 
 @Service
 public class IVSStreamService {

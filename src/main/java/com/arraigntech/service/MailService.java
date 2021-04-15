@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.arraigntech.service;
 
 import java.io.UnsupportedEncodingException;
 

@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.arraigntech.entity;
 
 import java.util.Date;
 

@@ -1,9 +1,9 @@
-package com.example.demo.mongorepos;
+package com.arraigntech.mongorepos;
 
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.example.demo.model.IVSLiveStreamResponse;
+import com.arraigntech.model.IVSLiveStreamResponse;
 
 
 public interface StreamResponseRepository extends  MongoRepository<IVSLiveStreamResponse, String>{

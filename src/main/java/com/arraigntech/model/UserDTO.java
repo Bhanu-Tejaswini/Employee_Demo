@@ -1,9 +1,9 @@
-package com.example.demo.model;
+package com.arraigntech.model;
 
 import java.util.List;
 
 public class UserDTO {
-	private String username;
+	private String username="";
 	private String email;
 	private String password;
 	private List<String> role;

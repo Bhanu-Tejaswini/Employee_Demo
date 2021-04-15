@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.arraigntech.config;
 
 import java.util.Arrays;
 

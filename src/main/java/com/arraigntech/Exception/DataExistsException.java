@@ -1,4 +1,4 @@
-package com.example.demo.Exception;
+package com.arraigntech.Exception;
 
 public class DataExistsException extends Exception {
 	static final long serialVersionUID = 1L;

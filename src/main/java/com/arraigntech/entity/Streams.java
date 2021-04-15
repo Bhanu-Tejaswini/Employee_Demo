@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.arraigntech.entity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

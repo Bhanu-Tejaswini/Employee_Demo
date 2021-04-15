@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.arraigntech.service;
 
 import java.util.Optional;
 
@@ -10,10 +10,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.Exception.AppException;
-import com.example.demo.entity.User;
-import com.example.demo.model.AuthUserDetail;
-import com.example.demo.repository.UserRespository;
+import com.arraigntech.Exception.AppException;
+import com.arraigntech.entity.User;
+import com.arraigntech.model.AuthUserDetail;
+import com.arraigntech.repository.UserRespository;
 
 @Component
 public class UserDetailServiceImpl implements UserDetailsService {

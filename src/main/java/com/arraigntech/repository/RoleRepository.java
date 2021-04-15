@@ -1,9 +1,9 @@
-package com.example.demo.repository;
+package com.arraigntech.repository;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.entity.Role;
+import com.arraigntech.entity.Role;
 
 @Repository
 public interface RoleRepository extends PagingAndSortingRepository<Role, String> {

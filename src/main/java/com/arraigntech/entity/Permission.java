@@ -1,10 +1,10 @@
-package com.example.demo.entity;
+package com.arraigntech.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.example.demo.model.VSBaseModel;
+import com.arraigntech.model.VSBaseModel;
 
 @Entity
 @Table(name = "permission")

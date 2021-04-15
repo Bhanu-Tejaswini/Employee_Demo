@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.arraigntech.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

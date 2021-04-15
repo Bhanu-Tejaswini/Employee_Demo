@@ -1,9 +1,8 @@
-package com.example.demo.entity;
+package com.arraigntech.entity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,7 +13,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
-import com.example.demo.model.VSBaseModel;
+import com.arraigntech.model.VSBaseModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "app_user")
@@ -50,6 +50,7 @@ public class User extends VSBaseModel {
 	@Type(type = "numeric_boolean")
 	private boolean accountNonLocked;
 
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "role_user", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "role_id") })

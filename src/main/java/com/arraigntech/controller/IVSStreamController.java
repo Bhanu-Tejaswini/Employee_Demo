@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.arraigntech.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.model.IVSLiveStream;
-import com.example.demo.model.IVSLiveStreamResponse;
-import com.example.demo.service.IVSStreamService;
+import com.arraigntech.model.IVSLiveStream;
+import com.arraigntech.model.IVSLiveStreamResponse;
+import com.arraigntech.service.IVSStreamService;
 
 @RestController
 @RequestMapping("/vstreem")

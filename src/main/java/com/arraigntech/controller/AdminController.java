@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.arraigntech.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,14 +17,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.example.demo.Exception.DataNotFoundException;
-import com.example.demo.entity.Permission;
-import com.example.demo.entity.Role;
-import com.example.demo.entity.User;
-import com.example.demo.model.RoleDTO;
-import com.example.demo.service.PermissionService;
-import com.example.demo.service.RoleService;
-import com.example.demo.service.UserService;
+import com.arraigntech.Exception.AppException;
+import com.arraigntech.Exception.DataNotFoundException;
+import com.arraigntech.entity.Permission;
+import com.arraigntech.entity.Role;
+import com.arraigntech.entity.User;
+import com.arraigntech.model.RoleDTO;
+import com.arraigntech.service.PermissionService;
+import com.arraigntech.service.RoleService;
+import com.arraigntech.service.UserService;
 
 @RestController
 public class AdminController {
@@ -127,7 +128,7 @@ public class AdminController {
 		try {
 			users = userService.getAll();
 			return ResponseEntity.ok(users);
-		} catch (DataNotFoundException e) {
+		} catch (AppException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
@@ -137,7 +138,7 @@ public class AdminController {
 		try {
 			boolean flag=userService.delete(id);
 			return new ResponseEntity<Void>(HttpStatus.OK);
-		} catch (DataNotFoundException e) {
+		} catch (AppException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 		

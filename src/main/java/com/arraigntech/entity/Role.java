@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.arraigntech.entity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +11,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.example.demo.model.VSBaseModel;
+import com.arraigntech.model.VSBaseModel;
 
 @Entity
 @Table(name = "role")
