@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
@@ -56,7 +57,8 @@ public class UserServiceImpl implements IVSService<User, String> {
 	@Autowired
 	private IVSJwtUtil jwtUtil;
 
-	public User register(UserDTO userDTO) throws DataExistsException {
+	@Transactional
+	public Boolean register(UserDTO userDTO)  {
 		User newUser = new User();
 //		newUser=userRepo.findByEmail(userDTO.getEmail());
 //   		if(newUser!=null) {
@@ -75,7 +77,9 @@ public class UserServiceImpl implements IVSService<User, String> {
 			Role role=roleRepo.findByName(str);
 			newUser.getRoles().add(role);
 		}
-		return userRepo.save(newUser);
+		userRepo.save(newUser);
+		
+		return true;
 	}
 
 	@Override
