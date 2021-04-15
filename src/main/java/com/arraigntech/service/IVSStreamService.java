@@ -4,12 +4,6 @@ import com.arraigntech.model.IVSLiveStream;
 import com.arraigntech.model.IVSLiveStreamResponse;
 import com.arraigntech.model.LiveStreamState;
 
-/**
- * 
- * @author tulabandula.kumar
- *
- */
-
 public interface IVSStreamService {
 
 	public IVSLiveStreamResponse createStream(IVSLiveStream liveStream);
