@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.arraigntech.Exception.AppException;
 import com.arraigntech.Exception.DataNotFoundException;
 import com.arraigntech.entity.Permission;
 import com.arraigntech.entity.Role;
@@ -131,7 +132,7 @@ public class AdminController {
 		try {
 			users = userService.getAll();
 			return ResponseEntity.ok(users);
-		} catch (DataNotFoundException e) {
+		} catch (AppException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
@@ -141,7 +142,7 @@ public class AdminController {
 		try {
 			boolean flag=userService.delete(id);
 			return new ResponseEntity<Void>(HttpStatus.OK);
-		} catch (DataNotFoundException e) {
+		} catch (AppException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 		

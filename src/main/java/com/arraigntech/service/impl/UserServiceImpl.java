@@ -23,6 +23,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.arraigntech.Exception.DataExistsException;
 import com.arraigntech.Exception.DataNotFoundException;
 import com.arraigntech.Exception.UserTokenNotFoundException;
+import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.Role;
 import com.arraigntech.entity.User;
 import com.arraigntech.model.LoginDetails;
@@ -34,6 +35,8 @@ import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.IVSService;
 import com.arraigntech.utility.IVSJwtUtil;
 
+import com.arraigntech.utility.IVSJwtUtil;
+import com.arraigntech.utility.MessageConstants;
 
 @Service
 public class UserServiceImpl implements IVSService<User, String> {
@@ -54,18 +57,17 @@ public class UserServiceImpl implements IVSService<User, String> {
 	@Value("${basic.auth}")
 	private String basicAuth;
 
-
 	@Autowired
 	private IVSJwtUtil jwtUtil;
 
 	@Transactional
-	public Boolean register(UserDTO userDTO)  {
-
-		User newUser = new User();
-//		newUser=userRepo.findByEmail(userDTO.getEmail());
-//   		if(newUser!=null) {
-//			throw new DataExistsException("The user already exists");
-//		}
+	public Boolean register(UserDTO userDTO) throws AppException {
+		User newUser=userRepo.findByEmail(userDTO.getEmail());
+		
+   		if(newUser!=null) {
+			throw new AppException(MessageConstants.USER_EXISTS);
+		}
+   		newUser=new User();
 		newUser.setUsername(userDTO.getUsername());
 		newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		newUser.setEmail(userDTO.getEmail());
@@ -90,29 +92,29 @@ public class UserServiceImpl implements IVSService<User, String> {
 	}
 
 	@Override
-	public List<User> getAll() throws DataNotFoundException {
+	public List<User> getAll() throws AppException {
 		List<User> users = userRepo.findAll();
 		if (users.isEmpty()) {
-			throw new DataNotFoundException("The Users list is empty");
+			throw new AppException(MessageConstants.USER_LIST_EMPTY);
 		}
 		return users;
 	}
 
 	@Override
-	public User update(User entity) throws DataExistsException {
+	public User update(User entity) throws AppException {
 		User newUser = new User();
 		newUser = userRepo.findByEmail(entity.getEmail());
 		if (newUser == null) {
-			throw new DataExistsException("The user already exists");
+			throw new AppException("The user already exists");
 		}
 		return userRepo.save(entity);
 	}
 
 	@Override
-	public boolean delete(String id) throws DataNotFoundException {
+	public boolean delete(String id) throws AppException {
 		Optional<User> newUser = userRepo.findById(id);
 		if (!newUser.isPresent()) {
-			throw new DataNotFoundException("The User does not exists");
+			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
 		userRepo.deleteById(id);
 		return true;
@@ -125,23 +127,34 @@ public class UserServiceImpl implements IVSService<User, String> {
 	}
 
 	public User updatePassword(String token, String newPassword)
-			throws UserTokenNotFoundException, DataNotFoundException {
+			throws AppException {
+		
+		if(token.isEmpty() || newPassword.isEmpty()) {
+			throw new AppException(MessageConstants.DETAILS_MISSING);
+		}
 		if (!(StringUtils.hasText(token) && jwtUtil.validateToken(token))) {
-			throw new UserTokenNotFoundException("Token does not exists");
+			throw new AppException(MessageConstants.TOKEN_NOT_FOUND);
 		}
 		String email = jwtUtil.getUsernameFromToken(token);
 		Date expiryDate = jwtUtil.getExpirationTimeFromToken(token);
 		System.out.println("email" + email + "  expiry date" + expiryDate);
 		User newUser = userRepo.findByEmail(email);
 		if (newUser == null) {
-			throw new DataNotFoundException("Unable to find the user with the provided email" + email);
+			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
 		newUser.setPassword(passwordEncoder.encode(newPassword));
 		return userRepo.save(newUser);
 	}
 	
-	public String generateToken(LoginDetails login, UriComponentsBuilder builder) {
+	public String generateToken(LoginDetails login, UriComponentsBuilder builder) throws AppException {
+		if(login.getEmail().isEmpty() || login.getPassword().isEmpty()) {
+			throw new AppException(MessageConstants.DETAILS_MISSING);
+		}
 		User newUser=userRepo.findByEmail(login.getEmail());
+		if (newUser == null) {
+			throw new AppException(MessageConstants.USER_NOT_FOUND);
+		}
+		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 		headers.add("Authorization",basicAuth);
 		
@@ -156,10 +169,10 @@ public class UserServiceImpl implements IVSService<User, String> {
 	}
 
 	@Override
-	public User getById(String id) throws DataNotFoundException {
+	public User getById(String id) throws AppException {
 		Optional<User> newUser = userRepo.findById(id);
 		if (!newUser.isPresent()) {
-			throw new DataNotFoundException("The mentioned user not available");
+			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
 		return newUser.get();
 	}

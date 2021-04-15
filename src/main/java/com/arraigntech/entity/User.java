@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 import com.arraigntech.model.VSBaseModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "app_user")
@@ -49,6 +50,7 @@ public class User extends VSBaseModel {
 	@Type(type = "numeric_boolean")
 	private boolean accountNonLocked;
 
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "role_user", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "role_id") })

@@ -22,17 +22,19 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.arraigntech.Exception.DataExistsException;
-import com.arraigntech.Exception.DataNotFoundException;
-import com.arraigntech.Exception.UserTokenNotFoundException;
+import com.arraigntech.Exception.AppException;
+import com.arraigntech.entity.User;
 import com.arraigntech.model.IVSPassword;
 import com.arraigntech.model.IVSTokenEmail;
 import com.arraigntech.model.LoginDetails;
 import com.arraigntech.model.UserDTO;
 import com.arraigntech.model.response.BaseResponse;
+import com.arraigntech.repository.UserRespository;
+import com.arraigntech.service.MailService;
 import com.arraigntech.service.impl.MailServiceImpl;
 import com.arraigntech.service.impl.UserServiceImpl;
 import com.arraigntech.utility.IVSJwtUtil;
+import com.arraigntech.utility.MessageConstants;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -51,6 +53,9 @@ public class AuthController {
 
 	@Autowired
 	private MailServiceImpl mailService;
+	
+	@Autowired
+	private UserRespository userRepo;
 
 	@GetMapping("/user")
 	@PreAuthorize("hasAuthority('create_profile')")
@@ -76,6 +81,10 @@ public class AuthController {
 
 	@PostMapping("/forgot-password")
 	public ResponseEntity<?> forgotPassword(@RequestBody IVSTokenEmail tokenEmail, UriComponentsBuilder builder) {
+		User newUser=userRepo.findByEmail(tokenEmail.getEmail());
+		if(newUser==null) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,MessageConstants.EMAIL_NOT_FOUND);
+		}
 
 		String token = jwtUtil.generateResetToken(tokenEmail.getEmail());
 		// Generating the password reset link
@@ -91,15 +100,21 @@ public class AuthController {
 	}
 	
 	@PostMapping("/login")
-	public String login(@RequestBody LoginDetails login, UriComponentsBuilder builder) {
-		return userService.generateToken(login,builder);
+	public ResponseEntity<?> login(@RequestBody LoginDetails login, UriComponentsBuilder builder) {
+		
+		try {
+			String token=userService.generateToken(login,builder);
+			return ResponseEntity.ok(token);
+		} catch (AppException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
 	}
 
 	@PostMapping("/reset-password/{token}")
 	public ResponseEntity<?> resetPassword(@PathVariable("token") String token, @RequestBody IVSPassword pass) {
 		try {
 			userService.updatePassword(token, pass.getPassword());
-		} catch (DataNotFoundException | UserTokenNotFoundException e) {
+		} catch (AppException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 
