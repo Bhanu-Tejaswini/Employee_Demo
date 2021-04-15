@@ -59,6 +59,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 
 	@Transactional
 	public Boolean register(UserDTO userDTO)  {
+
 		User newUser = new User();
 //		newUser=userRepo.findByEmail(userDTO.getEmail());
 //   		if(newUser!=null) {

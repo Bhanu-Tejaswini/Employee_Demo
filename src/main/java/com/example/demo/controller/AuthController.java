@@ -65,7 +65,6 @@ public class AuthController {
 		return "This is admin data";
 	}
 
-	
 	@ApiOperation(value = "save and register user")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/register", method = RequestMethod.POST,
