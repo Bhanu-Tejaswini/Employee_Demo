@@ -9,4 +9,5 @@ public interface MailService {
 	public void sendEmail(String email, String resetPasswordLink)
 			throws UnsupportedEncodingException, MessagingException;
 
+
 }

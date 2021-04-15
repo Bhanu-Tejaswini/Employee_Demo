@@ -15,4 +15,5 @@ public interface IVSStreamService {
 	public LiveStreamState fetchStreamState(String id);
 	
 	public void saveStream(IVSLiveStreamResponse response);
+
 }

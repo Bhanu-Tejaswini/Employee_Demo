@@ -53,6 +53,7 @@ public class AuthController {
 
 	@Autowired
 	private MailServiceImpl mailService;
+
 	
 	@Autowired
 	private UserRespository userRepo;
