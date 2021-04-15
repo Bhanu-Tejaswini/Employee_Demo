@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -22,21 +24,24 @@ import com.example.demo.entity.Permission;
 import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
 import com.example.demo.model.RoleDTO;
-import com.example.demo.service.PermissionService;
-import com.example.demo.service.RoleService;
-import com.example.demo.service.UserService;
+import com.example.demo.service.impl.PermissionServiceImpl;
+import com.example.demo.service.impl.RoleServiceImpl;
+import com.example.demo.service.impl.UserDetailServiceImpl;
+import com.example.demo.service.impl.UserServiceImpl;
 
 @RestController
 public class AdminController {
+	
+	public static final Logger log = LoggerFactory.getLogger(AdminController.class);
 
 	@Autowired
-	private RoleService roleService;
+	private RoleServiceImpl roleService;
 
 	@Autowired
-	private PermissionService permissionService;
+	private PermissionServiceImpl permissionService;
 
 	@Autowired
-	private UserService userService;
+	private UserServiceImpl userService;
 
 	@PostMapping("/role")
 	public ResponseEntity<Void> registerRole(@RequestBody RoleDTO role) {

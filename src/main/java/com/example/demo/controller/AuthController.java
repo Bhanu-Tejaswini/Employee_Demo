@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 
 import javax.mail.MessagingException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,21 +25,23 @@ import com.example.demo.model.IVSPassword;
 import com.example.demo.model.IVSTokenEmail;
 import com.example.demo.model.LoginDetails;
 import com.example.demo.model.UserDTO;
-import com.example.demo.service.MailService;
-import com.example.demo.service.UserService;
+import com.example.demo.service.impl.MailServiceImpl;
+import com.example.demo.service.impl.UserServiceImpl;
 import com.example.demo.utility.IVSJwtUtil;
 
 @RestController
 public class AuthController {
+	
+	public static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
 	@Autowired
-	private UserService userService;
+	private UserServiceImpl userService;
 
 	@Autowired
 	private IVSJwtUtil jwtUtil;
 
 	@Autowired
-	private MailService mailService;
+	private MailServiceImpl mailService;
 
 	@GetMapping("/user")
 	@PreAuthorize("hasAuthority('create_profile')")

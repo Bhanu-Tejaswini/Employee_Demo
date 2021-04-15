@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import java.util.Date;
 import java.util.List;
@@ -30,10 +30,12 @@ import com.example.demo.model.UserDTO;
 import com.example.demo.model.UserToken;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRespository;
+import com.example.demo.service.IVSService;
 import com.example.demo.utility.IVSJwtUtil;
 
 @Service
-public class UserService implements IVSService<User, String> {
+public class UserServiceImpl implements IVSService<User, String> {
+	
 
 	@Autowired
 	private UserRespository userRepo;

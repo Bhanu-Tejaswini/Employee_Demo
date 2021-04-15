@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +11,10 @@ import org.springframework.stereotype.Service;
 import com.example.demo.Exception.DataNotFoundException;
 import com.example.demo.entity.Permission;
 import com.example.demo.repository.PermissionRepository;
+import com.example.demo.service.IVSService;
 
 @Service
-public class PermissionService implements IVSService<Permission, String> {
+public class PermissionServiceImpl implements IVSService<Permission, String> {
 
 	@Autowired
 	private PermissionRepository permissionRepo;

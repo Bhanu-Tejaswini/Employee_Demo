@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +14,10 @@ import com.example.demo.entity.Role;
 import com.example.demo.model.RoleDTO;
 import com.example.demo.repository.PermissionRepository;
 import com.example.demo.repository.RoleRepository;
+import com.example.demo.service.IVSService;
 
 @Service
-public class RoleService implements IVSService<Role, String> {
+public class RoleServiceImpl implements IVSService<Role, String> {
 
 	@Autowired
 	private RoleRepository roleRepo;
