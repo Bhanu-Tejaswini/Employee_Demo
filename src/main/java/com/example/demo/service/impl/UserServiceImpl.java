@@ -56,7 +56,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 	@Autowired
 	private IVSJwtUtil jwtUtil;
 
-	public User register(UserDTO userDTO) throws DataExistsException {
+	public Boolean register(UserDTO userDTO) {
 		User newUser = new User();
 //		newUser=userRepo.findByEmail(userDTO.getEmail());
 //   		if(newUser!=null) {
@@ -75,7 +75,9 @@ public class UserServiceImpl implements IVSService<User, String> {
 			Role role=roleRepo.findByName(str);
 			newUser.getRoles().add(role);
 		}
-		return userRepo.save(newUser);
+		userRepo.save(newUser);
+		
+		return true;
 	}
 
 	@Override
