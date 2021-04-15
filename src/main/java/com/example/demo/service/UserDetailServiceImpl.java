@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.Exception.AppException;
 import com.example.demo.entity.User;
 import com.example.demo.model.AuthUserDetail;
 import com.example.demo.repository.UserRespository;
@@ -24,7 +25,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		Optional<User> optionalUser = userRepository.findByUsername(username);
-		optionalUser.orElseThrow(() -> new UsernameNotFoundException("Username or password wrong"));
+		optionalUser.orElseThrow(() -> new AppException("Username or password is Invalid"));
 
 //		User user=optionalUser.get();
 
