@@ -30,7 +30,6 @@ import com.arraigntech.model.LoginDetails;
 import com.arraigntech.model.UserDTO;
 import com.arraigntech.model.response.BaseResponse;
 import com.arraigntech.repository.UserRespository;
-import com.arraigntech.service.MailService;
 import com.arraigntech.service.impl.MailServiceImpl;
 import com.arraigntech.service.impl.UserServiceImpl;
 import com.arraigntech.utility.IVSJwtUtil;
@@ -53,10 +52,10 @@ public class AuthController {
 
 	@Autowired
 	private MailServiceImpl mailService;
-
 	
 	@Autowired
 	private UserRespository userRepo;
+	
 
 	@GetMapping("/user")
 	@PreAuthorize("hasAuthority('create_profile')")
@@ -66,7 +65,6 @@ public class AuthController {
 
 	@GetMapping("/admin")
 //	@PreAuthorize("hasAuthority('ROLE_user')")
-	
 	public String getAdmin() {
 		return "This is admin data";
 	}
