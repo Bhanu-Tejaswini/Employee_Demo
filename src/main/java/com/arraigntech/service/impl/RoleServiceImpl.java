@@ -1,4 +1,5 @@
-package com.arraigntech.service;
+
+package com.arraigntech.service.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +15,10 @@ import com.arraigntech.entity.Role;
 import com.arraigntech.model.RoleDTO;
 import com.arraigntech.repository.PermissionRepository;
 import com.arraigntech.repository.RoleRepository;
+import com.arraigntech.service.IVSService;
 
 @Service
-public class RoleService implements IVSService<Role, String> {
+public class RoleServiceImpl implements IVSService<Role, String> {
 
 	@Autowired
 	private RoleRepository roleRepo;

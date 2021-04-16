@@ -1,4 +1,5 @@
-package com.arraigntech.service;
+
+package com.arraigntech.service.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +12,10 @@ import org.springframework.stereotype.Service;
 import com.arraigntech.Exception.DataNotFoundException;
 import com.arraigntech.entity.Permission;
 import com.arraigntech.repository.PermissionRepository;
+import com.arraigntech.service.IVSService;
 
 @Service
-public class PermissionService implements IVSService<Permission, String> {
+public class PermissionServiceImpl implements IVSService<Permission, String> {
 
 	@Autowired
 	private PermissionRepository permissionRepo;

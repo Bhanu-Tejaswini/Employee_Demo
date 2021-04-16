@@ -1,5 +1,7 @@
 package com.arraigntech.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,14 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.arraigntech.model.IVSLiveStream;
 import com.arraigntech.model.IVSLiveStreamResponse;
-import com.arraigntech.service.IVSStreamService;
+import com.arraigntech.service.impl.IVSStreamServiceImpl;
 
 @RestController
 @RequestMapping("/vstreem")
 public class IVSStreamController {
+	
+	public static final Logger log = LoggerFactory.getLogger(IVSStreamController.class);
 
 	@Autowired
-	private IVSStreamService streamService;
+	private IVSStreamServiceImpl streamService;
 
 	@PostMapping("/create")
 	public IVSLiveStreamResponse createStream(@RequestBody IVSLiveStream liveStream) {

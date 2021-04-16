@@ -3,6 +3,8 @@ package com.arraigntech.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -23,21 +25,25 @@ import com.arraigntech.entity.Permission;
 import com.arraigntech.entity.Role;
 import com.arraigntech.entity.User;
 import com.arraigntech.model.RoleDTO;
-import com.arraigntech.service.PermissionService;
-import com.arraigntech.service.RoleService;
-import com.arraigntech.service.UserService;
+import com.arraigntech.service.impl.PermissionServiceImpl;
+import com.arraigntech.service.impl.RoleServiceImpl;
+import com.arraigntech.service.impl.UserServiceImpl;
+
+
 
 @RestController
 public class AdminController {
+	
+	public static final Logger log = LoggerFactory.getLogger(AdminController.class);
 
 	@Autowired
-	private RoleService roleService;
+	private RoleServiceImpl roleService;
 
 	@Autowired
-	private PermissionService permissionService;
+	private PermissionServiceImpl permissionService;
 
 	@Autowired
-	private UserService userService;
+	private UserServiceImpl userService;
 
 	@PostMapping("/role")
 	public ResponseEntity<Void> registerRole(@RequestBody RoleDTO role) {

@@ -1,4 +1,5 @@
-package com.arraigntech.service;
+
+package com.arraigntech.service.impl;
 
 import java.util.Date;
 import java.util.List;
@@ -28,11 +29,13 @@ import com.arraigntech.model.UserDTO;
 import com.arraigntech.model.UserToken;
 import com.arraigntech.repository.RoleRepository;
 import com.arraigntech.repository.UserRespository;
+import com.arraigntech.service.IVSService;
 import com.arraigntech.utility.IVSJwtUtil;
 import com.arraigntech.utility.MessageConstants;
 
 @Service
-public class UserService implements IVSService<User, String> {
+public class UserServiceImpl implements IVSService<User, String> {
+	
 
 	@Autowired
 	private UserRespository userRepo;
@@ -52,7 +55,8 @@ public class UserService implements IVSService<User, String> {
 	@Autowired
 	private IVSJwtUtil jwtUtil;
 
-	public User register(UserDTO userDTO) throws AppException {
+
+	public Boolean register(UserDTO userDTO) throws AppException {
 		User newUser=userRepo.findByEmail(userDTO.getEmail());
 		
    		if(newUser!=null) {
@@ -72,7 +76,9 @@ public class UserService implements IVSService<User, String> {
 			Role role=roleRepo.findByName(str);
 			newUser.getRoles().add(role);
 		}
-		return userRepo.save(newUser);
+		userRepo.save(newUser);
+		
+		return true;
 	}
 
 	@Override
