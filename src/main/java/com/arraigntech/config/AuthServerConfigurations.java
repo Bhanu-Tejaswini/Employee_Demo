@@ -33,9 +33,28 @@ public class AuthServerConfigurations implements AuthorizationServerConfigurer {
 
 	@Autowired
 	private DataSource dataSource;
-
+	
 	@Autowired
 	private JwtAccessTokenConverter accessTokenConverter;
+	
+//	@Value("${app.auth.kfName}")
+//	private String kfName;
+//	
+//	@Value("${app.auth.ksPass}")
+//	private String ksPass;
+//
+//	private final AccessTokenConverter customClaimAccessTokenConverter = new AccessTokenConverter();
+//	
+//	@SuppressWarnings("deprecation")
+//	@Bean
+//	public JwtAccessTokenConverter getAccessTokenConverter() {
+//		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+//		KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource(kfName),
+//		        ksPass.toCharArray());
+//		converter.setKeyPair(keyStoreKeyFactory.getKeyPair("secretkey"));
+//		converter.setAccessTokenConverter(customClaimAccessTokenConverter);
+//		return converter;
+//	}
 
 	@Bean
 	public TokenStore jdbcTokenStore() {

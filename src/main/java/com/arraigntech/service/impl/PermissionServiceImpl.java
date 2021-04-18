@@ -9,10 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.arraigntech.Exception.DataNotFoundException;
+import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.Permission;
 import com.arraigntech.repository.PermissionRepository;
 import com.arraigntech.service.IVSService;
+import com.arraigntech.utility.MessageConstants;
 
 @Service
 public class PermissionServiceImpl implements IVSService<Permission, String> {
@@ -26,10 +27,10 @@ public class PermissionServiceImpl implements IVSService<Permission, String> {
 	}
 
 	@Override
-	public List<Permission> getAll() throws DataNotFoundException {
+	public List<Permission> getAll() throws AppException {
 		List<Permission> permissions = permissionRepo.findAll();
 		if (permissions.isEmpty()) {
-			throw new DataNotFoundException("There are no permissions to display");
+			throw new AppException(MessageConstants.DATA_NOT_FOUND);
 		}
 		return permissions;
 	}
@@ -47,20 +48,20 @@ public class PermissionServiceImpl implements IVSService<Permission, String> {
 	}
 
 	@Override
-	public boolean delete(String id) throws DataNotFoundException {
+	public boolean delete(String id) throws AppException {
 		Optional<Permission> permission = permissionRepo.findById(id);
 		if (!permission.isPresent()) {
-			throw new DataNotFoundException("The specified permission is not found");
+			throw new AppException(MessageConstants.DATA_NOT_FOUND);
 		}
 		permissionRepo.deleteById(id);
 		return true;
 	}
 
 	@Override
-	public Permission getById(String id) throws DataNotFoundException {
+	public Permission getById(String id) throws AppException {
 		Optional<Permission> permission = permissionRepo.findById(id);
 		if (!permission.isPresent()) {
-			throw new DataNotFoundException("The required permission does not found");
+			throw new AppException(MessageConstants.DATA_NOT_FOUND);
 		}
 		return permission.get();
 	}

@@ -1,65 +1,31 @@
 package com.arraigntech.Exception;
 
-import java.util.Date;
-
-import org.hibernate.exception.ConstraintViolationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingServletRequestParameterException;
+
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.server.ResponseStatusException;
+
+import com.arraigntech.Exception.Model.ErrorResponse;
+import com.arraigntech.entity.response.BaseResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public CustomErrorDetails handleMethodArgumentNotValidException(MethodArgumentNotValidException ex,
-			WebRequest request) {
-		return new CustomErrorDetails(new Date(), "Arguments Not valid", ex.getMessage());
-	}
+	private static final String MESSAGE = "message";
 
-	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-	@ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-	public CustomErrorDetails handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex,
-			WebRequest request) {
-		return new CustomErrorDetails(new Date(), " Http request method not supported for the request",
-				ex.getMessage());
-	}
+	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public CustomErrorDetails handleMissingServletRequestParameterException(MissingServletRequestParameterException ex,
-			WebRequest request) {
-		return new CustomErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
-	}
-
-	@ExceptionHandler(ConstraintViolationException.class)
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-	public CustomErrorDetails handleConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
-		return new CustomErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
-	}
-
-	@ExceptionHandler(ResponseStatusException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public CustomErrorDetails handleResponseStatusException(ResponseStatusException ex, WebRequest request) {
-		return new CustomErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
-	}
-
-	@ExceptionHandler(DataNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public CustomErrorDetails handleUserNotFoundException(DataNotFoundException ex, WebRequest request) {
-		return new CustomErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
-	}
-
-	@ExceptionHandler(DataExistsException.class)
-	@ResponseStatus(HttpStatus.CONFLICT)
-	public CustomErrorDetails handleUserExistsException(DataExistsException ex, WebRequest request) {
-		return new CustomErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+	@ExceptionHandler(AppException.class)
+	public BaseResponse<ErrorResponse> handleAppException(AppException e) {
+		LOGGER.error(e.getMessage(), e);
+		BaseResponse<ErrorResponse> response = new BaseResponse<ErrorResponse>();
+		response.withResponseMessage(MESSAGE, e.getMessage());
+		response.withSuccess(false);
+		return response;
 	}
 
 }

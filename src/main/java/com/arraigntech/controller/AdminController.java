@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.arraigntech.Exception.AppException;
-import com.arraigntech.Exception.DataNotFoundException;
 import com.arraigntech.entity.Permission;
 import com.arraigntech.entity.Role;
 import com.arraigntech.entity.User;
@@ -32,6 +32,7 @@ import com.arraigntech.service.impl.UserServiceImpl;
 
 
 @RestController
+@CrossOrigin(origins="*")
 public class AdminController {
 	
 	public static final Logger log = LoggerFactory.getLogger(AdminController.class);
@@ -65,7 +66,7 @@ public class AdminController {
 		try {
 			roleService.delete(id);
 			return new ResponseEntity<Void>(HttpStatus.OK);
-		} catch (DataNotFoundException e) {
+		} catch (AppException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
@@ -77,7 +78,7 @@ public class AdminController {
 		try {
 			roles = roleService.getAll();
 			return ResponseEntity.ok(roles);
-		} catch (DataNotFoundException e) {
+		} catch (AppException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
@@ -107,7 +108,7 @@ public class AdminController {
 		try {
 			permissionService.delete(id);
 			return new ResponseEntity<Void>(HttpStatus.OK);
-		} catch (DataNotFoundException e) {
+		} catch (AppException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
@@ -118,7 +119,7 @@ public class AdminController {
 		try {
 			permissions = permissionService.getAll();
 			return ResponseEntity.ok(permissions);
-		} catch (DataNotFoundException e) {
+		} catch (AppException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}

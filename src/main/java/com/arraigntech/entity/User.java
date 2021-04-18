@@ -49,6 +49,14 @@ public class User extends VSBaseModel {
 	@Column(name = "accountnonlocked")
 	@Type(type = "numeric_boolean")
 	private boolean accountNonLocked;
+	@Column(name = "mobile_number")
+	private String mobileNumber;
+	@Column
+	private String pincode;
+	@Column
+	private String language;
+	@Column(name = "time_zone")
+	private String timeZone;
 
 	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -122,6 +130,38 @@ public class User extends VSBaseModel {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+
+	public String getPincode() {
+		return pincode;
+	}
+
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public String getTimeZone() {
+		return timeZone;
+	}
+
+	public void setTimeZone(String timeZone) {
+		this.timeZone = timeZone;
 	}
 
 }
