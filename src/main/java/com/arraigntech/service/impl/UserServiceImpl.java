@@ -137,7 +137,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		return null;
 	}
 
-	public String updatePassword(String token, String newPassword) throws AppException {
+	public User updatePassword(String token, String newPassword) throws AppException {
 
 		if (token.isEmpty() || newPassword.isEmpty()) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
@@ -153,8 +153,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
 		newUser.setPassword(passwordEncoder.encode(newPassword));
-		userRepo.save(newUser);
-		return MessageConstants.PASSWORDMESSAGE;
+		return userRepo.save(newUser);
 	}
 
 	public String generateToken(LoginDetails login, UriComponentsBuilder builder) throws AppException {

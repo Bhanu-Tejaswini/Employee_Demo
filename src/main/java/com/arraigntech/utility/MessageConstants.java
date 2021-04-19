@@ -15,4 +15,5 @@ public class MessageConstants {
 	public static final String PASSWORDMESSAGE="Password Changed successfully";
 	public static final String EMAILSETTINGSMESSAGE="Email settings updated successfully";
 	public static final String USER_SETTINGS_UPDATED="User settings updated successfully";
+	public final static String KEY_SUCCESS = "Success";
 }

@@ -22,6 +22,7 @@ import com.arraigntech.model.IVSTokenEmail;
 import com.arraigntech.model.LoginDetails;
 import com.arraigntech.model.UserDTO;
 import com.arraigntech.service.impl.UserServiceImpl;
+import com.arraigntech.utility.MessageConstants;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -79,7 +80,10 @@ public class AuthController {
 	@RequestMapping(value = "/reset-password/{token}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@CrossOrigin(origins = "*")
 	public BaseResponse<String> resetPassword(@PathVariable("token") String token, @RequestBody IVSPassword pass) {
-		return new BaseResponse<String>(userService.updatePassword(token, pass.getPassword())).withSuccess(true);
+		userService.updatePassword(token, pass.getPassword());
+		BaseResponse<String> response = new BaseResponse<>();
+		return response.withSuccess(true)
+				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.PASSWORDMESSAGE).build();
 	}
 
 }
