@@ -51,7 +51,7 @@ public class RoleServiceImpl implements IVSService<Role, String> {
 		return roleRepo.save(entity);
 	}
 
-	@Override
+
 	public boolean delete(String id) throws AppException {
 		Optional<Role> newRole = roleRepo.findById(id);
 		if (!newRole.isPresent()) {

@@ -14,7 +14,7 @@ public interface IVSService<T, ID> {
 
 	public T update(T entity);
 
-	public boolean delete(ID id);
+//	public boolean delete(ID id);
 
 	public T getById(String id);
 }

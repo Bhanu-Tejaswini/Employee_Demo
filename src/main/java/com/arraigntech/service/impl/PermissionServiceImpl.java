@@ -47,7 +47,7 @@ public class PermissionServiceImpl implements IVSService<Permission, String> {
 		return permissionRepo.save(entity);
 	}
 
-	@Override
+
 	public boolean delete(String id) throws AppException {
 		Optional<Permission> permission = permissionRepo.findById(id);
 		if (!permission.isPresent()) {

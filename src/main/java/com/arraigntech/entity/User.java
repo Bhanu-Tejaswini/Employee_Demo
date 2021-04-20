@@ -57,6 +57,9 @@ public class User extends VSBaseModel {
 	private String language;
 	@Column(name = "time_zone")
 	private String timeZone;
+	@Column
+	@Type(type = "numeric_boolean")
+	private boolean active;
 
 	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -162,6 +165,14 @@ public class User extends VSBaseModel {
 
 	public void setTimeZone(String timeZone) {
 		this.timeZone = timeZone;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 }

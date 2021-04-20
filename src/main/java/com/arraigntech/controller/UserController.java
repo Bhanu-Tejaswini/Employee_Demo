@@ -31,7 +31,6 @@ public class UserController {
 	@ApiOperation(value = "Update password")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/update-password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "*")
 	public BaseResponse<String> resetPassword(@RequestBody IVSPassword pass) {
 		return new BaseResponse<String>(userService.updateAccountPassword(pass.getPassword(),pass.getNewpassword())).withSuccess(true);
 	}
@@ -39,7 +38,6 @@ public class UserController {
 	@ApiOperation(value = "Fetch email Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/email-settings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "*")
 	public BaseResponse<EmailSettingsModel> getEmailSettings() {
 		return new BaseResponse<EmailSettingsModel>(userService.getEmailSetting()).withSuccess(true);
 	}
@@ -47,7 +45,6 @@ public class UserController {
 	@ApiOperation(value = "save email Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/email-settings", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "*")
 	public BaseResponse<String> postEmailSettings(@RequestBody EmailSettingsModel emailSettingsModel) {
 		return new BaseResponse<String>(userService.saveEmailSettings(emailSettingsModel)).withSuccess(true);
 	}
@@ -55,7 +52,6 @@ public class UserController {
 	@ApiOperation(value = "Fetch user Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/user-settings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "*")
 	public BaseResponse<UserSettingsDTO> getUserSettings() {
 		return new BaseResponse<UserSettingsDTO>(userService.fetchUserSettings()).withSuccess(true);
 	}
@@ -63,7 +59,7 @@ public class UserController {
 	@ApiOperation(value = "save user Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/user-settings", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "*")
+//	@PreAuthorize("hasAuthority('create_profile')")
 	public BaseResponse<String> postUserSettings(@RequestBody UserSettingsDTO userSettings) {
 		return new BaseResponse<String>(userService.saveUserSettings(userSettings)).withSuccess(true);
 	}

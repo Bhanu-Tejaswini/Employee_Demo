@@ -139,15 +139,4 @@ public class AdminController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
-
-	@DeleteMapping("/user/{id}")
-	public ResponseEntity<Void> deleteUser(@PathVariable("id") String id) {
-		try {
-			boolean flag=userService.delete(id);
-			return new ResponseEntity<Void>(HttpStatus.OK);
-		} catch (AppException e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-		}
-		
-	}
 }

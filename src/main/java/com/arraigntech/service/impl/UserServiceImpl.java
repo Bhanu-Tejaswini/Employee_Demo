@@ -4,6 +4,7 @@ package com.arraigntech.service.impl;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.mail.MessagingException;
@@ -15,6 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -25,6 +28,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.EmailSettings;
+import com.arraigntech.entity.ResetToken;
 import com.arraigntech.entity.Role;
 import com.arraigntech.entity.User;
 import com.arraigntech.model.EmailSettingsModel;
@@ -34,17 +38,18 @@ import com.arraigntech.model.UserDTO;
 import com.arraigntech.model.UserSettingsDTO;
 import com.arraigntech.model.UserToken;
 import com.arraigntech.repository.EmailSettingsRepository;
+import com.arraigntech.repository.ResetTokenRepository;
 import com.arraigntech.repository.RoleRepository;
 import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.IVSService;
+import com.arraigntech.utility.EmailValidator;
 import com.arraigntech.utility.IVSJwtUtil;
 import com.arraigntech.utility.MessageConstants;
+import com.arraigntech.utility.PasswordConstraintValidator;
 
 @Service
 public class UserServiceImpl implements IVSService<User, String> {
 
-	
-	
 	@Autowired
 	private UserRespository userRepo;
 
@@ -65,19 +70,41 @@ public class UserServiceImpl implements IVSService<User, String> {
 
 	@Autowired
 	private MailServiceImpl mailService;
-	
+
 	@Autowired
 	private EmailSettingsRepository emailSettingsRepo;
 
+	@Autowired
+	private EmailValidator emailValidator;
+
+	@Autowired
+	private PasswordConstraintValidator passwordValidator;
+
+	@Value("${reset-password-baseUrl}")
+	private String baseUrl;
+	
+	@Value("${reset-password-scheme}")
+	private String scheme;
+	
+	@Autowired
+	private ResetTokenRepository resetTokenRepo;
+
 	public Boolean register(UserDTO userDTO) throws AppException {
+		System.out.println(emailValidator.isValidEmail(userDTO.getEmail()));
+		if (userDTO.getEmail() == null || !emailValidator.isValidEmail(userDTO.getEmail())) {
+			throw new AppException(MessageConstants.INVALID_EMAIL);
+		}
 		User newUser = userRepo.findByEmail(userDTO.getEmail());
 
-		if (newUser != null) {
+		if (Objects.nonNull(newUser)) {
 			throw new AppException(MessageConstants.USER_EXISTS);
 		}
-		Optional<User> newUser1=userRepo.findByUsername(userDTO.getUsername());
-		if(newUser1.isPresent()) {
+		Optional<User> newUser1 = userRepo.findByUsername(userDTO.getUsername());
+		if (newUser1.isPresent()) {
 			throw new AppException(MessageConstants.USER_EXISTS_USERNAME);
+		}
+		if (!passwordValidator.isValid(userDTO.getPassword())) {
+			throw new AppException(MessageConstants.INVALID_PASSWORD);
 		}
 		newUser = new User();
 		newUser.setUsername(userDTO.getUsername());
@@ -87,6 +114,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		newUser.setAccountNonExpired(true);
 		newUser.setAccountNonLocked(true);
 		newUser.setCredentialsNonExpired(true);
+		newUser.setActive(true);
 
 		for (String str : userDTO.getRole()) {
 			Role role = roleRepo.findByName(str);
@@ -115,19 +143,21 @@ public class UserServiceImpl implements IVSService<User, String> {
 	public User update(User entity) throws AppException {
 		User newUser = new User();
 		newUser = userRepo.findByEmail(entity.getEmail());
-		if (newUser == null) {
+		if (Objects.isNull(newUser)) {
 			throw new AppException("The user already exists");
 		}
 		return userRepo.save(entity);
 	}
 
-	@Override
-	public boolean delete(String id) throws AppException {
-		Optional<User> newUser = userRepo.findById(id);
-		if (!newUser.isPresent()) {
+
+	public boolean delete() throws AppException {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Optional<User> optionalUser = userRepo.findByUsername(authentication.getName());
+		if (!optionalUser.isPresent()) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		userRepo.deleteById(id);
+		optionalUser.get().setActive(false);
+		userRepo.save(optionalUser.get());
 		return true;
 	}
 
@@ -142,6 +172,9 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (token.isEmpty() || newPassword.isEmpty()) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
+		if (!passwordValidator.isValid(newPassword)) {
+			throw new AppException(MessageConstants.INVALID_PASSWORD);
+		}
 		if (!(StringUtils.hasText(token) && jwtUtil.validateToken(token))) {
 			throw new AppException(MessageConstants.TOKEN_NOT_FOUND);
 		}
@@ -149,11 +182,18 @@ public class UserServiceImpl implements IVSService<User, String> {
 		Date expiryDate = jwtUtil.getExpirationTimeFromToken(token);
 		System.out.println("email" + email + "  expiry date" + expiryDate);
 		User newUser = userRepo.findByEmail(email);
-		if (newUser == null) {
+		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
+		}
+		//check whether token exist in the database or not
+		ResetToken resetToken=resetTokenRepo.findByUser(newUser);
+		if(Objects.isNull(resetToken)) {
+			throw new AppException(MessageConstants.TOKEN_EXPIRED);
 		}
 		newUser.setPassword(passwordEncoder.encode(newPassword));
 		userRepo.save(newUser);
+		//deleting the token after reseting the password
+		resetTokenRepo.deleteById(resetToken.getId());
 		return MessageConstants.PASSWORDMESSAGE;
 	}
 
@@ -161,11 +201,14 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (login.getEmail().isEmpty() || login.getPassword().isEmpty()) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
+		if (!emailValidator.isValidEmail(login.getEmail())) {
+			throw new AppException(MessageConstants.INVALID_EMAIL);
+		}
 		User newUser = userRepo.findByEmail(login.getEmail());
-		if (newUser == null) {
+		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		if(!passwordEncoder.matches(login.getPassword(), newUser.getPassword())) {
+		if (!passwordEncoder.matches(login.getPassword(), newUser.getPassword())) {
 			throw new AppException(MessageConstants.WRONG_PASSWORD);
 		}
 
@@ -174,8 +217,8 @@ public class UserServiceImpl implements IVSService<User, String> {
 
 		String localUrl = builder.path("/oauth/token").build().toUriString();
 
-		String userName = newUser.getUsername();
-		String uri = localUrl + "?grant_type=password&username=" + userName + "&password=" + login.getPassword();
+		String uri = localUrl + "?grant_type=password&username=" + login.getEmail() + "&password="
+				+ login.getPassword();
 		HttpEntity<UserToken> request = new HttpEntity<>(headers);
 		ResponseEntity<TokenResponse> reponseEntity = restTemplate.exchange(uri, HttpMethod.POST, request,
 				TokenResponse.class);
@@ -192,84 +235,91 @@ public class UserServiceImpl implements IVSService<User, String> {
 		return newUser.get();
 	}
 
-	public String forgotPassword(String email, UriComponentsBuilder builder) {
+	public Boolean forgotPassword(String email) {
+		if (email == null || !emailValidator.isValidEmail(email)) {
+			throw new AppException(MessageConstants.INVALID_EMAIL);
+		}
 		User newUser = userRepo.findByEmail(email);
-		if (newUser == null) {
+		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-
+		//generating the token
 		String token = jwtUtil.generateResetToken(email);
+		//saving the resettoken in the database
+		ResetToken resetToken=new ResetToken(token,newUser);
+		resetTokenRepo.save(resetToken);
 		// Generating the password reset link
-		String passwordResetLink = builder.path("/forgot-password").queryParam("token", token).buildAndExpand(token)
-				.toUriString();
+		UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
+		String passwordResetLink = builder.scheme(scheme).host(baseUrl).path("/auth/setPassword").queryParam("token", token)
+				.buildAndExpand(token).toUriString();
 		// Sending the mail with password reset link
 		try {
 			mailService.sendEmail(email, passwordResetLink);
 		} catch (UnsupportedEncodingException | MessagingException e) {
 			throw new AppException(e.getMessage());
 		}
-		return token;
+		return true;
 	}
-	
+
 	public String updateAccountPassword(String oldPassword, String newPassword) {
-		if(oldPassword.isEmpty() || newPassword.isEmpty()) {
+		if (oldPassword.isEmpty() || newPassword.isEmpty()) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		Optional<User> optionalUser=userRepo.findByUsername(authentication.getName());
-		Optional<User> optionalUser=userRepo.findByUsername("user1");
-		if(!optionalUser.isPresent()) {
+		if (!passwordValidator.isValid(newPassword)) {
+			throw new AppException(MessageConstants.INVALID_PASSWORD);
+		}
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Optional<User> optionalUser = userRepo.findByUsername(authentication.getName());
+		if (!optionalUser.isPresent()) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		User newUser=optionalUser.get();
-		if(passwordEncoder.matches(oldPassword, newUser.getPassword())){
+		User newUser = optionalUser.get();
+		if (passwordEncoder.matches(oldPassword, newUser.getPassword())) {
 			newUser.setPassword(passwordEncoder.encode(newPassword));
-		}
-		else {
+		} else {
 			throw new AppException(MessageConstants.WRONG_PASSWORD);
 		}
 		userRepo.save(newUser);
 		return MessageConstants.PASSWORDMESSAGE;
 	}
-	
+
 	public EmailSettingsModel getEmailSetting() {
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		Optional<User> optionalUser=userRepo.findByUsername(authentication.getName());
-		Optional<User> optionalUser=userRepo.findByUsername("user1");
-		if(!optionalUser.isPresent()){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Optional<User> optionalUser = userRepo.findByUsername(authentication.getName());
+
+		if (!optionalUser.isPresent()) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		EmailSettings emailSettings=emailSettingsRepo.findByUser(optionalUser.get());
-		if(emailSettings==null) {
-			return new EmailSettingsModel(true,true,true,true,true,true);
+		EmailSettings emailSettings = emailSettingsRepo.findByUser(optionalUser.get());
+		if (Objects.isNull(emailSettings)) {
+			return new EmailSettingsModel(true, true, true, true, true, true);
 		}
-		return new EmailSettingsModel(emailSettings.isSystemAlerts(),emailSettings.isMonthlyStreamingReports(),emailSettings.isInstantStreamingReport()
-				,emailSettings.isPromotions(),emailSettings.isProductUpdates(),emailSettings.isBlogDigest());
+		return new EmailSettingsModel(emailSettings.isSystemAlerts(), emailSettings.isMonthlyStreamingReports(),
+				emailSettings.isInstantStreamingReport(), emailSettings.isPromotions(),
+				emailSettings.isProductUpdates(), emailSettings.isBlogDigest());
 	}
-	
+
 	public String saveEmailSettings(EmailSettingsModel emailSettings) {
-		if(emailSettings==null) {
+		if (Objects.isNull(emailSettings)) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		Optional<User> optionalUser=userRepo.findByUsername(authentication.getName());
-		Optional<User> optionalUser=userRepo.findByUsername("user1");
-		if(!optionalUser.isPresent()) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Optional<User> optionalUser = userRepo.findByUsername(authentication.getName());
+		if (!optionalUser.isPresent()) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		EmailSettings checkSettings=emailSettingsRepo.findByUser(optionalUser.get());
-		if(checkSettings==null) {
+		EmailSettings checkSettings = emailSettingsRepo.findByUser(optionalUser.get());
+		if (Objects.isNull(checkSettings)) {
 			EmailSettings newSettings = new EmailSettings();
-			persistEmailSettings(newSettings,emailSettings,optionalUser.get());
-		}
-		else {
-			persistEmailSettings(checkSettings,emailSettings,optionalUser.get());
+			persistEmailSettings(newSettings, emailSettings, optionalUser.get());
+		} else {
+			persistEmailSettings(checkSettings, emailSettings, optionalUser.get());
 		}
 
 		return MessageConstants.EMAILSETTINGSMESSAGE;
 	}
-	
-	public boolean persistEmailSettings(EmailSettings settings,EmailSettingsModel emailSettings,User user ) {
+
+	public boolean persistEmailSettings(EmailSettings settings, EmailSettingsModel emailSettings, User user) {
 		settings.setUser(user);
 		settings.setSystemAlerts(emailSettings.getSystemAlerts());
 		settings.setMonthlyStreamingReports(emailSettings.getMonthlyStreamingReports());
@@ -280,27 +330,36 @@ public class UserServiceImpl implements IVSService<User, String> {
 		emailSettingsRepo.save(settings);
 		return true;
 	}
-	
+
 	public UserSettingsDTO fetchUserSettings() {
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		Optional<User> optionalUser=userRepo.findByUsername(authentication.getName());
-		Optional<User> optionalUser=userRepo.findByUsername("user1");
-		if(!optionalUser.isPresent()) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Optional<User> optionalUser = userRepo.findByUsername(authentication.getName());
+		if (!optionalUser.isPresent()) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		User newUser=optionalUser.get();
-		return new UserSettingsDTO(newUser.getEmail(),newUser.getMobileNumber(),newUser.getPincode(),newUser.getUsername(),
-				newUser.getLanguage(),newUser.getTimeZone());
+		User newUser = optionalUser.get();
+		return new UserSettingsDTO(newUser.getEmail(), newUser.getMobileNumber(), newUser.getPincode(),
+				newUser.getUsername(), newUser.getLanguage(), newUser.getTimeZone());
 	}
-	
+
 	public String saveUserSettings(UserSettingsDTO userSettings) {
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		Optional<User> optionalUser=userRepo.findByUsername(authentication.getName());
-		Optional<User> optionalUser=userRepo.findByUsername("user1");
-		if(!optionalUser.isPresent()) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Optional<User> optionalUser = userRepo.findByUsername(authentication.getName());
+		if (!optionalUser.isPresent()) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		User newUser=optionalUser.get();
+		if (userSettings.getEmail() == null || !emailValidator.isValidEmail(userSettings.getEmail())) {
+			throw new AppException(MessageConstants.INVALID_EMAIL);
+		}
+		User checkEmailUser=userRepo.findByEmailAndIdNot(userSettings.getEmail(),optionalUser.get().getId());
+		if(Objects.nonNull(checkEmailUser)) {
+			throw new AppException(MessageConstants.EMAIL_EXISTS);
+		}
+		User checkUsername=userRepo.findByUsernameAndIdNot(userSettings.getUsername(),optionalUser.get().getId());
+		if(Objects.nonNull(checkUsername)) {
+			throw new AppException(MessageConstants.USER_EXISTS_USERNAME);
+		}
+		User newUser = optionalUser.get();
 		newUser.setEmail(userSettings.getEmail());
 		newUser.setMobileNumber(userSettings.getMobilenumber());
 		newUser.setUsername(userSettings.getUsername());
@@ -310,6 +369,5 @@ public class UserServiceImpl implements IVSService<User, String> {
 		userRepo.save(newUser);
 		return MessageConstants.USER_SETTINGS_UPDATED;
 	}
-	
-	
+
 }
