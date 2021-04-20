@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arraigntech.entity.response.BaseResponse;
+import com.arraigntech.model.AccountSettingVO;
 import com.arraigntech.model.EmailSettingsModel;
 import com.arraigntech.model.IVSPassword;
 import com.arraigntech.model.UserSettingsDTO;
+import com.arraigntech.service.AccountSettingService;
 import com.arraigntech.service.impl.UserServiceImpl;
 
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +29,9 @@ public class UserController {
 	
 	@Autowired
 	private UserServiceImpl userService;
+	
+	@Autowired
+	protected AccountSettingService accountSettingService;
 	
 	@ApiOperation(value = "Update password")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
@@ -66,5 +71,13 @@ public class UserController {
 	@CrossOrigin(origins = "*")
 	public BaseResponse<String> postUserSettings(@RequestBody UserSettingsDTO userSettings) {
 		return new BaseResponse<String>(userService.saveUserSettings(userSettings)).withSuccess(true);
+	}
+	
+	@ApiOperation(value = "timezonelist and country list")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/timezonelist", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@CrossOrigin(origins = "*")
+	public BaseResponse<AccountSettingVO> getTimeZonesList() {
+		return new BaseResponse<AccountSettingVO>(accountSettingService.getTimeZonesList()).withSuccess(true);
 	}
 }
