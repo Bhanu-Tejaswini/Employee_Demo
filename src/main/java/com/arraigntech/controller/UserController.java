@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arraigntech.entity.response.BaseResponse;
+
 import com.arraigntech.model.EmailSettingsModel;
 import com.arraigntech.model.IVSPassword;
 import com.arraigntech.model.UserSettingsDTO;
@@ -27,6 +28,7 @@ public class UserController {
 	
 	@Autowired
 	private UserServiceImpl userService;
+
 	
 	@ApiOperation(value = "Update password")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
@@ -62,5 +64,13 @@ public class UserController {
 //	@PreAuthorize("hasAuthority('create_profile')")
 	public BaseResponse<String> postUserSettings(@RequestBody UserSettingsDTO userSettings) {
 		return new BaseResponse<String>(userService.saveUserSettings(userSettings)).withSuccess(true);
+	}
+	
+	@ApiOperation(value = "Delete user account")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/user", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<Boolean> deleteUser() {
+//		log.debug("Delete user account");
+		return new BaseResponse<Boolean>(userService.delete()).withSuccess(true);
 	}
 }

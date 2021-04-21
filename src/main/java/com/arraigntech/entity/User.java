@@ -1,10 +1,13 @@
 package com.arraigntech.entity;
 
+import java.security.AuthProvider;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -14,6 +17,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 import com.arraigntech.model.VSBaseModel;
+import com.arraigntech.utility.AuthenticationProvider;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -60,6 +64,9 @@ public class User extends VSBaseModel {
 	@Column
 	@Type(type = "numeric_boolean")
 	private boolean active;
+	@Enumerated(EnumType.STRING)
+	@Column
+	private AuthenticationProvider provider;
 
 	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -175,4 +182,11 @@ public class User extends VSBaseModel {
 		this.active = active;
 	}
 
+	public AuthenticationProvider getProvider() {
+		return provider;
+	}
+
+	public void setProvider(AuthenticationProvider provider) {
+		this.provider = provider;
+	}
 }

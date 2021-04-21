@@ -1,6 +1,7 @@
 package com.arraigntech.controller;
 
 import java.net.HttpURLConnection;
+import java.security.Principal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,13 +85,5 @@ public class AuthController {
 		BaseResponse<String> response = new BaseResponse<>();
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.PASSWORDMESSAGE).build();
-	}
-	
-	@ApiOperation(value = "Delete user account")
-	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-	@RequestMapping(value = "/user", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<Boolean> deleteUser() {
-		log.debug("Delete user account");
-		return new BaseResponse<Boolean>(userService.delete()).withSuccess(true);
 	}
 }

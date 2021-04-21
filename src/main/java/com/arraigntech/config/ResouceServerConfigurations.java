@@ -12,6 +12,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 
+import com.arraigntech.service.impl.CustomOauth2UserService;
+
 @Configuration
 @EnableResourceServer
 public class ResouceServerConfigurations extends ResourceServerConfigurerAdapter {
@@ -21,6 +23,9 @@ public class ResouceServerConfigurations extends ResourceServerConfigurerAdapter
 
 	@Value("${security.jwt.resource-ids}")
 	private String resourceIds;
+	
+	@Autowired
+	private CustomOauth2UserService oauth2UserService;
 
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
@@ -31,15 +36,21 @@ public class ResouceServerConfigurations extends ResourceServerConfigurerAdapter
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
+		System.out.println("resource sec starts");
 		http.csrf().disable();
 		http.cors().and()
         .requestMatchers()
         .and()
         .authorizeRequests()
         .antMatchers("/actuator/**", "v2/api-docs/**", "/oauth/*", "/auth/**").permitAll()
-        .anyRequest().authenticated()
-        .and().sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//        .anyRequest().authenticated()
+        .and()
+        .oauth2Login()
+//        	.defaultSuccessUrl("/prevent",true)
+        .permitAll()
+    	.userInfoEndpoint().userService(oauth2UserService);
+//        .and().sessionManagement()
+//        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 //        .antMatchers("/user").hasAnyAuthority("create_profile").anyRequest().authenticated();
 		
 	}

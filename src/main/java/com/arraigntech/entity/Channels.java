@@ -1,6 +1,6 @@
 package com.arraigntech.entity;
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -26,7 +26,7 @@ public class Channels extends VSBaseModel {
 	@Type(type = "numeric_boolean")
 	private boolean active;
 
-	@ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+	@ManyToOne(targetEntity = User.class)
 	private User user;
 
 	public Channels() {
