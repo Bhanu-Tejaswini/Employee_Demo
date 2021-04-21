@@ -43,15 +43,14 @@ public class ResouceServerConfigurations extends ResourceServerConfigurerAdapter
         .and()
         .authorizeRequests()
         .antMatchers("/actuator/**", "v2/api-docs/**", "/oauth/*", "/auth/**").permitAll()
-//        .anyRequest().authenticated()
-        .and()
-        .oauth2Login()
-//        	.defaultSuccessUrl("/prevent",true)
-        .permitAll()
-    	.userInfoEndpoint().userService(oauth2UserService);
-//        .and().sessionManagement()
-//        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//        .antMatchers("/user").hasAnyAuthority("create_profile").anyRequest().authenticated();
+        .anyRequest().authenticated()
+//        .and()
+//        .oauth2Login()
+////        	.defaultSuccessUrl("/prevent",true)
+//        .permitAll()
+//    	.userInfoEndpoint().userService(oauth2UserService);
+        .and().sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
 	}
 	

@@ -12,8 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.User;
@@ -26,7 +27,6 @@ import com.arraigntech.utility.LoggedInUserDetails;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.utility.OtpGenerator;
 import com.arraigntech.utility.UtilEnum;
-import com.twilio.Twilio;
 
 
 /**
@@ -42,11 +42,11 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 	@Autowired
 	protected OtpGenerator otpGenerator;
 	
-	@Value("${app.mobile.otp.validity}")
-	protected int mobileOTPExpiryTime;
-	
-	@Value("${sponsor.sms.OTPLength:4}")
-	private Integer sponsorSmsOTPLength;
+//	@Value("${app.mobile.otp.validity}")
+//	protected int mobileOTPExpiryTime;
+//	
+//	@Value("${sponsor.sms.OTPLength:4}")
+//	private Integer sponsorSmsOTPLength;
 	
 	@Value("${twilio.account.id}")
 	private String twilioAccountId;
@@ -91,12 +91,12 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 	@Override
 	public Boolean sendOTPForUser(String mobilenumber) {
 		// TODO Auto-generated method stub
-		if (!StringUtils.hasText(mobilenumber)) {
-			throw new AppException(MessageConstants.INVALID_PHONE_NUMBER);
-		}
-		// generate OTP
-		String otp = otpGenerator.generateOTP(sponsorSmsOTPLength);
-		Twilio.init(twilioAccountId, twilioAccessToken);
+//		if (!StringUtils.hasText(mobilenumber)) {
+//			throw new AppException(MessageConstants.INVALID_PHONE_NUMBER);
+//		}
+//		// generate OTP
+//		String otp = otpGenerator.generateOTP(sponsorSmsOTPLength);
+//		Twilio.init(twilioAccountId, twilioAccessToken);
 		// send SMS OTP
 		//sendSMSOTP(mobilenumber, otp);
 		return null;
@@ -148,9 +148,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 //	}
 	
 	public UserSettingsDTO fetchUserSettings() {
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		Optional<User> optionalUser=userRepo.findByUsername(authentication.getName());
-		Optional<User> optionalUser=userRepo.findByUsername("user1");
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Optional<User> optionalUser=userRepo.findByUsername(authentication.getName());
+//		Optional<User> optionalUser=userRepo.findByUsername("user1");
 		if(!optionalUser.isPresent()) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
