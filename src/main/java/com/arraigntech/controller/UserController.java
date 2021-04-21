@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arraigntech.entity.response.BaseResponse;
-
 import com.arraigntech.model.EmailSettingsModel;
 import com.arraigntech.model.IVSPassword;
 import com.arraigntech.model.UserSettingsDTO;
+import com.arraigntech.service.impl.AccountSettingServiceImpl;
 import com.arraigntech.service.impl.UserServiceImpl;
 
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +28,8 @@ public class UserController {
 	
 	@Autowired
 	private UserServiceImpl userService;
+	
+	private AccountSettingServiceImpl accountSettingsImpl;
 
 	
 	@ApiOperation(value = "Update password")
@@ -55,16 +57,16 @@ public class UserController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/user-settings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<UserSettingsDTO> getUserSettings() {
-		return new BaseResponse<UserSettingsDTO>(userService.fetchUserSettings()).withSuccess(true);
+		return new BaseResponse<UserSettingsDTO>(accountSettingsImpl.fetchUserSettings()).withSuccess(true);
 	}
 	
-	@ApiOperation(value = "save user Settings")
-	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-	@RequestMapping(value = "/user-settings", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-//	@PreAuthorize("hasAuthority('create_profile')")
-	public BaseResponse<String> postUserSettings(@RequestBody UserSettingsDTO userSettings) {
-		return new BaseResponse<String>(userService.saveUserSettings(userSettings)).withSuccess(true);
-	}
+//	@ApiOperation(value = "save user Settings")
+//	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+//	@RequestMapping(value = "/user-settings", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+////	@PreAuthorize("hasAuthority('create_profile')")
+//	public BaseResponse<String> postUserSettings(@RequestBody UserSettingsDTO userSettings) {
+//		return new BaseResponse<String>(userService.saveUserSettings(userSettings)).withSuccess(true);
+//	}
 	
 	@ApiOperation(value = "Delete user account")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })

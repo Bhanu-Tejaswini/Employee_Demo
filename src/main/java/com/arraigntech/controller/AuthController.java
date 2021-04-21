@@ -81,6 +81,7 @@ public class AuthController {
 	public BaseResponse<String> resetPassword(@RequestHeader(name="Authorization", required=true) String token, @RequestBody IVSResetPassword pass) {
 		log.debug("Reseting the password");
 //		return new BaseResponse<String>(userService.updatePassword(token, pass.getPassword())).withSuccess(true);
+
 		userService.updatePassword(token, pass.getPassword());
 		BaseResponse<String> response = new BaseResponse<>();
 		return response.withSuccess(true)

@@ -330,44 +330,23 @@ public class UserServiceImpl implements IVSService<User, String> {
 		emailSettingsRepo.save(settings);
 		return true;
 	}
-
-	public UserSettingsDTO fetchUserSettings() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Optional<User> optionalUser = userRepo.findByUsername(authentication.getName());
-		if (!optionalUser.isPresent()) {
-			throw new AppException(MessageConstants.USER_NOT_FOUND);
-		}
-		User newUser = optionalUser.get();
-		return new UserSettingsDTO(newUser.getEmail(), newUser.getMobileNumber(), newUser.getPincode(),
-				newUser.getUsername(), newUser.getLanguage(), newUser.getTimeZone());
-	}
-
-	public String saveUserSettings(UserSettingsDTO userSettings) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Optional<User> optionalUser = userRepo.findByUsername(authentication.getName());
-		if (!optionalUser.isPresent()) {
-			throw new AppException(MessageConstants.USER_NOT_FOUND);
-		}
-		if (userSettings.getEmail() == null || !emailValidator.isValidEmail(userSettings.getEmail())) {
-			throw new AppException(MessageConstants.INVALID_EMAIL);
-		}
-		User checkEmailUser=userRepo.findByEmailAndIdNot(userSettings.getEmail(),optionalUser.get().getId());
-		if(Objects.nonNull(checkEmailUser)) {
-			throw new AppException(MessageConstants.EMAIL_EXISTS);
-		}
-		User checkUsername=userRepo.findByUsernameAndIdNot(userSettings.getUsername(),optionalUser.get().getId());
-		if(Objects.nonNull(checkUsername)) {
-			throw new AppException(MessageConstants.USER_EXISTS_USERNAME);
-		}
-		User newUser = optionalUser.get();
-		newUser.setEmail(userSettings.getEmail());
-		newUser.setMobileNumber(userSettings.getMobilenumber());
-		newUser.setUsername(userSettings.getUsername());
-		newUser.setPincode(userSettings.getPincode());
-		newUser.setLanguage(userSettings.getLanguage());
-		newUser.setTimeZone(userSettings.getTimezone());
-		userRepo.save(newUser);
-		return MessageConstants.USER_SETTINGS_UPDATED;
-	}
-
+	
+//	public String saveUserSettings(UserSettingsDTO userSettings) {
+////		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+////		Optional<User> optionalUser=userRepo.findByUsername(authentication.getName());
+//		Optional<User> optionalUser=userRepo.findByUsername("user1");
+//		if(!optionalUser.isPresent()) {
+//			throw new AppException(MessageConstants.USER_NOT_FOUND);
+//		}
+//		User newUser=optionalUser.get();
+//		newUser.setEmail(userSettings.getEmail());
+//		newUser.setMobileNumber(userSettings.getMobilenumber());
+//		newUser.setUsername(userSettings.getUsername());
+//		newUser.setPincode(userSettings.getPincode());
+//		newUser.setLanguage(userSettings.getLanguage());
+//		newUser.setTimeZone(userSettings.getTimezone());
+//		userRepo.save(newUser);
+//		return MessageConstants.USER_SETTINGS_UPDATED;
+//	}
+	
 }

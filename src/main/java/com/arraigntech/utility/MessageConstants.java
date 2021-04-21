@@ -20,4 +20,11 @@ public class MessageConstants {
 	public static final String USER_SETTINGS_UPDATED="User settings updated successfully";
 	public static final String KEY_SUCCESS = "Success";
 	public static final String TOKEN_EXPIRED="Token has been expired";
+	public final static String INVALID_PHONE_NUMBER = "Phone Number is Invalid";
+	public static final String USERNAME_UPDATE="UserName updated successfully";
+	public static final String MOBILENUMBER_UPDATE="Mobile number updated successfully";
+	public static final String PINCODE_UPDATE="Pincode updated successfully";
+	public static final String LANGUAGE_UPDATE="Language updated successfully";
+	public static final String COUNTRY_UPDATE="Country updated successfully";
+	public static final String TIMEZONE_UPDATE="Timezone updated successfully";
 }
