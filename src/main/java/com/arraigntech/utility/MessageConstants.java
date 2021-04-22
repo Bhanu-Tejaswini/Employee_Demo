@@ -15,14 +15,16 @@ public class MessageConstants {
 	public static final String PASSWORDMESSAGE="Password Changed successfully";
 	public static final String EMAILSETTINGSMESSAGE="Email settings updated successfully";
 	public static final String USER_SETTINGS_UPDATED="User settings updated successfully";
-	public final static String KEY_SUCCESS = "Success";
-	public final static String INVALID_PHONE_NUMBER = "Phone Number is Invalid";
+	public static final  String KEY_SUCCESS = "Success";
+	public static final  String INVALID_PHONE_NUMBER = "Phone Number is Invalid";
 	public static final String USERNAME_UPDATE="UserName updated successfully";
 	public static final String MOBILENUMBER_UPDATE="Mobile number updated successfully";
 	public static final String PINCODE_UPDATE="Pincode updated successfully";
 	public static final String LANGUAGE_UPDATE="Language updated successfully";
 	public static final String COUNTRY_UPDATE="Country updated successfully";
 	public static final String TIMEZONE_UPDATE="Timezone updated successfully";
+	public static final String AUTHENTICATION_FAILED = "Authentication failed. Please enter valid verification code.";
+	public static final String OTP_VERIFICATION = "OTP has been verfied.";
 	
 	
 }

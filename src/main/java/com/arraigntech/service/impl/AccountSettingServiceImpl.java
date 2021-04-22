@@ -24,7 +24,9 @@ import com.arraigntech.utility.CommonUtils;
 import com.arraigntech.utility.LoggedInUserDetails;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.utility.OtpGenerator;
+import com.arraigntech.utility.ResetUserDetails;
 import com.arraigntech.utility.UtilEnum;
+import com.arraigntech.utility.VerifyCode;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 
@@ -46,7 +48,7 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 	protected int mobileOTPExpiryTime;
 	
 	@Value("${sponsor.sms.OTPLength:4}")
-	private Integer sponsorSmsOTPLength;
+	private Integer userSmsOTPLength;
 	
 	@Value("${twilio.account.id}")
 	private static String twilioAccountId;
@@ -57,13 +59,12 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 	@Autowired
 	private UserRespository userRepo;
 	
-    public static final String ACCOUNT_SID = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-    public static final String AUTH_TOKEN = "YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY";
-    public static final String TWILIO_NUMBER = "+15555555555";
-
-//	   static {
-//	      Twilio.init(twilioAccountId, twilioAccessToken);
-//	   }
+	@Autowired
+	protected VerifyCode verifyCode;
+	
+	@Autowired
+	protected ResetUserDetails resetUserDetails;
+	
 
 	@Override
 	public AccountSettingVO getTimeZonesList() {
@@ -88,21 +89,6 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		return countriesList;
 	}
 
-	@Override
-	public Boolean sendOTPForUser(String mobilenumber) {
-		if (!StringUtils.hasText(mobilenumber)) {
-			throw new AppException(MessageConstants.INVALID_PHONE_NUMBER);
-		}
-		// generate OTP
-		String otp = otpGenerator.generateOTP(sponsorSmsOTPLength);
-		Twilio.init(twilioAccountId, twilioAccessToken);
-		Message.creator(
-		                new com.twilio.type.PhoneNumber("+91"+mobilenumber),//The phone number you are sending text to
-		                new com.twilio.type.PhoneNumber("+31251121"),//The Twilio phone number
-		                "Please enter the OTP:" +otp)
-		           .create();
-		return true;
-	}
 
 	@Override
 	public Boolean saveUserName(String name) {
@@ -147,10 +133,6 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		return true;
 	}
 	
-//	protected void sendSMSOTP(String phoneNumber, RegionEnum region, String otp) {
-//		notificationService.sendSMS(phoneNumber, region, otp);
-//	}
-	
 	public UserSettingsDTO fetchUserSettings() {
 //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //		Optional<User> optionalUser=userRepo.findByUsername(authentication.getName());
@@ -170,6 +152,42 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
 		return user;
+	}
+	
+	@Override
+	public Boolean sendOTPForUser(String mobilenumber) {
+		if (!StringUtils.hasText(mobilenumber)) {
+			throw new AppException(MessageConstants.INVALID_PHONE_NUMBER);
+		}
+		User user = getUser();
+		// generate OTP
+		String otp = otpGenerator.generateOTP(userSmsOTPLength);
+		user.setOtp(otp);
+		Twilio.init(twilioAccountId, twilioAccessToken);
+		Message.creator(
+		                new com.twilio.type.PhoneNumber(mobilenumber),//The phone number you are sending text to
+		                new com.twilio.type.PhoneNumber("+31251121"),//The Twilio phone number
+		                "Please enter the OTP:" +otp)
+		           .create();
+		userRepo.save(user);
+		return true;
+	}
+	
+	@Override
+	public Boolean verifyCode(UserSettingsDTO userRequest) throws AppException {
+		log.debug("verifyCode request{}");
+		if (!StringUtils.hasText(userRequest.getCode())) {
+			throw new AppException(MessageConstants.AUTHENTICATION_FAILED);
+		}
+		User user = getUser();
+		Boolean isValid = verifyCode.execute(userRequest);
+		if (!isValid) {
+			throw new AppException(MessageConstants.AUTHENTICATION_FAILED);
+		} else {
+			resetUserDetails.execute(user);
+		}
+		log.debug("verifyCode response{}", isValid);
+		return isValid;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.arraigntech.entity;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +58,14 @@ public class User extends VSBaseModel {
 	private String language;
 	@Column(name = "time_zone")
 	private String timeZone;
+	
+	private Integer codeSentCounter;
+
+	private Integer invalidCodeAttemptCount;
+
+	private OffsetDateTime verificationEndTime;
+	
+	private String otp;
 
 	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -163,5 +172,41 @@ public class User extends VSBaseModel {
 	public void setTimeZone(String timeZone) {
 		this.timeZone = timeZone;
 	}
+
+	public Integer getCodeSentCounter() {
+		return codeSentCounter;
+	}
+
+	public void setCodeSentCounter(Integer codeSentCounter) {
+		this.codeSentCounter = codeSentCounter;
+	}
+
+	public Integer getInvalidCodeAttemptCount() {
+		return invalidCodeAttemptCount;
+	}
+
+	public void setInvalidCodeAttemptCount(Integer invalidCodeAttemptCount) {
+		this.invalidCodeAttemptCount = invalidCodeAttemptCount;
+	}
+
+	public OffsetDateTime getVerificationEndTime() {
+		return verificationEndTime;
+	}
+
+	public void setVerificationEndTime(OffsetDateTime verificationEndTime) {
+		this.verificationEndTime = verificationEndTime;
+	}
+
+	public String getOtp() {
+		return otp;
+	}
+
+	public void setOtp(String otp) {
+		this.otp = otp;
+	}
+	
+	
+	
+	
 
 }

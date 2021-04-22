@@ -8,6 +8,8 @@ public class UserSettingsDTO {
 	private String username;
 	private String language;
 	private String timezone;
+	
+	private String code;
 
 	public UserSettingsDTO() {
 
@@ -59,6 +61,15 @@ public class UserSettingsDTO {
 
 	public void setTimezone(String timezone) {
 		this.timezone = timezone;
+	}
+	
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public UserSettingsDTO(String email, String mobilenumber, String pincode, String username, String language,
