@@ -78,13 +78,6 @@ public class AccountUserController {
 //		return new BaseResponse<String>(userService.saveUserSettings(userSettings)).withSuccess(true);
 //	}
 	
-//	@ApiOperation(value = "timezonelist and country list")
-//	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-//	@RequestMapping(value = "/timezonelist", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//	@CrossOrigin(origins = "*")
-//	public BaseResponse<AccountSettingVO> getTimeZonesList() {
-//		return new BaseResponse<AccountSettingVO>(accountSettingService.getTimeZonesList()).withSuccess(true);
-//	}
 	
 	@ApiOperation(value = "send a OTP for mobile number verification")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })

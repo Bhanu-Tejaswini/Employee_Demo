@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.User;
@@ -27,6 +28,8 @@ import com.arraigntech.utility.LoggedInUserDetails;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.utility.OtpGenerator;
 import com.arraigntech.utility.UtilEnum;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
 
 
 /**
@@ -44,21 +47,22 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 	
 //	@Value("${app.mobile.otp.validity}")
 //	protected int mobileOTPExpiryTime;
-//	
-//	@Value("${sponsor.sms.OTPLength:4}")
-//	private Integer sponsorSmsOTPLength;
+	
+	@Value("${sponsor.sms.OTPLength:4}")
+	private Integer sponsorSmsOTPLength;
 	
 	@Value("${twilio.account.id}")
-	private String twilioAccountId;
+	private static String twilioAccountId;
 	
 	@Value("${twilio.auth.token}")
-	private String twilioAccessToken;
+	private static String twilioAccessToken;
 	
 	@Autowired
 	private UserRespository userRepo;
 	
-	private final static String ACCOUNT_SID = "<ACCOUNT-SID>";
-	private final static String AUTH_ID = "AUTH-ID";
+    public static final String ACCOUNT_SID = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+    public static final String AUTH_TOKEN = "YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY";
+    public static final String TWILIO_NUMBER = "+15555555555";
 
 //	   static {
 //	      Twilio.init(twilioAccountId, twilioAccessToken);
@@ -90,20 +94,25 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 
 	@Override
 	public Boolean sendOTPForUser(String mobilenumber) {
-		// TODO Auto-generated method stub
-//		if (!StringUtils.hasText(mobilenumber)) {
-//			throw new AppException(MessageConstants.INVALID_PHONE_NUMBER);
-//		}
-//		// generate OTP
-//		String otp = otpGenerator.generateOTP(sponsorSmsOTPLength);
-//		Twilio.init(twilioAccountId, twilioAccessToken);
-		// send SMS OTP
-		//sendSMSOTP(mobilenumber, otp);
-		return null;
+		if (!StringUtils.hasText(mobilenumber)) {
+			throw new AppException(MessageConstants.INVALID_PHONE_NUMBER);
+		}
+		// generate OTP
+		String otp = otpGenerator.generateOTP(sponsorSmsOTPLength);
+		Twilio.init(twilioAccountId, twilioAccessToken);
+		Message.creator(
+		                new com.twilio.type.PhoneNumber("+91"+mobilenumber),//The phone number you are sending text to
+		                new com.twilio.type.PhoneNumber("+31251121"),//The Twilio phone number
+		                "Please enter the OTP:" +otp)
+		           .create();
+		return true;
 	}
 
 	@Override
 	public Boolean saveUserName(String name) {
+		if(!StringUtils.hasText(name)) {
+			throw new AppException(MessageConstants.USER_NOT_FOUND);
+		}
 		User user = getUser();
 		user.setUsername(name);
 		userRepo.save(user);
@@ -124,7 +133,6 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		user.setPincode(pinCode);
 		userRepo.save(user);
 		return true;
-		
 	}
 
 	@Override
@@ -150,7 +158,6 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 	public UserSettingsDTO fetchUserSettings() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Optional<User> optionalUser=userRepo.findByUsername(authentication.getName());
-//		Optional<User> optionalUser=userRepo.findByUsername("user1");
 		if(!optionalUser.isPresent()) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}

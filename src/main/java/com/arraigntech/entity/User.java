@@ -1,6 +1,6 @@
 package com.arraigntech.entity;
 
-import java.security.AuthProvider;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +67,10 @@ public class User extends VSBaseModel {
 	@Enumerated(EnumType.STRING)
 	@Column
 	private AuthenticationProvider provider;
+	private Integer codeSentCounter;
+	private Integer failedLoginAttempt;
+	private Integer invalidCodeAttemptCount;
+	private OffsetDateTime verificationEndTime;
 
 	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER)
