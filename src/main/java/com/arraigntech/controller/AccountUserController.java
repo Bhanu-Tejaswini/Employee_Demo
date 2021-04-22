@@ -90,7 +90,7 @@ public class AccountUserController {
 				.withSuccess(true);
 	}
 	
-	@ApiOperation(value = "save user Settings")
+	@ApiOperation(value = "save userName Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "username/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@CrossOrigin(origins = "*")
@@ -99,6 +99,17 @@ public class AccountUserController {
 		accountSettingService.saveUserName(userSettings.getUsername());
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.USERNAME_UPDATE).build();
+	}
+	
+	@ApiOperation(value = "save email Settings")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "email/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@CrossOrigin(origins = "*")
+	public BaseResponse<Boolean> emailUpdate(@RequestBody UserSettingsDTO userSettings) {
+		BaseResponse<Boolean> response = new BaseResponse<>();
+		accountSettingService.updateEmail(userSettings.getEmail());
+		return response.withSuccess(true)
+				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.EMAILSETTINGSMESSAGE).build();
 	}
 	
 	@ApiOperation(value = "save mobilenumber Settings")

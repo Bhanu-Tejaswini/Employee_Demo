@@ -27,6 +27,8 @@ public interface AccountSettingService {
 	
 	Boolean updateMobileNumber(String name);
 	
+	Boolean updateEmail(String email);
+	
 	UserSettingsDTO fetchUserSettings();
 	
 	Boolean verifyCode(UserSettingsDTO userRequest) throws AppException;

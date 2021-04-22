@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -100,6 +101,10 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
 		User user = getUser();
+		User checkUser=userRepo.findByUsernameAndIdNot(name, user.getId());
+		if(Objects.nonNull(checkUser)) {
+			throw new AppException(MessageConstants.USER_EXISTS_USERNAME);
+		}
 		user.setUsername(name);
 		userRepo.save(user);
 		return true;
@@ -107,6 +112,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 
 	@Override
 	public Boolean updateLanguage(String language) {
+		if(!StringUtils.hasText(language)) {
+			throw new AppException(MessageConstants.DATA_MISSING);
+		}
 		User user = getUser();
 		user.setLanguage(language);
 		userRepo.save(user);
@@ -115,14 +123,35 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 
 	@Override
 	public Boolean updatePincode(String pinCode) {
+		if(!StringUtils.hasText(pinCode)) {
+			throw new AppException(MessageConstants.DATA_MISSING);
+		}
 		User user = getUser();
 		user.setPincode(pinCode);
+		userRepo.save(user);
+		return true;
+	}
+	
+	@Override
+	public Boolean updateEmail(String email) {
+		if(!StringUtils.hasText(email)) {
+			throw new AppException(MessageConstants.DATA_MISSING);
+		}
+		User user = getUser();
+		User checkUser=userRepo.findByEmailAndIdNot(email, user.getId());
+		if(Objects.nonNull(checkUser)) {
+			throw new AppException(MessageConstants.EMAIL_EXISTS);
+		}
+		user.setEmail(email);
 		userRepo.save(user);
 		return true;
 	}
 
 	@Override
 	public Boolean updateTimeZone(String timeZone) {
+		if(!StringUtils.hasText(timeZone)) {
+			throw new AppException(MessageConstants.DATA_MISSING);
+		}
 		User user = getUser();
 		user.setTimeZone(timeZone);
 		userRepo.save(user);
@@ -131,6 +160,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 
 	@Override
 	public Boolean updateMobileNumber(String mobileNumber) {
+		if(!StringUtils.hasText(mobileNumber)) {
+			throw new AppException(MessageConstants.DATA_MISSING);
+		}
 		User user = getUser();
 		user.setMobileNumber(mobileNumber);
 		userRepo.save(user);
