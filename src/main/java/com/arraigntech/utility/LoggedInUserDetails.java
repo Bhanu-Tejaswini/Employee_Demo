@@ -39,6 +39,13 @@ public class LoggedInUserDetails implements UserDetails {
 
 
 
+	public LoggedInUserDetails() {
+		this.id = "";
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;

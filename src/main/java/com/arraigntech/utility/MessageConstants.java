@@ -27,4 +27,7 @@ public class MessageConstants {
 	public static final String LANGUAGE_UPDATE="Language updated successfully";
 	public static final String COUNTRY_UPDATE="Country updated successfully";
 	public static final String TIMEZONE_UPDATE="Timezone updated successfully";
+	public static final String AUTHENTICATION_FAILED = "Authentication failed. Please enter valid verification code.";
+	public static final String OTP_VERIFICATION = "OTP has been verfied.";
+
 }

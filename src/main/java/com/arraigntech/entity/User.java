@@ -61,16 +61,21 @@ public class User extends VSBaseModel {
 	private String language;
 	@Column(name = "time_zone")
 	private String timeZone;
+
 	@Column
 	@Type(type = "numeric_boolean")
 	private boolean active;
 	@Enumerated(EnumType.STRING)
 	@Column
 	private AuthenticationProvider provider;
+
 	private Integer codeSentCounter;
-	private Integer failedLoginAttempt;
+
 	private Integer invalidCodeAttemptCount;
+
 	private OffsetDateTime verificationEndTime;
+
+	private String otp;
 
 	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -138,14 +143,6 @@ public class User extends VSBaseModel {
 		this.accountNonLocked = accountNonLocked;
 	}
 
-	public List<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
-	}
-
 	public String getMobileNumber() {
 		return mobileNumber;
 	}
@@ -193,4 +190,55 @@ public class User extends VSBaseModel {
 	public void setProvider(AuthenticationProvider provider) {
 		this.provider = provider;
 	}
+
+	public Integer getCodeSentCounter() {
+		return codeSentCounter;
+	}
+
+	public void setCodeSentCounter(Integer codeSentCounter) {
+		this.codeSentCounter = codeSentCounter;
+	}
+
+	public Integer getInvalidCodeAttemptCount() {
+		return invalidCodeAttemptCount;
+	}
+
+	public void setInvalidCodeAttemptCount(Integer invalidCodeAttemptCount) {
+		this.invalidCodeAttemptCount = invalidCodeAttemptCount;
+	}
+
+	public OffsetDateTime getVerificationEndTime() {
+		return verificationEndTime;
+	}
+
+	public void setVerificationEndTime(OffsetDateTime verificationEndTime) {
+		this.verificationEndTime = verificationEndTime;
+	}
+
+	public String getOtp() {
+		return otp;
+	}
+
+	public void setOtp(String otp) {
+		this.otp = otp;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	@Override
+	public String toString() {
+		return "User [username=" + username + ", password=" + password + ", email=" + email + ", enabled=" + enabled
+				+ ", accountNonExpired=" + accountNonExpired + ", credentialsNonExpired=" + credentialsNonExpired
+				+ ", accountNonLocked=" + accountNonLocked + ", mobileNumber=" + mobileNumber + ", pincode=" + pincode
+				+ ", language=" + language + ", timeZone=" + timeZone + ", active=" + active + ", provider=" + provider
+				+ ", codeSentCounter=" + codeSentCounter + ", invalidCodeAttemptCount=" + invalidCodeAttemptCount
+				+ ", verificationEndTime=" + verificationEndTime + ", otp=" + otp + ", roles=" + roles + "]";
+	}
+
 }

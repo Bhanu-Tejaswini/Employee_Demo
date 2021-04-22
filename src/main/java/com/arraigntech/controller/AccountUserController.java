@@ -144,4 +144,15 @@ public class AccountUserController {
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.TIMEZONE_UPDATE).build();
 	}
+	
+	@ApiOperation(value = "verify OTP")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "verify/otp", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@CrossOrigin(origins = "*")
+	public BaseResponse<Boolean> otpVeriifcation(@RequestBody UserSettingsDTO userSettings) {
+		BaseResponse<Boolean> response = new BaseResponse<>();
+		accountSettingService.verifyCode(userSettings);
+		return response.withSuccess(true)
+				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.OTP_VERIFICATION).build();
+	}
 }
