@@ -6,11 +6,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.User;
 import com.arraigntech.repository.UserRespository;
 
+/**
+ * 
+ * @author tulabandula.kumar
+ *
+ */
+@Component
 public class ResetUserDetails implements Action<User, Boolean> {
 	
 	public static final Logger log = LoggerFactory.getLogger(ResetUserDetails.class);
