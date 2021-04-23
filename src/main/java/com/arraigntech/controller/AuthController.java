@@ -21,7 +21,9 @@ import com.arraigntech.entity.response.BaseResponse;
 import com.arraigntech.model.IVSResetPassword;
 import com.arraigntech.model.IVSTokenEmail;
 import com.arraigntech.model.LoginDetails;
+import com.arraigntech.model.SocialLoginDTO;
 import com.arraigntech.model.UserDTO;
+import com.arraigntech.service.impl.SocialLoginServiceImpl;
 import com.arraigntech.service.impl.UserServiceImpl;
 import com.arraigntech.utility.MessageConstants;
 
@@ -38,6 +40,9 @@ public class AuthController {
 
 	@Autowired
 	private UserServiceImpl userService;
+	
+	@Autowired
+	private SocialLoginServiceImpl socialLoginService;
 
 	@GetMapping("/user")
 	@PreAuthorize("hasAuthority('update_profile')")
@@ -88,8 +93,8 @@ public class AuthController {
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.PASSWORDMESSAGE).build();
 	}
 	
-	@PostMapping("/test")
-	public String getToken(@RequestBody UserDTO user) {
-		return userService.getToken(user);
+	@PostMapping("/google-login")
+	public String getToken(@RequestBody SocialLoginDTO socialLogin) {
+		return socialLoginService.getToken(socialLogin);
 	}
 }

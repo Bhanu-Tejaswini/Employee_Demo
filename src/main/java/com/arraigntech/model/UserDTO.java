@@ -2,15 +2,14 @@ package com.arraigntech.model;
 
 import java.util.List;
 
+import com.arraigntech.utility.AuthenticationProvider;
+
 public class UserDTO {
-	private String username="";
+	private String username = "";
 	private String email;
 	private String password;
 	private List<String> role;
-
-	public UserDTO() {
-
-	}
+	private AuthenticationProvider provider;
 
 	public String getUsername() {
 		return username;
@@ -42,6 +41,23 @@ public class UserDTO {
 
 	public void setRole(List<String> role) {
 		this.role = role;
+	}
+
+	public AuthenticationProvider getProvider() {
+		return provider;
+	}
+
+	public void setProvider(AuthenticationProvider provider) {
+		this.provider = provider;
+	}
+
+	public UserDTO(String username, String email, String password, List<String> role, AuthenticationProvider provider) {
+		super();
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.role = role;
+		this.provider = provider;
 	}
 
 }

@@ -51,6 +51,7 @@ import com.arraigntech.repository.ResetTokenRepository;
 import com.arraigntech.repository.RoleRepository;
 import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.IVSService;
+import com.arraigntech.utility.AuthenticationProvider;
 import com.arraigntech.utility.EmailValidator;
 import com.arraigntech.utility.IVSJwtUtil;
 import com.arraigntech.utility.MessageConstants;
@@ -100,7 +101,8 @@ public class UserServiceImpl implements IVSService<User, String> {
 	
 
 	public Boolean register(UserDTO userDTO) throws AppException {
-		System.out.println(emailValidator.isValidEmail(userDTO.getEmail()));
+		AuthenticationProvider provider = userDTO.getProvider(); 
+
 		if (userDTO.getEmail() == null || !emailValidator.isValidEmail(userDTO.getEmail())) {
 			throw new AppException(MessageConstants.INVALID_EMAIL);
 		}
@@ -116,7 +118,11 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (!passwordValidator.isValid(userDTO.getPassword())) {
 			throw new AppException(MessageConstants.INVALID_PASSWORD);
 		}
+//		if(provider.equals(null)) {
+//			provider=AuthenticationProvider.LOCAL;
+//		}
 		newUser = new User();
+		newUser.setProvider(userDTO.getProvider());
 		newUser.setUsername(userDTO.getUsername());
 		newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		newUser.setEmail(userDTO.getEmail());

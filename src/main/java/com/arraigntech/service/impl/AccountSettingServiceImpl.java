@@ -181,17 +181,12 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 	
 	private User getUser() {
 		
-//		LoggedInUserDetails userDetails = CommonUtils.getUser();
-//		AuthUserDetail user=(AuthUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-		AuthUserDetail user=(AuthUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		System.out.println(user);
-//		Optional<User> user = userRepo.findByUsername(username);
-//		System.out.println(user.getEmail());
-//		if(user == null) {
-//			throw new AppException(MessageConstants.USER_NOT_FOUND);
-//		}
-		return new User();
+		String username=SecurityContextHolder.getContext().getAuthentication().getName();
+		Optional<User> user = userRepo.findByUsername(username);
+		if(user == null) {
+			throw new AppException(MessageConstants.USER_NOT_FOUND);
+		}
+		return user.get();
 	}
 	
 	@Override
