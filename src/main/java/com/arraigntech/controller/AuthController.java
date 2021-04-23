@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +20,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.arraigntech.model.IVSResetPassword;
 import com.arraigntech.model.IVSTokenEmail;
 import com.arraigntech.model.LoginDetails;
+import com.arraigntech.model.SocialLoginDTO;
 import com.arraigntech.model.UserDTO;
+
 import com.arraigntech.model.response.BaseResponse;
-import com.arraigntech.repository.UserRespository;
-import com.arraigntech.service.impl.MailServiceImpl;
+import com.arraigntech.service.impl.SocialLoginServiceImpl;
 import com.arraigntech.service.impl.UserServiceImpl;
-import com.arraigntech.utility.IVSJwtUtil;
 import com.arraigntech.utility.MessageConstants;
 
 import io.swagger.annotations.ApiOperation;
@@ -42,14 +43,10 @@ public class AuthController {
 	private UserServiceImpl userService;
 
 	@Autowired
-	private IVSJwtUtil jwtUtil;
+	private SocialLoginServiceImpl socialLoginService;
 
-	@Autowired
-	private MailServiceImpl mailService;
-	
-	@Autowired
-	private UserRespository userRepo;
-	
+
+
 	@GetMapping("/user")
 	@PreAuthorize("hasAuthority('update_profile')")
 	public String getUser() {
@@ -83,19 +80,33 @@ public class AuthController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<String> login(@RequestBody LoginDetails login, UriComponentsBuilder builder) {
 		log.debug("User Login");
-		return new BaseResponse<String>(userService.generateToken(login, builder)).withSuccess(true);
+		BaseResponse<String> response = new BaseResponse<>();
+		String generateToken = userService.generateToken(login, builder);
+		return response.withSuccess(true)
+				.withResponseMessage(MessageConstants.KEY_SUCCESS, generateToken).build();
 	}
 
 	@ApiOperation(value = "Reseting the password")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/reset-password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<String> resetPassword(@RequestHeader(name="Authorization", required=true) String token, @RequestBody IVSResetPassword pass) {
+	public BaseResponse<String> resetPassword(@RequestHeader(name = "Authorization", required = true) String token,
+			@RequestBody IVSResetPassword pass) {
 		log.debug("Reseting the password");
-//		return new BaseResponse<String>(userService.updatePassword(token, pass.getPassword())).withSuccess(true);
-
-		userService.updatePassword(token, pass.getPassword());
 		BaseResponse<String> response = new BaseResponse<>();
+		userService.updatePassword(token, pass.getPassword());
+		
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.PASSWORDMESSAGE).build();
+	}
+
+	@ApiOperation(value = "Google signin")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/google-login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<String> getToken(@RequestBody SocialLoginDTO socialLogin) {
+		log.debug("Google signin");
+		BaseResponse<String> response = new BaseResponse<>();
+		String token=socialLoginService.getToken(socialLogin);
+		return response.withSuccess(true)
+				.withResponseMessage(MessageConstants.KEY_SUCCESS, token).build();
 	}
 }

@@ -2,9 +2,12 @@ package com.arraigntech.service.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.mail.MessagingException;
 
@@ -15,9 +18,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.OAuth2Request;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -40,6 +50,7 @@ import com.arraigntech.repository.ResetTokenRepository;
 import com.arraigntech.repository.RoleRepository;
 import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.IVSService;
+import com.arraigntech.utility.AuthenticationProvider;
 import com.arraigntech.utility.EmailValidator;
 import com.arraigntech.utility.IVSJwtUtil;
 import com.arraigntech.utility.MessageConstants;
@@ -80,15 +91,17 @@ public class UserServiceImpl implements IVSService<User, String> {
 
 	@Value("${reset-password-baseUrl}")
 	private String baseUrl;
-	
+
 	@Value("${reset-password-scheme}")
 	private String scheme;
-	
+
 	@Autowired
 	private ResetTokenRepository resetTokenRepo;
+	
 
 	public Boolean register(UserDTO userDTO) throws AppException {
-		System.out.println(emailValidator.isValidEmail(userDTO.getEmail()));
+		AuthenticationProvider provider = userDTO.getProvider(); 
+
 		if (userDTO.getEmail() == null || !emailValidator.isValidEmail(userDTO.getEmail())) {
 			throw new AppException(MessageConstants.INVALID_EMAIL);
 		}
@@ -104,7 +117,11 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (!passwordValidator.isValid(userDTO.getPassword())) {
 			throw new AppException(MessageConstants.INVALID_PASSWORD);
 		}
+//		if(provider.equals(null)) {
+//			provider=AuthenticationProvider.LOCAL;
+//		}
 		newUser = new User();
+		newUser.setProvider(userDTO.getProvider());
 		newUser.setUsername(userDTO.getUsername());
 		newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		newUser.setEmail(userDTO.getEmail());
@@ -147,7 +164,6 @@ public class UserServiceImpl implements IVSService<User, String> {
 		return userRepo.save(entity);
 	}
 
-
 	public boolean delete(String password) throws AppException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Optional<User> optionalUser = userRepo.findByUsername(authentication.getName());
@@ -187,14 +203,14 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		//check whether token exist in the database or not
-		ResetToken resetToken=resetTokenRepo.findByUser(newUser);
-		if(Objects.isNull(resetToken)) {
+		// check whether token exist in the database or not
+		ResetToken resetToken = resetTokenRepo.findByUser(newUser);
+		if (Objects.isNull(resetToken)) {
 			throw new AppException(MessageConstants.TOKEN_EXPIRED);
 		}
 		newUser.setPassword(passwordEncoder.encode(newPassword));
 		userRepo.save(newUser);
-		//deleting the token after reseting the password
+		// deleting the token after reseting the password
 		resetTokenRepo.deleteById(resetToken.getId());
 		return MessageConstants.PASSWORDMESSAGE;
 	}
@@ -245,15 +261,15 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		//generating the token
+		// generating the token
 		String token = jwtUtil.generateResetToken(email);
-		//saving the resettoken in the database
-		ResetToken resetToken=new ResetToken(token,newUser);
+		// saving the resettoken in the database
+		ResetToken resetToken = new ResetToken(token, newUser);
 		resetTokenRepo.save(resetToken);
 		// Generating the password reset link
 		UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
-		String passwordResetLink = builder.scheme(scheme).host(baseUrl).path("/auth/setPassword").queryParam("token", token)
-				.buildAndExpand(token).toUriString();
+		String passwordResetLink = builder.scheme(scheme).host(baseUrl).path("/auth/setPassword")
+				.queryParam("token", token).buildAndExpand(token).toUriString();
 		// Sending the mail with password reset link
 		try {
 			mailService.sendEmail(email, passwordResetLink);
@@ -332,7 +348,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		emailSettingsRepo.save(settings);
 		return true;
 	}
-	
+
 //	public String saveUserSettings(UserSettingsDTO userSettings) {
 ////		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 ////		Optional<User> optionalUser=userRepo.findByUsername(authentication.getName());
@@ -350,5 +366,5 @@ public class UserServiceImpl implements IVSService<User, String> {
 //		userRepo.save(newUser);
 //		return MessageConstants.USER_SETTINGS_UPDATED;
 //	}
-	
+
 }
