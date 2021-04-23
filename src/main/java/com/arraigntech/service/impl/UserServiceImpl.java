@@ -150,13 +150,17 @@ public class UserServiceImpl implements IVSService<User, String> {
 	}
 
 
-	public boolean delete() throws AppException {
+	public boolean delete(String password) throws AppException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Optional<User> optionalUser = userRepo.findByUsername(authentication.getName());
 		if (!optionalUser.isPresent()) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		optionalUser.get().setActive(false);
+		if (passwordEncoder.matches(password, optionalUser.get().getPassword())) {
+			optionalUser.get().setActive(false);
+		} else {
+			throw new AppException(MessageConstants.WRONG_PASSWORD);
+		}
 		userRepo.save(optionalUser.get());
 		return true;
 	}

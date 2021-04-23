@@ -36,7 +36,6 @@ public class ResouceServerConfigurations extends ResourceServerConfigurerAdapter
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		System.out.println("resource sec starts");
 		http.csrf().disable();
 		http.cors().and()
         .requestMatchers()

@@ -6,6 +6,7 @@ public class MessageConstants {
 	public static final String TOKEN_NOT_FOUND="Token does not exists";
 	public static final String USER_NOT_FOUND="Unable to find the user";
 	public static final String USER_LIST_EMPTY="There are no users to display";
+	public static final String USER_DELETED="User has been deleted successfully";
 	public static final String DETAILS_MISSING="Please provide all the values";
 	public static final String EMAIL_NOT_FOUND="Email address not found, Please enter valid email address.";
 	public static final String EMAIL_EXISTS="Email address already exists";

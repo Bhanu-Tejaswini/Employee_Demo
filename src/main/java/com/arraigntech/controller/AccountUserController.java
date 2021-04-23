@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arraigntech.entity.response.BaseResponse;
-import com.arraigntech.model.AccountSettingVO;
 import com.arraigntech.model.EmailSettingsModel;
 import com.arraigntech.model.IVSPassword;
+import com.arraigntech.model.IVSResetPassword;
 import com.arraigntech.model.UserSettingsDTO;
 import com.arraigntech.service.AccountSettingService;
 import com.arraigntech.service.impl.UserServiceImpl;
@@ -165,5 +165,16 @@ public class AccountUserController {
 		accountSettingService.verifyCode(userSettings);
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.OTP_VERIFICATION).build();
+	}
+	
+	@ApiOperation(value = "Delete user account")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/user", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<Boolean> deleteUser(@RequestBody IVSResetPassword password) {
+		BaseResponse<Boolean> response = new BaseResponse<>();
+		log.debug("Delete user account");
+		userService.delete(password.getPassword());
+		return response.withSuccess(true)
+				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.USER_DELETED).build();
 	}
 }
