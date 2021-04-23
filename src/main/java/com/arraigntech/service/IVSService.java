@@ -4,20 +4,17 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
-import com.arraigntech.Exception.DataExistsException;
-import com.arraigntech.Exception.DataNotFoundException;
-
 public interface IVSService<T, ID> {
 
 	public Page<T> getPaginated(Integer page, Integer limit);
 
-	public List<T> getAll() throws DataNotFoundException;
+	public List<T> getAll();
 
 	public T create(T entity);
 
-	public T update(T entity) throws DataExistsException;
+	public T update(T entity);
 
-	public boolean delete(ID id) throws DataNotFoundException;
+//	public boolean delete(ID id);
 
-	public T getById(String id) throws DataNotFoundException;
+	public T getById(String id);
 }

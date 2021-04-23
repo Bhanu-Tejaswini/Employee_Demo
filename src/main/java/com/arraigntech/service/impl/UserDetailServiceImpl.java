@@ -1,6 +1,7 @@
 package com.arraigntech.service.impl;
 
 import java.util.Optional;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,19 +25,18 @@ public class UserDetailServiceImpl implements UserDetailsService {
 	private UserRespository userRepository;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) {
+	public UserDetails loadUserByUsername(String email) {
 		log.debug("loadUserByUsername method start");
 
-		Optional<User> optionalUser = userRepository.findByUsername(username);
-		optionalUser.orElseThrow(() -> new AppException("Username or password is Invalid"));
+		User newUser = userRepository.findByEmail(email);
 
-//		User user=optionalUser.get();
-
-		UserDetails userDetails = new AuthUserDetail(optionalUser.get());
+		if(Objects.isNull(newUser)) {
+			throw new AppException("Username or password is Invalid");
+		}
+		UserDetails userDetails = new AuthUserDetail(newUser);
 		// checks account is valid or expired
 		new AccountStatusUserDetailsChecker().check(userDetails);
 		log.debug("loadUserByUsername method end");
 		return userDetails;
-	}
-
+	}		    
 }

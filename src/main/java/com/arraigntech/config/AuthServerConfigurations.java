@@ -33,9 +33,10 @@ public class AuthServerConfigurations implements AuthorizationServerConfigurer {
 
 	@Autowired
 	private DataSource dataSource;
-
+	
 	@Autowired
 	private JwtAccessTokenConverter accessTokenConverter;
+	
 
 	@Bean
 	public TokenStore jdbcTokenStore() {

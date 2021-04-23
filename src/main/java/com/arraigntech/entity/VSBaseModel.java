@@ -16,10 +16,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @MappedSuperclass
 public abstract class VSBaseModel {
 
+
 	@Id
 	@GeneratedValue(generator = "system-uuid")
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
-	@Column(unique = true)
+	@Column(name="id",unique = true)
 	protected String id;
 
 	protected Date createdAt;

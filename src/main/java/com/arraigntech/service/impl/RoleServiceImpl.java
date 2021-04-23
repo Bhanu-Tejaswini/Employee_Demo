@@ -8,13 +8,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.arraigntech.Exception.DataNotFoundException;
+import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.Permission;
 import com.arraigntech.entity.Role;
 import com.arraigntech.model.RoleDTO;
 import com.arraigntech.repository.PermissionRepository;
 import com.arraigntech.repository.RoleRepository;
 import com.arraigntech.service.IVSService;
+import com.arraigntech.utility.MessageConstants;
 
 @Service
 public class RoleServiceImpl implements IVSService<Role, String> {
@@ -49,30 +50,30 @@ public class RoleServiceImpl implements IVSService<Role, String> {
 		return roleRepo.save(entity);
 	}
 
-	@Override
-	public boolean delete(String id) throws DataNotFoundException {
+
+	public boolean delete(String id) throws AppException {
 		Optional<Role> newRole = roleRepo.findById(id);
 		if (!newRole.isPresent()) {
-			throw new DataNotFoundException("The specified role not found");
+			throw new AppException(MessageConstants.DATA_NOT_FOUND);
 		}
 		roleRepo.deleteById(id);
 		return true;
 	}
 
 	@Override
-	public List<Role> getAll() throws DataNotFoundException {
+	public List<Role> getAll() throws AppException {
 		List<Role> roles = (List<Role>) roleRepo.findAll();
 		if (roles.isEmpty()) {
-			throw new DataNotFoundException("Their are no roles to display");
+			throw new AppException(MessageConstants.DATA_NOT_FOUND);
 		}
 		return roles;
 	}
 
 	@Override
-	public Role getById(String id) throws DataNotFoundException {
+	public Role getById(String id) throws AppException {
 		Optional<Role> role = roleRepo.findById(id);
 		if (!role.isPresent()) {
-			throw new DataNotFoundException("The role does not exists");
+			throw new AppException(MessageConstants.DATA_NOT_FOUND);
 		}
 		return role.get();
 	}

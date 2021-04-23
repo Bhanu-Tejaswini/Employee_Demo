@@ -1,10 +1,13 @@
 package com.arraigntech.entity;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -14,6 +17,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 import com.arraigntech.model.VSBaseModel;
+import com.arraigntech.utility.AuthenticationProvider;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -49,6 +53,29 @@ public class User extends VSBaseModel {
 	@Column(name = "accountnonlocked")
 	@Type(type = "numeric_boolean")
 	private boolean accountNonLocked;
+	@Column(name = "mobile_number")
+	private String mobileNumber;
+	@Column
+	private String pincode;
+	@Column
+	private String language;
+	@Column(name = "time_zone")
+	private String timeZone;
+
+	@Column
+	@Type(type = "numeric_boolean")
+	private boolean active;
+	@Enumerated(EnumType.STRING)
+	@Column
+	private AuthenticationProvider provider;
+
+	private Integer codeSentCounter;
+
+	private Integer invalidCodeAttemptCount;
+
+	private OffsetDateTime verificationEndTime;
+
+	private String otp;
 
 	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -116,12 +143,102 @@ public class User extends VSBaseModel {
 		this.accountNonLocked = accountNonLocked;
 	}
 
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+
+	public String getPincode() {
+		return pincode;
+	}
+
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public String getTimeZone() {
+		return timeZone;
+	}
+
+	public void setTimeZone(String timeZone) {
+		this.timeZone = timeZone;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public AuthenticationProvider getProvider() {
+		return provider;
+	}
+
+	public void setProvider(AuthenticationProvider provider) {
+		this.provider = provider;
+	}
+
+	public Integer getCodeSentCounter() {
+		return codeSentCounter;
+	}
+
+	public void setCodeSentCounter(Integer codeSentCounter) {
+		this.codeSentCounter = codeSentCounter;
+	}
+
+	public Integer getInvalidCodeAttemptCount() {
+		return invalidCodeAttemptCount;
+	}
+
+	public void setInvalidCodeAttemptCount(Integer invalidCodeAttemptCount) {
+		this.invalidCodeAttemptCount = invalidCodeAttemptCount;
+	}
+
+	public OffsetDateTime getVerificationEndTime() {
+		return verificationEndTime;
+	}
+
+	public void setVerificationEndTime(OffsetDateTime verificationEndTime) {
+		this.verificationEndTime = verificationEndTime;
+	}
+
+	public String getOtp() {
+		return otp;
+	}
+
+	public void setOtp(String otp) {
+		this.otp = otp;
+	}
+
 	public List<Role> getRoles() {
 		return roles;
 	}
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+
+	@Override
+	public String toString() {
+		return "User [username=" + username + ", password=" + password + ", email=" + email + ", enabled=" + enabled
+				+ ", accountNonExpired=" + accountNonExpired + ", credentialsNonExpired=" + credentialsNonExpired
+				+ ", accountNonLocked=" + accountNonLocked + ", mobileNumber=" + mobileNumber + ", pincode=" + pincode
+				+ ", language=" + language + ", timeZone=" + timeZone + ", active=" + active + ", provider=" + provider
+				+ ", codeSentCounter=" + codeSentCounter + ", invalidCodeAttemptCount=" + invalidCodeAttemptCount
+				+ ", verificationEndTime=" + verificationEndTime + ", otp=" + otp + ", roles=" + roles + "]";
 	}
 
 }
