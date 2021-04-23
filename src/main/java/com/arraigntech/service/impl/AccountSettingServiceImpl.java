@@ -48,17 +48,18 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 	@Autowired
 	protected OtpGenerator otpGenerator;
 	
-//	@Value("${app.mobile.otp.validity}")
-//	protected int mobileOTPExpiryTime;
+
+	@Value("${app.mobile.otp.validity:5}")
+	protected int mobileOTPExpiryTime;
 	
 	@Value("${sponsor.sms.OTPLength:4}")
 	private Integer userSmsOTPLength;
 	
 	@Value("${twilio.account.id}")
-	private static String twilioAccountId;
+	private String twilioAccountId;
 	
 	@Value("${twilio.auth.token}")
-	private static String twilioAccessToken;
+	private String twilioAccessToken;
 	
 	@Autowired
 	private UserRespository userRepo;
@@ -181,11 +182,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 	}
 	
 	private User getUser() {
-		
-//		LoggedInUserDetails userDetails = CommonUtils.getUser();
-		String username=SecurityContextHolder.getContext().getAuthentication().getName();
-		Optional<User> user = userRepo.findByUsername(username);
-		if(user == null) {
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		Optional<User> user = userRepo.findByUsername(name);
+		if(!user.isPresent()) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
 		return user.get();
@@ -203,7 +202,7 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		Twilio.init(twilioAccountId, twilioAccessToken);
 		Message.creator(
 		                new com.twilio.type.PhoneNumber(mobilenumber),//The phone number you are sending text to
-		                new com.twilio.type.PhoneNumber("+31251121"),//The Twilio phone number
+		                new com.twilio.type.PhoneNumber("+15042267347"),//The Twilio phone number
 		                "Please enter the OTP:" +otp)
 		           .create();
 		userRepo.save(user);
@@ -218,6 +217,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		}
 		User user = getUser();
 		Boolean isValid = verifyCode.execute(userRequest);
+		if(userRequest.getCode().equalsIgnoreCase(user.getOtp())) {
+			isValid = true;
+		}
 		if (!isValid) {
 			throw new AppException(MessageConstants.AUTHENTICATION_FAILED);
 		} else {

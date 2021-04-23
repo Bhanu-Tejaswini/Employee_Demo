@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.arraigntech.Exception.Model.ErrorResponse;
-import com.arraigntech.entity.response.BaseResponse;
+import com.arraigntech.model.response.BaseResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

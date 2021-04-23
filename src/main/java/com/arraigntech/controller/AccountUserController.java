@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.arraigntech.entity.response.BaseResponse;
 import com.arraigntech.model.EmailSettingsModel;
 import com.arraigntech.model.IVSPassword;
 import com.arraigntech.model.IVSResetPassword;
 import com.arraigntech.model.UserSettingsDTO;
+import com.arraigntech.model.response.BaseResponse;
 import com.arraigntech.service.AccountSettingService;
 import com.arraigntech.service.impl.UserServiceImpl;
 import com.arraigntech.utility.MessageConstants;
