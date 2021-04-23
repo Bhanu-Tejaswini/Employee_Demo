@@ -21,11 +21,10 @@ import org.springframework.util.StringUtils;
 import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.User;
 import com.arraigntech.model.AccountSettingVO;
+import com.arraigntech.model.AuthUserDetail;
 import com.arraigntech.model.UserSettingsDTO;
 import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.AccountSettingService;
-import com.arraigntech.utility.CommonUtils;
-import com.arraigntech.utility.LoggedInUserDetails;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.utility.OtpGenerator;
 import com.arraigntech.utility.ResetUserDetails;
@@ -183,12 +182,16 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 	private User getUser() {
 		
 //		LoggedInUserDetails userDetails = CommonUtils.getUser();
-		String username=SecurityContextHolder.getContext().getAuthentication().getName();
-		Optional<User> user = userRepo.findByUsername(username);
-		if(user == null) {
-			throw new AppException(MessageConstants.USER_NOT_FOUND);
-		}
-		return user.get();
+//		AuthUserDetail user=(AuthUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+		AuthUserDetail user=(AuthUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		System.out.println(user);
+//		Optional<User> user = userRepo.findByUsername(username);
+//		System.out.println(user.getEmail());
+//		if(user == null) {
+//			throw new AppException(MessageConstants.USER_NOT_FOUND);
+//		}
+		return new User();
 	}
 	
 	@Override

@@ -3,9 +3,12 @@ package com.arraigntech.service.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.mail.MessagingException;
 
@@ -16,9 +19,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.OAuth2Request;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -35,7 +45,6 @@ import com.arraigntech.model.EmailSettingsModel;
 import com.arraigntech.model.LoginDetails;
 import com.arraigntech.model.TokenResponse;
 import com.arraigntech.model.UserDTO;
-import com.arraigntech.model.UserSettingsDTO;
 import com.arraigntech.model.UserToken;
 import com.arraigntech.repository.EmailSettingsRepository;
 import com.arraigntech.repository.ResetTokenRepository;
@@ -80,12 +89,18 @@ public class UserServiceImpl implements IVSService<User, String> {
 	@Autowired
 	private PasswordConstraintValidator passwordValidator;
 
+	@Autowired
+	private DefaultTokenServices tokenService;
+
+	@Value("${client-id}")
+	private String clientId;
+
 	@Value("${reset-password-baseUrl}")
 	private String baseUrl;
-	
+
 	@Value("${reset-password-scheme}")
 	private String scheme;
-	
+
 	@Autowired
 	private ResetTokenRepository resetTokenRepo;
 
@@ -149,7 +164,6 @@ public class UserServiceImpl implements IVSService<User, String> {
 		return userRepo.save(entity);
 	}
 
-
 	public boolean delete(String password) throws AppException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Optional<User> optionalUser = userRepo.findByUsername(authentication.getName());
@@ -189,14 +203,14 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		//check whether token exist in the database or not
-		ResetToken resetToken=resetTokenRepo.findByUser(newUser);
-		if(Objects.isNull(resetToken)) {
+		// check whether token exist in the database or not
+		ResetToken resetToken = resetTokenRepo.findByUser(newUser);
+		if (Objects.isNull(resetToken)) {
 			throw new AppException(MessageConstants.TOKEN_EXPIRED);
 		}
 		newUser.setPassword(passwordEncoder.encode(newPassword));
 		userRepo.save(newUser);
-		//deleting the token after reseting the password
+		// deleting the token after reseting the password
 		resetTokenRepo.deleteById(resetToken.getId());
 		return MessageConstants.PASSWORDMESSAGE;
 	}
@@ -247,15 +261,15 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		//generating the token
+		// generating the token
 		String token = jwtUtil.generateResetToken(email);
-		//saving the resettoken in the database
-		ResetToken resetToken=new ResetToken(token,newUser);
+		// saving the resettoken in the database
+		ResetToken resetToken = new ResetToken(token, newUser);
 		resetTokenRepo.save(resetToken);
 		// Generating the password reset link
 		UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
-		String passwordResetLink = builder.scheme(scheme).host(baseUrl).path("/auth/setPassword").queryParam("token", token)
-				.buildAndExpand(token).toUriString();
+		String passwordResetLink = builder.scheme(scheme).host(baseUrl).path("/auth/setPassword")
+				.queryParam("token", token).buildAndExpand(token).toUriString();
 		// Sending the mail with password reset link
 		try {
 			mailService.sendEmail(email, passwordResetLink);
@@ -334,7 +348,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		emailSettingsRepo.save(settings);
 		return true;
 	}
-	
+
 //	public String saveUserSettings(UserSettingsDTO userSettings) {
 ////		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 ////		Optional<User> optionalUser=userRepo.findByUsername(authentication.getName());
@@ -352,5 +366,55 @@ public class UserServiceImpl implements IVSService<User, String> {
 //		userRepo.save(newUser);
 //		return MessageConstants.USER_SETTINGS_UPDATED;
 //	}
-	
+
+	public OAuth2AccessToken getAccessToken(User user) {
+		HashMap<String, String> authorizationParameters = new HashMap<String, String>();
+		authorizationParameters.put("scope", "read");
+		authorizationParameters.put("username", user.getEmail());
+		authorizationParameters.put("client_id", clientId);
+		authorizationParameters.put("grant", "password");
+
+		Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+		user.getRoles().forEach((role) -> {
+			role.getPermissions().forEach(permission -> {
+				authorities.add(new SimpleGrantedAuthority(permission.getName()));
+			});
+		});
+
+		Set<String> responseType = new HashSet<String>();
+		responseType.add("password");
+
+		Set<String> scopes = new HashSet<String>();
+		scopes.add("read");
+		scopes.add("write");
+
+		OAuth2Request authorizationRequest = new OAuth2Request(authorizationParameters, clientId, authorities, true,
+				scopes, null, "", responseType, null);
+
+		org.springframework.security.core.userdetails.User userPrincipal = new org.springframework.security.core.userdetails.User(
+				user.getEmail(), user.getPassword(), authorities);
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userPrincipal,
+				null, authorities);
+
+		OAuth2Authentication authenticationRequest = new OAuth2Authentication(authorizationRequest,
+				authenticationToken);
+		authenticationRequest.setAuthenticated(true);
+		OAuth2AccessToken accessToken = tokenService.createAccessToken(authenticationRequest);
+
+		return accessToken;
+	}
+
+	public String getToken(UserDTO user) {
+		User newUser = new User();
+		newUser.setUsername(user.getUsername());
+		newUser.setEmail(user.getEmail());
+		newUser.setPassword("");
+		for (String str : user.getRole()) {
+			Role role = roleRepo.findByName(str);
+			newUser.getRoles().add(role);
+		}
+		OAuth2AccessToken token=getAccessToken(newUser);
+		return token.toString();
+	}
+
 }
