@@ -89,12 +89,6 @@ public class UserServiceImpl implements IVSService<User, String> {
 	@Autowired
 	private PasswordConstraintValidator passwordValidator;
 
-	@Autowired
-	private DefaultTokenServices tokenService;
-
-	@Value("${client-id}")
-	private String clientId;
-
 	@Value("${reset-password-baseUrl}")
 	private String baseUrl;
 
@@ -103,6 +97,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 
 	@Autowired
 	private ResetTokenRepository resetTokenRepo;
+	
 
 	public Boolean register(UserDTO userDTO) throws AppException {
 		System.out.println(emailValidator.isValidEmail(userDTO.getEmail()));
@@ -366,55 +361,5 @@ public class UserServiceImpl implements IVSService<User, String> {
 //		userRepo.save(newUser);
 //		return MessageConstants.USER_SETTINGS_UPDATED;
 //	}
-
-	public OAuth2AccessToken getAccessToken(User user) {
-		HashMap<String, String> authorizationParameters = new HashMap<String, String>();
-		authorizationParameters.put("scope", "read");
-		authorizationParameters.put("username", user.getEmail());
-		authorizationParameters.put("client_id", clientId);
-		authorizationParameters.put("grant", "password");
-
-		Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-		user.getRoles().forEach((role) -> {
-			role.getPermissions().forEach(permission -> {
-				authorities.add(new SimpleGrantedAuthority(permission.getName()));
-			});
-		});
-
-		Set<String> responseType = new HashSet<String>();
-		responseType.add("password");
-
-		Set<String> scopes = new HashSet<String>();
-		scopes.add("read");
-		scopes.add("write");
-
-		OAuth2Request authorizationRequest = new OAuth2Request(authorizationParameters, clientId, authorities, true,
-				scopes, null, "", responseType, null);
-
-		org.springframework.security.core.userdetails.User userPrincipal = new org.springframework.security.core.userdetails.User(
-				user.getEmail(), user.getPassword(), authorities);
-		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userPrincipal,
-				null, authorities);
-
-		OAuth2Authentication authenticationRequest = new OAuth2Authentication(authorizationRequest,
-				authenticationToken);
-		authenticationRequest.setAuthenticated(true);
-		OAuth2AccessToken accessToken = tokenService.createAccessToken(authenticationRequest);
-
-		return accessToken;
-	}
-
-	public String getToken(UserDTO user) {
-		User newUser = new User();
-		newUser.setUsername(user.getUsername());
-		newUser.setEmail(user.getEmail());
-		newUser.setPassword("");
-		for (String str : user.getRole()) {
-			Role role = roleRepo.findByName(str);
-			newUser.getRoles().add(role);
-		}
-		OAuth2AccessToken token=getAccessToken(newUser);
-		return token.toString();
-	}
 
 }
