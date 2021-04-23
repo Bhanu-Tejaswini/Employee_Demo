@@ -33,5 +33,6 @@ public class MessageConstants {
 	public static final String DATA_MISSING="The Data is missing";
 	public static final String REGISTRATION_CONFIRMATION_LINK="Registration confirmation link";
 	public static final String REGISTRATION_CONFIRMATION_TOKEN="RegistrationToken";
+	public static final String INVALID_REGISTER_TOKEN="Invalid registration token";
 
 }

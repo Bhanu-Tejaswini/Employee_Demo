@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,9 +91,9 @@ public class AuthController {
 	
 	@ApiOperation(value = "registration link")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-	@RequestMapping(value = "/registerationlink", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<Boolean> registerationLink(@RequestBody UserDTO user) {
-		log.debug("save and register user");
-		return new BaseResponse<Boolean>(userService.sendRegisterationLink(user)).withSuccess(true);
+	@RequestMapping(value = "/verify/{token}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<Boolean> registerationLink(@PathVariable(value = "token") String token) {
+		log.debug("registration link");
+		return new BaseResponse<Boolean>(userService.verifyRegisterationToken(token)).withSuccess(true);
 	}
 }

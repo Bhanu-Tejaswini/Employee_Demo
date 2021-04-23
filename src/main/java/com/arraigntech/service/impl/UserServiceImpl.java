@@ -107,6 +107,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 	private String formMail;
 
 	public Boolean register(UserDTO userDTO) throws AppException {
+		Boolean flag = false;
 		System.out.println(emailValidator.isValidEmail(userDTO.getEmail()));
 		if (userDTO.getEmail() == null || !emailValidator.isValidEmail(userDTO.getEmail())) {
 			throw new AppException(MessageConstants.INVALID_EMAIL);
@@ -126,8 +127,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		newUser = new User();
 		newUser.setUsername(userDTO.getUsername());
 		newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-		newUser.setEmail(userDTO.getEmail());
-		newUser.setEnabled(true);
+		newUser.setEmail(userDTO.getEmail());	
 		newUser.setAccountNonExpired(true);
 		newUser.setAccountNonLocked(true);
 		newUser.setCredentialsNonExpired(true);
@@ -137,8 +137,12 @@ public class UserServiceImpl implements IVSService<User, String> {
 			Role role = roleRepo.findByName(str);
 			newUser.getRoles().add(role);
 		}
+		
+		flag = sendRegisterationLink(userDTO);
+		if(flag) {
+			newUser.setEnabled(true);
+		}
 		userRepo.save(newUser);
-
 		return true;
 	}
 
@@ -361,7 +365,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 			String token = jwtUtil.generateResetToken(user.getEmail());
 			Map<String, String> model = new HashMap<String, String>();
 			UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
-			String regisrationLink = builder.scheme(scheme).host(registrationBaseurl).path("/auth/register").queryParam("token", token)
+			String regisrationLink = builder.scheme(scheme).host(registrationBaseurl).path("/auth/login").queryParam("token", token)
 					.buildAndExpand(token).toUriString();
 			model.put(MessageConstants.REGISTRATION_CONFIRMATION_TOKEN, regisrationLink);
 			Email email = formEmailData.formEmail(formMail, user.getEmail(),
@@ -369,29 +373,19 @@ public class UserServiceImpl implements IVSService<User, String> {
 			mailService.sendEmail(email);
 			log.debug("sendRegisterationLink method end");
 		} catch (Exception e) {
-			log.error("Error in sending activate notification email to vendor : " + user.getEmail(), e);
+			log.error("Error in sending registration link : " + user.getEmail(), e);
 			throw new AppException("Something went wrong, Please try again later.");
 		}
 
 		return true;
 	}
 	
-//	public String saveUserSettings(UserSettingsDTO userSettings) {
-////		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-////		Optional<User> optionalUser=userRepo.findByUsername(authentication.getName());
-//		Optional<User> optionalUser=userRepo.findByUsername("user1");
-//		if(!optionalUser.isPresent()) {
-//			throw new AppException(MessageConstants.USER_NOT_FOUND);
-//		}
-//		User newUser=optionalUser.get();
-//		newUser.setEmail(userSettings.getEmail());
-//		newUser.setMobileNumber(userSettings.getMobilenumber());
-//		newUser.setUsername(userSettings.getUsername());
-//		newUser.setPincode(userSettings.getPincode());
-//		newUser.setLanguage(userSettings.getLanguage());
-//		newUser.setTimeZone(userSettings.getTimezone());
-//		userRepo.save(newUser);
-//		return MessageConstants.USER_SETTINGS_UPDATED;
-//	}
+	public Boolean verifyRegisterationToken(String token) {
+		log.debug("verifyRegisterationToken method start");
+			if (!StringUtils.hasText(token)) {
+				throw new AppException(MessageConstants.INVALID_REGISTER_TOKEN);
+			}
+		return true;
+	}
 	
 }
