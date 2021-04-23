@@ -48,7 +48,6 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 	@Autowired
 	protected OtpGenerator otpGenerator;
 	
-
 	@Value("${app.mobile.otp.validity:5}")
 	protected int mobileOTPExpiryTime;
 	
