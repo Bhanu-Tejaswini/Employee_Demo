@@ -87,4 +87,12 @@ public class AuthController {
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.PASSWORDMESSAGE).build();
 	}
+	
+	@ApiOperation(value = "registration link")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/registerationlink", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<Boolean> registerationLink(@RequestBody UserDTO user) {
+		log.debug("save and register user");
+		return new BaseResponse<Boolean>(userService.sendRegisterationLink(user)).withSuccess(true);
+	}
 }

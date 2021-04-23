@@ -31,5 +31,7 @@ public class MessageConstants {
 	public static final String AUTHENTICATION_FAILED = "Authentication failed. Please enter valid verification code.";
 	public static final String OTP_VERIFICATION = "OTP has been verfied.";
 	public static final String DATA_MISSING="The Data is missing";
+	public static final String REGISTRATION_CONFIRMATION_LINK="Registration confirmation link";
+	public static final String REGISTRATION_CONFIRMATION_TOKEN="RegistrationToken";
 
 }

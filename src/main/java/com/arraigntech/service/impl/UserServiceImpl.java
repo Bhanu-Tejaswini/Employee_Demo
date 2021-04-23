@@ -3,12 +3,16 @@ package com.arraigntech.service.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 import javax.mail.MessagingException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -31,24 +35,28 @@ import com.arraigntech.entity.EmailSettings;
 import com.arraigntech.entity.ResetToken;
 import com.arraigntech.entity.Role;
 import com.arraigntech.entity.User;
+import com.arraigntech.model.Email;
 import com.arraigntech.model.EmailSettingsModel;
 import com.arraigntech.model.LoginDetails;
 import com.arraigntech.model.TokenResponse;
 import com.arraigntech.model.UserDTO;
-import com.arraigntech.model.UserSettingsDTO;
 import com.arraigntech.model.UserToken;
 import com.arraigntech.repository.EmailSettingsRepository;
 import com.arraigntech.repository.ResetTokenRepository;
 import com.arraigntech.repository.RoleRepository;
 import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.IVSService;
+import com.arraigntech.service.MailService;
 import com.arraigntech.utility.EmailValidator;
+import com.arraigntech.utility.FormEmailData;
 import com.arraigntech.utility.IVSJwtUtil;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.utility.PasswordConstraintValidator;
 
 @Service
 public class UserServiceImpl implements IVSService<User, String> {
+	
+	public static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Autowired
 	private UserRespository userRepo;
@@ -69,7 +77,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 	private IVSJwtUtil jwtUtil;
 
 	@Autowired
-	private MailServiceImpl mailService;
+	private MailService mailService;
 
 	@Autowired
 	private EmailSettingsRepository emailSettingsRepo;
@@ -88,6 +96,15 @@ public class UserServiceImpl implements IVSService<User, String> {
 	
 	@Autowired
 	private ResetTokenRepository resetTokenRepo;
+	
+	@Autowired
+	private FormEmailData formEmailData;
+	
+	@Value("${registrationlink-baseUrl}")
+	private String registrationBaseurl;
+	
+	@Value("${spring.mail.username}")
+	private String formMail;
 
 	public Boolean register(UserDTO userDTO) throws AppException {
 		System.out.println(emailValidator.isValidEmail(userDTO.getEmail()));
@@ -332,6 +349,30 @@ public class UserServiceImpl implements IVSService<User, String> {
 		settings.setProductUpdates(emailSettings.getProductUpdates());
 		settings.setBlogDigest(emailSettings.getBlogDigest());
 		emailSettingsRepo.save(settings);
+		return true;
+	}
+
+	public Boolean sendRegisterationLink(UserDTO user) {
+		log.debug("sendRegisterationLink method start");
+		try {
+			if (user.getEmail() == null || !emailValidator.isValidEmail(user.getEmail())) {
+				throw new AppException(MessageConstants.INVALID_EMAIL);
+			}
+			String token = jwtUtil.generateResetToken(user.getEmail());
+			Map<String, String> model = new HashMap<String, String>();
+			UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
+			String regisrationLink = builder.scheme(scheme).host(registrationBaseurl).path("/auth/register").queryParam("token", token)
+					.buildAndExpand(token).toUriString();
+			model.put(MessageConstants.REGISTRATION_CONFIRMATION_TOKEN, regisrationLink);
+			Email email = formEmailData.formEmail(formMail, user.getEmail(),
+					MessageConstants.REGISTRATION_CONFIRMATION_LINK, model);
+			mailService.sendEmail(email);
+			log.debug("sendRegisterationLink method end");
+		} catch (Exception e) {
+			log.error("Error in sending activate notification email to vendor : " + user.getEmail(), e);
+			throw new AppException("Something went wrong, Please try again later.");
+		}
+
 		return true;
 	}
 	
