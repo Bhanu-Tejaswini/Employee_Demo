@@ -89,11 +89,18 @@ public class AuthController {
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.PASSWORDMESSAGE).build();
 	}
 	
-	@ApiOperation(value = "registration link")
+	@ApiOperation(value = "registration link verification")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/verify/{token}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> registerationLink(@PathVariable(value = "token") String token) {
-		log.debug("registration link");
-		return new BaseResponse<Boolean>(userService.verifyRegisterationToken(token)).withSuccess(true);
+		log.debug("registration link verification");
+		Boolean result = userService.verifyRegisterationToken(token);
+		BaseResponse<Boolean> response = new BaseResponse<>();
+		return result
+				? response.withSuccess(true)
+						.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.EMAIL_SUCCESS).build()
+				: response.withSuccess(false)
+						.withResponseMessage(MessageConstants.KEY_FAIL, MessageConstants.VERIFICATION_EMAIL_FAIL)
+						.build();
 	}
 }

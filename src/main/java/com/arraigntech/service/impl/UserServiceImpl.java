@@ -52,6 +52,9 @@ import com.arraigntech.utility.FormEmailData;
 import com.arraigntech.utility.IVSJwtUtil;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.utility.PasswordConstraintValidator;
+import com.nimbusds.oauth2.sdk.auth.Secret;
+
+import io.jsonwebtoken.Jwts;
 
 @Service
 public class UserServiceImpl implements IVSService<User, String> {
@@ -105,7 +108,10 @@ public class UserServiceImpl implements IVSService<User, String> {
 	
 	@Value("${spring.mail.username}")
 	private String formMail;
-
+	
+	@Autowired
+	private IVSJwtUtil iVSJwtUtil;
+	
 	public Boolean register(UserDTO userDTO) throws AppException {
 		Boolean flag = false;
 		System.out.println(emailValidator.isValidEmail(userDTO.getEmail()));
@@ -385,7 +391,13 @@ public class UserServiceImpl implements IVSService<User, String> {
 			if (!StringUtils.hasText(token)) {
 				throw new AppException(MessageConstants.INVALID_REGISTER_TOKEN);
 			}
-		return true;
+			iVSJwtUtil.validateToken(token);
+			String email = iVSJwtUtil.getUsernameFromToken(token);
+			User user = userRepo.findByEmail(email);
+			if(Objects.nonNull(user) && user.isEnabled()) {
+				return true;
+			}
+		return false;
 	}
 	
 }
