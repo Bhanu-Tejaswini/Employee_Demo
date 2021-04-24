@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.arraigntech.model.IVSLiveStream;
-import com.arraigntech.model.IVSLiveStreamResponse;
 import com.arraigntech.service.impl.IVSStreamServiceImpl;
+import com.arraigntech.streamsModel.IVSLiveStream;
+import com.arraigntech.streamsModel.IVSLiveStreamResponse;
 
 @RestController
 @CrossOrigin(origins="*")

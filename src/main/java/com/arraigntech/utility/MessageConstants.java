@@ -13,7 +13,7 @@ public class MessageConstants {
 	public static final String INVALID_EMAIL="Please enter valid email address";
 	public static final String USER_EXISTS="User already exists";
 	public static final String INVALID_RESET_TOKEN="Invalid reset password token";
-	public static final String WRONG_PASSWORD="wrong passowrd";
+	public static final String WRONG_PASSWORD="Please check password you have entered	";
 	public static final String INVALID_PASSWORD="The password should contain minimum 8 characters, atleast 1 upercase letter,1 digit.";
 	public static final String USER_EXISTS_USERNAME="User with username already exists";
 	public static final String PASSWORDMESSAGE="Password Changed successfully";

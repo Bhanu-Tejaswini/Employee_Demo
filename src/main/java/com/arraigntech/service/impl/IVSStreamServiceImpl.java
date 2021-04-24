@@ -12,13 +12,13 @@ import org.springframework.web.client.RestTemplate;
 
 import com.arraigntech.entity.Streams;
 import com.arraigntech.entity.User;
-import com.arraigntech.model.IVSLiveStream;
-import com.arraigntech.model.IVSLiveStreamResponse;
-import com.arraigntech.model.LiveStreamState;
 import com.arraigntech.mongorepos.StreamResponseRepository;
 import com.arraigntech.repository.StreamRepository;
 import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.IVSStreamService;
+import com.arraigntech.streamsModel.IVSLiveStream;
+import com.arraigntech.streamsModel.IVSLiveStreamResponse;
+import com.arraigntech.streamsModel.LiveStreamState;
 
 @Service
 public class IVSStreamServiceImpl implements IVSStreamService {

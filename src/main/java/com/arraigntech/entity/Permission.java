@@ -4,8 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.arraigntech.model.VSBaseModel;
-
 @Entity
 @Table(name = "permission")
 public class Permission extends VSBaseModel {

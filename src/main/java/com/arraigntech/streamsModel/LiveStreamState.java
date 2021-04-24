@@ -1,4 +1,4 @@
-package com.arraigntech.model;
+package com.arraigntech.streamsModel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

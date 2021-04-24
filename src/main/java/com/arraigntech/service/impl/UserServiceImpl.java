@@ -2,12 +2,9 @@ package com.arraigntech.service.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.mail.MessagingException;
 
@@ -18,16 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.OAuth2Request;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -51,6 +39,7 @@ import com.arraigntech.repository.RoleRepository;
 import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.IVSService;
 import com.arraigntech.utility.AuthenticationProvider;
+import com.arraigntech.utility.CommonUtils;
 import com.arraigntech.utility.EmailValidator;
 import com.arraigntech.utility.IVSJwtUtil;
 import com.arraigntech.utility.MessageConstants;
@@ -165,17 +154,13 @@ public class UserServiceImpl implements IVSService<User, String> {
 	}
 
 	public boolean delete(String password) throws AppException {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Optional<User> optionalUser = userRepo.findByUsername(authentication.getName());
-		if (!optionalUser.isPresent()) {
-			throw new AppException(MessageConstants.USER_NOT_FOUND);
-		}
-		if (passwordEncoder.matches(password, optionalUser.get().getPassword())) {
-			optionalUser.get().setActive(false);
+		User newUser=getUser();
+		if (passwordEncoder.matches(password, newUser.getPassword())) {
+			newUser.setActive(false);
 		} else {
 			throw new AppException(MessageConstants.WRONG_PASSWORD);
 		}
-		userRepo.save(optionalUser.get());
+		userRepo.save(newUser);
 		return true;
 	}
 
@@ -197,8 +182,8 @@ public class UserServiceImpl implements IVSService<User, String> {
 			throw new AppException(MessageConstants.TOKEN_NOT_FOUND);
 		}
 		String email = jwtUtil.getUsernameFromToken(token);
-		Date expiryDate = jwtUtil.getExpirationTimeFromToken(token);
-		System.out.println("email" + email + "  expiry date" + expiryDate);
+
+
 		User newUser = userRepo.findByEmail(email);
 		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
@@ -286,12 +271,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (!passwordValidator.isValid(newPassword)) {
 			throw new AppException(MessageConstants.INVALID_PASSWORD);
 		}
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Optional<User> optionalUser = userRepo.findByUsername(authentication.getName());
-		if (!optionalUser.isPresent()) {
-			throw new AppException(MessageConstants.USER_NOT_FOUND);
-		}
-		User newUser = optionalUser.get();
+		User newUser=getUser();
 		if (passwordEncoder.matches(oldPassword, newUser.getPassword())) {
 			newUser.setPassword(passwordEncoder.encode(newPassword));
 		} else {
@@ -302,13 +282,8 @@ public class UserServiceImpl implements IVSService<User, String> {
 	}
 
 	public EmailSettingsModel getEmailSetting() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Optional<User> optionalUser = userRepo.findByUsername(authentication.getName());
-
-		if (!optionalUser.isPresent()) {
-			throw new AppException(MessageConstants.USER_NOT_FOUND);
-		}
-		EmailSettings emailSettings = emailSettingsRepo.findByUser(optionalUser.get());
+		User newUser=getUser();
+		EmailSettings emailSettings = emailSettingsRepo.findByUser(newUser);
 		if (Objects.isNull(emailSettings)) {
 			return new EmailSettingsModel(true, true, true, true, true, true);
 		}
@@ -321,17 +296,13 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (Objects.isNull(emailSettings)) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Optional<User> optionalUser = userRepo.findByUsername(authentication.getName());
-		if (!optionalUser.isPresent()) {
-			throw new AppException(MessageConstants.USER_NOT_FOUND);
-		}
-		EmailSettings checkSettings = emailSettingsRepo.findByUser(optionalUser.get());
+		User newUser=getUser();
+		EmailSettings checkSettings = emailSettingsRepo.findByUser(newUser);
 		if (Objects.isNull(checkSettings)) {
 			EmailSettings newSettings = new EmailSettings();
-			persistEmailSettings(newSettings, emailSettings, optionalUser.get());
+			persistEmailSettings(newSettings, emailSettings, newUser);
 		} else {
-			persistEmailSettings(checkSettings, emailSettings, optionalUser.get());
+			persistEmailSettings(checkSettings, emailSettings, newUser);
 		}
 
 		return MessageConstants.EMAILSETTINGSMESSAGE;
@@ -366,5 +337,13 @@ public class UserServiceImpl implements IVSService<User, String> {
 //		userRepo.save(newUser);
 //		return MessageConstants.USER_SETTINGS_UPDATED;
 //	}
+	
+	private User getUser() {
+		User user = userRepo.findByEmail(CommonUtils.getUser());
+		if(Objects.isNull(user)) {	
+			throw new AppException(MessageConstants.USER_NOT_FOUND);
+		}
+		return user;
+	}
 
 }

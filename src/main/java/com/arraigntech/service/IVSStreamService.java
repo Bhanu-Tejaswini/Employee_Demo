@@ -1,8 +1,8 @@
 package com.arraigntech.service;
 
-import com.arraigntech.model.IVSLiveStream;
-import com.arraigntech.model.IVSLiveStreamResponse;
-import com.arraigntech.model.LiveStreamState;
+import com.arraigntech.streamsModel.IVSLiveStream;
+import com.arraigntech.streamsModel.IVSLiveStreamResponse;
+import com.arraigntech.streamsModel.LiveStreamState;
 
 public interface IVSStreamService {
 

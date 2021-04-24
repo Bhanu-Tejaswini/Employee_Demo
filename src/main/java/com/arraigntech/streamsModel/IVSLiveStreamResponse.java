@@ -1,10 +1,11 @@
-package com.arraigntech.model;
+package com.arraigntech.streamsModel;
 
 
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.arraigntech.entity.VSBaseModel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Document(collection="streams")

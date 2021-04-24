@@ -20,7 +20,7 @@ public abstract class VSBaseModel {
 	@Id
 	@GeneratedValue(generator = "system-uuid")
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
-	@Column(name="id",unique = true)
+	@Column(unique = true)
 	protected String id;
 
 	protected Date createdAt;

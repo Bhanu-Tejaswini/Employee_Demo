@@ -6,25 +6,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.User;
 import com.arraigntech.model.AccountSettingVO;
-import com.arraigntech.model.AuthUserDetail;
 import com.arraigntech.model.UserSettingsDTO;
 import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.AccountSettingService;
+import com.arraigntech.utility.CommonUtils;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.utility.OtpGenerator;
 import com.arraigntech.utility.ResetUserDetails;
@@ -169,23 +166,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 	}
 	
 	public UserSettingsDTO fetchUserSettings() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Optional<User> optionalUser=userRepo.findByUsername(authentication.getName());
-		if(!optionalUser.isPresent()) {
-			throw new AppException(MessageConstants.USER_NOT_FOUND);
-		}
-		User newUser=optionalUser.get();
+		User newUser=getUser();
 		return new UserSettingsDTO(newUser.getEmail(),newUser.getMobileNumber(),newUser.getPincode(),newUser.getUsername(),
 				newUser.getLanguage(),newUser.getTimeZone());
-	}
-	
-	private User getUser() {
-		String name = SecurityContextHolder.getContext().getAuthentication().getName();
-		Optional<User> user = userRepo.findByUsername(name);
-		if(!user.isPresent()) {
-			throw new AppException(MessageConstants.USER_NOT_FOUND);
-		}
-		return user.get();
 	}
 	
 	@Override
@@ -225,6 +208,16 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		}
 		log.debug("verifyCode response{}", isValid);
 		return isValid;
+	}
+	
+	
+	//returns currently logged in user details
+	private User getUser() {
+		User user = userRepo.findByEmail(CommonUtils.getUser());
+		if(Objects.isNull(user)) {	
+			throw new AppException(MessageConstants.USER_NOT_FOUND);
+		}
+		return user;
 	}
 
 }

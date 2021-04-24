@@ -16,7 +16,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
-import com.arraigntech.model.VSBaseModel;
 import com.arraigntech.utility.AuthenticationProvider;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

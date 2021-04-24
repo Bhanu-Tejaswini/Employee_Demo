@@ -3,7 +3,6 @@ package com.arraigntech.utility;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.arraigntech.Exception.AppException;
 
 /**
  * 

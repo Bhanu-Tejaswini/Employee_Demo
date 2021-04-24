@@ -1,4 +1,4 @@
-package com.arraigntech.model;
+package com.arraigntech.streamsModel;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.arraigntech.model;
+package com.arraigntech.streamsModel;
 
 public class LiveStream {
 	public int aspect_ratio_height;
