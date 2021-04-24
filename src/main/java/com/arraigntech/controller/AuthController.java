@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +22,6 @@ import com.arraigntech.model.IVSTokenEmail;
 import com.arraigntech.model.LoginDetails;
 import com.arraigntech.model.SocialLoginDTO;
 import com.arraigntech.model.UserDTO;
-
 import com.arraigntech.model.response.BaseResponse;
 import com.arraigntech.service.impl.SocialLoginServiceImpl;
 import com.arraigntech.service.impl.UserServiceImpl;
@@ -99,6 +98,7 @@ public class AuthController {
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.PASSWORDMESSAGE).build();
 	}
 
+
 	@ApiOperation(value = "Google signin")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/google-login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -108,5 +108,21 @@ public class AuthController {
 		String token=socialLoginService.getToken(socialLogin);
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, token).build();
+	}
+	
+	@ApiOperation(value = "registration link verification")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/verify/{token}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<Boolean> registerationLink(@PathVariable(value = "token") String token) {
+		log.debug("registration link verification");
+		Boolean result = userService.verifyRegisterationToken(token);
+		BaseResponse<Boolean> response = new BaseResponse<>();
+		return result
+				? response.withSuccess(true)
+						.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.EMAIL_SUCCESS).build()
+				: response.withSuccess(false)
+						.withResponseMessage(MessageConstants.KEY_FAIL, MessageConstants.VERIFICATION_EMAIL_FAIL)
+						.build();
+
 	}
 }

@@ -1,13 +1,16 @@
 package com.arraigntech.service.impl;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 import javax.mail.MessagingException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -28,6 +31,7 @@ import com.arraigntech.entity.EmailSettings;
 import com.arraigntech.entity.ResetToken;
 import com.arraigntech.entity.Role;
 import com.arraigntech.entity.User;
+import com.arraigntech.model.Email;
 import com.arraigntech.model.EmailSettingsModel;
 import com.arraigntech.model.LoginDetails;
 import com.arraigntech.model.TokenResponse;
@@ -40,13 +44,21 @@ import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.IVSService;
 import com.arraigntech.utility.AuthenticationProvider;
 import com.arraigntech.utility.CommonUtils;
+import com.arraigntech.service.MailService;
+
 import com.arraigntech.utility.EmailValidator;
+import com.arraigntech.utility.FormEmailData;
 import com.arraigntech.utility.IVSJwtUtil;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.utility.PasswordConstraintValidator;
+import com.nimbusds.oauth2.sdk.auth.Secret;
+
+import io.jsonwebtoken.Jwts;
 
 @Service
 public class UserServiceImpl implements IVSService<User, String> {
+
+	public static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Autowired
 	private UserRespository userRepo;
@@ -67,7 +79,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 	private IVSJwtUtil jwtUtil;
 
 	@Autowired
-	private MailServiceImpl mailService;
+	private MailService mailService;
 
 	@Autowired
 	private EmailSettingsRepository emailSettingsRepo;
@@ -86,10 +98,23 @@ public class UserServiceImpl implements IVSService<User, String> {
 
 	@Autowired
 	private ResetTokenRepository resetTokenRepo;
-	
+
+	@Autowired
+	private FormEmailData formEmailData;
+
+	@Value("${registrationlink-baseUrl}")
+	private String registrationBaseurl;
+
+	@Value("${spring.mail.username}")
+	private String formMail;
+
+	@Autowired
+	private IVSJwtUtil iVSJwtUtil;
 
 	public Boolean register(UserDTO userDTO) throws AppException {
 		AuthenticationProvider provider = userDTO.getProvider(); 
+		Boolean flag = false;
+		System.out.println(emailValidator.isValidEmail(userDTO.getEmail()));
 
 		if (userDTO.getEmail() == null || !emailValidator.isValidEmail(userDTO.getEmail())) {
 			throw new AppException(MessageConstants.INVALID_EMAIL);
@@ -113,8 +138,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		newUser.setProvider(userDTO.getProvider());
 		newUser.setUsername(userDTO.getUsername());
 		newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-		newUser.setEmail(userDTO.getEmail());
-		newUser.setEnabled(true);
+		newUser.setEmail(userDTO.getEmail());	
 		newUser.setAccountNonExpired(true);
 		newUser.setAccountNonLocked(true);
 		newUser.setCredentialsNonExpired(true);
@@ -124,8 +148,12 @@ public class UserServiceImpl implements IVSService<User, String> {
 			Role role = roleRepo.findByName(str);
 			newUser.getRoles().add(role);
 		}
+		
+		flag = sendRegisterationLink(userDTO);
+		if(flag) {
+			newUser.setEnabled(true);
+		}
 		userRepo.save(newUser);
-
 		return true;
 	}
 
@@ -154,7 +182,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 	}
 
 	public boolean delete(String password) throws AppException {
-		User newUser=getUser();
+		User newUser = getUser();
 		if (passwordEncoder.matches(password, newUser.getPassword())) {
 			newUser.setActive(false);
 		} else {
@@ -182,7 +210,6 @@ public class UserServiceImpl implements IVSService<User, String> {
 			throw new AppException(MessageConstants.TOKEN_NOT_FOUND);
 		}
 		String email = jwtUtil.getUsernameFromToken(token);
-
 
 		User newUser = userRepo.findByEmail(email);
 		if (Objects.isNull(newUser)) {
@@ -271,7 +298,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (!passwordValidator.isValid(newPassword)) {
 			throw new AppException(MessageConstants.INVALID_PASSWORD);
 		}
-		User newUser=getUser();
+		User newUser = getUser();
 		if (passwordEncoder.matches(oldPassword, newUser.getPassword())) {
 			newUser.setPassword(passwordEncoder.encode(newPassword));
 		} else {
@@ -282,7 +309,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 	}
 
 	public EmailSettingsModel getEmailSetting() {
-		User newUser=getUser();
+		User newUser = getUser();
 		EmailSettings emailSettings = emailSettingsRepo.findByUser(newUser);
 		if (Objects.isNull(emailSettings)) {
 			return new EmailSettingsModel(true, true, true, true, true, true);
@@ -296,7 +323,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (Objects.isNull(emailSettings)) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
-		User newUser=getUser();
+		User newUser = getUser();
 		EmailSettings checkSettings = emailSettingsRepo.findByUser(newUser);
 		if (Objects.isNull(checkSettings)) {
 			EmailSettings newSettings = new EmailSettings();
@@ -320,27 +347,47 @@ public class UserServiceImpl implements IVSService<User, String> {
 		return true;
 	}
 
-//	public String saveUserSettings(UserSettingsDTO userSettings) {
-////		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-////		Optional<User> optionalUser=userRepo.findByUsername(authentication.getName());
-//		Optional<User> optionalUser=userRepo.findByUsername("user1");
-//		if(!optionalUser.isPresent()) {
-//			throw new AppException(MessageConstants.USER_NOT_FOUND);
-//		}
-//		User newUser=optionalUser.get();
-//		newUser.setEmail(userSettings.getEmail());
-//		newUser.setMobileNumber(userSettings.getMobilenumber());
-//		newUser.setUsername(userSettings.getUsername());
-//		newUser.setPincode(userSettings.getPincode());
-//		newUser.setLanguage(userSettings.getLanguage());
-//		newUser.setTimeZone(userSettings.getTimezone());
-//		userRepo.save(newUser);
-//		return MessageConstants.USER_SETTINGS_UPDATED;
-//	}
-	
+	public Boolean sendRegisterationLink(UserDTO user) {
+		log.debug("sendRegisterationLink method start");
+		try {
+			if (user.getEmail() == null || !emailValidator.isValidEmail(user.getEmail())) {
+				throw new AppException(MessageConstants.INVALID_EMAIL);
+			}
+			String token = jwtUtil.generateResetToken(user.getEmail());
+			Map<String, String> model = new HashMap<String, String>();
+			UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
+			String regisrationLink = builder.scheme(scheme).host(registrationBaseurl).path("/auth/login")
+					.queryParam("token", token).buildAndExpand(token).toUriString();
+			model.put(MessageConstants.REGISTRATION_CONFIRMATION_TOKEN, regisrationLink);
+			Email email = formEmailData.formEmail(formMail, user.getEmail(),
+					MessageConstants.REGISTRATION_CONFIRMATION_LINK, model);
+			mailService.sendEmail(email);
+			log.debug("sendRegisterationLink method end");
+		} catch (Exception e) {
+			log.error("Error in sending registration link : " + user.getEmail(), e);
+			throw new AppException("Something went wrong, Please try again later.");
+		}
+
+		return true;
+	}
+
+	public Boolean verifyRegisterationToken(String token) {
+		log.debug("verifyRegisterationToken method start");
+		if (!StringUtils.hasText(token)) {
+			throw new AppException(MessageConstants.INVALID_REGISTER_TOKEN);
+		}
+		iVSJwtUtil.validateToken(token);
+		String email = iVSJwtUtil.getUsernameFromToken(token);
+		User user = userRepo.findByEmail(email);
+		if (Objects.nonNull(user) && user.isEnabled()) {
+			return true;
+		}
+		return false;
+	}
+
 	private User getUser() {
 		User user = userRepo.findByEmail(CommonUtils.getUser());
-		if(Objects.isNull(user)) {	
+		if (Objects.isNull(user)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
 		return user;

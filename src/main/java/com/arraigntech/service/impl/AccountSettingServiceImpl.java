@@ -170,7 +170,6 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		return new UserSettingsDTO(newUser.getEmail(),newUser.getMobileNumber(),newUser.getPincode(),newUser.getUsername(),
 				newUser.getLanguage(),newUser.getTimeZone());
 	}
-	
 	@Override
 	public Boolean sendOTPForUser(String mobilenumber) {
 		if (!StringUtils.hasText(mobilenumber)) {
