@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.arraigntech.model.Email;
 import com.arraigntech.service.MailService;
+import com.arraigntech.utility.MessageConstants;
 
 @Service
 public class MailServiceImpl implements MailService {
@@ -54,10 +55,9 @@ public class MailServiceImpl implements MailService {
 		MimeMessageHelper helper = new MimeMessageHelper(message);
 
 		//Template template = freemarkerConfig.getTemplate(email.getTemplateName());
-		Map model = email.getMessageBody();
 		//String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
 		helper.setTo(email.getTo());
-		//helper.setText(html, true);
+		helper.setText(email.getMessageBody(), true);
 		helper.setSubject(email.getSubject());
 		helper.setFrom(email.getFrom());
 		mailSender.send(message);

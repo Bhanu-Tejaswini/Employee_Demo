@@ -114,7 +114,6 @@ public class UserServiceImpl implements IVSService<User, String> {
 	
 	public Boolean register(UserDTO userDTO) throws AppException {
 		Boolean flag = false;
-		System.out.println(emailValidator.isValidEmail(userDTO.getEmail()));
 		if (userDTO.getEmail() == null || !emailValidator.isValidEmail(userDTO.getEmail())) {
 			throw new AppException(MessageConstants.INVALID_EMAIL);
 		}
@@ -369,13 +368,12 @@ public class UserServiceImpl implements IVSService<User, String> {
 				throw new AppException(MessageConstants.INVALID_EMAIL);
 			}
 			String token = jwtUtil.generateResetToken(user.getEmail());
-			Map<String, String> model = new HashMap<String, String>();
 			UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
 			String regisrationLink = builder.scheme(scheme).host(registrationBaseurl).path("/auth/login").queryParam("token", token)
 					.buildAndExpand(token).toUriString();
-			model.put(MessageConstants.REGISTRATION_CONFIRMATION_TOKEN, regisrationLink);
+			regisrationLink = "<p>Please use the below link to confirm the VStreem registration mail.<b></b><b></b></p>" +regisrationLink;
 			Email email = formEmailData.formEmail(formMail, user.getEmail(),
-					MessageConstants.REGISTRATION_CONFIRMATION_LINK, model);
+					MessageConstants.REGISTRATION_CONFIRMATION_LINK, regisrationLink);
 			mailService.sendEmail(email);
 			log.debug("sendRegisterationLink method end");
 		} catch (Exception e) {
