@@ -103,13 +103,25 @@ public class AuthController {
 	@ApiOperation(value = "Google signin")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/google-login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<String> getToken(@RequestBody SocialLoginDTO socialLogin) {
+	public BaseResponse<String> getGoogleToken(@RequestBody SocialLoginDTO socialLogin) {
 		log.debug("Google signin");
 		BaseResponse<String> response = new BaseResponse<>();
 		String token=socialLoginService.getGoogleToken(socialLogin);
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, token).build();
 	}
+	
+	@ApiOperation(value = "Facebook signin")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/facebook-login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<String> getFacebookToken(@RequestBody SocialLoginDTO socialLogin) {
+		log.debug("Facebook signin");
+		BaseResponse<String> response = new BaseResponse<>();
+		String token=socialLoginService.getFacebookToken(socialLogin);
+		return response.withSuccess(true)
+				.withResponseMessage(MessageConstants.KEY_SUCCESS, token).build();
+	}
+
 	
 	@ApiOperation(value = "registration link verification")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
