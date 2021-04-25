@@ -1,6 +1,7 @@
 package com.arraigntech.controller;
 
 import java.net.HttpURLConnection;
+import java.security.Principal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,8 +49,8 @@ public class AuthController {
 
 	@GetMapping("/user")
 	@PreAuthorize("hasAuthority('update_profile')")
-	public String getUser() {
-		return "This is user data";
+	public Principal getUser(Principal principal) {
+		return principal;
 	}
 
 	@GetMapping("/admin")
@@ -105,7 +106,7 @@ public class AuthController {
 	public BaseResponse<String> getToken(@RequestBody SocialLoginDTO socialLogin) {
 		log.debug("Google signin");
 		BaseResponse<String> response = new BaseResponse<>();
-		String token=socialLoginService.getToken(socialLogin);
+		String token=socialLoginService.getGoogleToken(socialLogin);
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, token).build();
 	}

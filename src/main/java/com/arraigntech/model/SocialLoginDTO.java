@@ -1,16 +1,23 @@
 package com.arraigntech.model;
 
-import java.util.List;
-
 public class SocialLoginDTO {
 
-	private List<Authority> authorities;
+	private String email;
+	private String username;
 
-	public List<Authority> getAuthorities() {
-		return authorities;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setAuthorities(List<Authority> authorities) {
-		this.authorities = authorities;
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }

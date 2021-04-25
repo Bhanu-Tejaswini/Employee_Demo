@@ -1,6 +1,5 @@
 package com.arraigntech.service.impl;
 
-import java.util.Optional;
 import java.util.Objects;
 
 import org.slf4j.Logger;
@@ -38,6 +37,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		new AccountStatusUserDetailsChecker().check(userDetails);
 		log.debug("loadUserByUsername method end");
 		return userDetails;
+
 	}		    
 //
 //	@Autowired

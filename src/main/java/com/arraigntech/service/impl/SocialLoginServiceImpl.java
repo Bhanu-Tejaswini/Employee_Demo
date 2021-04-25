@@ -27,6 +27,8 @@ import com.arraigntech.utility.AuthenticationProvider;
 
 @Service
 public class SocialLoginServiceImpl {
+	
+	public static final String ROLE="ROLE_USER";
 
 	@Autowired
 	private DefaultTokenServices tokenService;
@@ -46,12 +48,11 @@ public class SocialLoginServiceImpl {
 	@Autowired
 	private UserDetailServiceImpl userDetailsService;
 	
-	public String getToken(SocialLoginDTO socialLogin) {
+	public String getGoogleToken(SocialLoginDTO socialLogin) {
 		//checks whether email is verified or not
-		boolean emailVerified=socialLogin.getAuthorities().get(0).getAttributes().isEmail_verified();
-		String getEmail=socialLogin.getAuthorities().get(0).getAttributes().getEmail();
-		String getUsername=socialLogin.getAuthorities().get(0).getAttributes().getName();
-		String role=socialLogin.getAuthorities().get(0).getAuthority();
+		String getEmail=socialLogin.getEmail();
+		String getUsername=socialLogin.getUsername();
+		String role=ROLE;
 		User checkUser=userRepo.findByEmail(getEmail);
 		if(Objects.isNull(checkUser)) {
 			userService.register(new UserDTO(getUsername,getEmail,"Google123",Arrays.asList(role),AuthenticationProvider.GOOGLE));
@@ -66,6 +67,24 @@ public class SocialLoginServiceImpl {
 		return token.toString();
 	}
 	
+	public String getFacebookToken(SocialLoginDTO socialLogin) {
+		//checks whether email is verified or not
+		String getEmail=socialLogin.getEmail();
+		String getUsername=socialLogin.getUsername();
+		String role=ROLE;
+		User checkUser=userRepo.findByEmail(getEmail);
+		if(Objects.isNull(checkUser)) {
+			userService.register(new UserDTO(getUsername,getEmail,"Facebook123",Arrays.asList(role),AuthenticationProvider.FACEBOOK));
+		}
+		User newUser = new User();
+		newUser.setUsername(getUsername);
+		newUser.setEmail(getEmail);
+		newUser.setPassword("");
+		Role newRole = roleRepo.findByName(role);
+		newUser.getRoles().add(newRole);
+		OAuth2AccessToken token=getAccessToken(newUser);
+		return token.toString();
+	}
 
 	public OAuth2AccessToken getAccessToken(User user) {
 		HashMap<String, String> authorizationParameters = new HashMap<String, String>();
