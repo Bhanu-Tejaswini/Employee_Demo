@@ -14,7 +14,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
-import com.arraigntech.service.impl.CustomOauth2UserService;
 import com.arraigntech.service.impl.UserDetailServiceImpl;
 
 @Configuration
@@ -30,9 +29,7 @@ public class WebSecurityConfigurations extends WebSecurityConfigurerAdapter {
 
 	@Value("${security.security-realm}")
 	private String securityRealm;
-	
-	@Autowired
-	private CustomOauth2UserService oauth2UserService;
+
 
 	@Bean
 	public AuthenticationManager getauthenticationManagerBean() throws Exception {

@@ -23,10 +23,11 @@ import com.arraigntech.model.SocialLoginDTO;
 import com.arraigntech.model.UserDTO;
 import com.arraigntech.repository.RoleRepository;
 import com.arraigntech.repository.UserRespository;
+import com.arraigntech.service.SocialLoginService;
 import com.arraigntech.utility.AuthenticationProvider;
 
 @Service
-public class SocialLoginServiceImpl {
+public class SocialLoginServiceImpl implements SocialLoginService {
 	
 	public static final String ROLE="ROLE_USER";
 

@@ -56,6 +56,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 	@Value("${twilio.auth.token}")
 	private String twilioAccessToken;
 	
+	@Value("${twilio.phone.number}")
+	private String twilioPhoneNumber;
+	
 	@Autowired
 	private UserRespository userRepo;
 	
@@ -182,7 +185,7 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		Twilio.init(twilioAccountId, twilioAccessToken);
 		Message.creator(
 		                new com.twilio.type.PhoneNumber(mobilenumber),//The phone number you are sending text to
-		                new com.twilio.type.PhoneNumber("+15042267347"),//The Twilio phone number
+		                new com.twilio.type.PhoneNumber(twilioPhoneNumber),//The Twilio phone number
 		                "Please enter the OTP:" +otp)
 		           .create();
 		userRepo.save(user);

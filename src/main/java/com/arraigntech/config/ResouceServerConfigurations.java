@@ -12,7 +12,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 
-import com.arraigntech.service.impl.CustomOauth2UserService;
 
 @Configuration
 @EnableResourceServer
@@ -23,9 +22,6 @@ public class ResouceServerConfigurations extends ResourceServerConfigurerAdapter
 
 	@Value("${security.jwt.resource-ids}")
 	private String resourceIds;
-	
-	@Autowired
-	private CustomOauth2UserService oauth2UserService;
 
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
