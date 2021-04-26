@@ -2,8 +2,10 @@ package com.arraigntech.model.response;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.arraigntech.entity.Channels;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -65,6 +67,7 @@ public class BaseResponse<T> implements Serializable {
 	public BaseResponse<T> build() {
 		return this;
 	}
+
 
 
 }

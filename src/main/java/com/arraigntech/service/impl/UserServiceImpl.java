@@ -1,9 +1,7 @@
 package com.arraigntech.service.impl;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -27,33 +25,36 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.arraigntech.Exception.AppException;
+import com.arraigntech.entity.Channels;
 import com.arraigntech.entity.EmailSettings;
 import com.arraigntech.entity.ResetToken;
 import com.arraigntech.entity.Role;
+import com.arraigntech.entity.UpdateTitle;
 import com.arraigntech.entity.User;
+import com.arraigntech.model.ChannelDTO;
+import com.arraigntech.model.ChannelStatus;
 import com.arraigntech.model.Email;
 import com.arraigntech.model.EmailSettingsModel;
 import com.arraigntech.model.LoginDetails;
 import com.arraigntech.model.TokenResponse;
+import com.arraigntech.model.UpdateTitleDTO;
 import com.arraigntech.model.UserDTO;
 import com.arraigntech.model.UserToken;
+import com.arraigntech.repository.ChannelsRepository;
 import com.arraigntech.repository.EmailSettingsRepository;
 import com.arraigntech.repository.ResetTokenRepository;
 import com.arraigntech.repository.RoleRepository;
+import com.arraigntech.repository.UpdateTitleRepository;
 import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.IVSService;
+import com.arraigntech.service.MailService;
 import com.arraigntech.utility.AuthenticationProvider;
 import com.arraigntech.utility.CommonUtils;
-import com.arraigntech.service.MailService;
-
 import com.arraigntech.utility.EmailValidator;
 import com.arraigntech.utility.FormEmailData;
 import com.arraigntech.utility.IVSJwtUtil;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.utility.PasswordConstraintValidator;
-import com.nimbusds.oauth2.sdk.auth.Secret;
-
-import io.jsonwebtoken.Jwts;
 
 @Service
 public class UserServiceImpl implements IVSService<User, String> {
@@ -110,6 +111,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 
 	@Autowired
 	private IVSJwtUtil iVSJwtUtil;
+	
 
 	public Boolean register(UserDTO userDTO) throws AppException {
 		AuthenticationProvider provider = userDTO.getProvider(); 
@@ -390,5 +392,4 @@ public class UserServiceImpl implements IVSService<User, String> {
 		}
 		return user;
 	}
-
 }

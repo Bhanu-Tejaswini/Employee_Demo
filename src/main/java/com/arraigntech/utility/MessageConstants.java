@@ -37,6 +37,12 @@ public class MessageConstants {
 	public static final String EMAIL_SUCCESS = "Email verified successfully";
 	public static final String VERIFICATION_EMAIL_FAIL = "Email verification failed";
 	public final static String KEY_FAIL = "fail";
-
-
+	public final static String CHANNEL_EXISTS="Channel already exists";
+	public final static String CHANNEL_ENABLED="Channel enabled";
+	public final static String CHANNEL_DISABLED="Channel Disabled";
+	public final static String CHANNEL_NOT_FOUND="Channel does not found";
+	public final static String CHANNEL_SUCCESS="Channel added successfully";
+	public final static String TITLE_SUCCESS="Channel Titles updated successfully";
+	public final static String CHANNEL_FAIL="Adding channel failed";
+	public final static String TITLE_FAIL="Updating the titles failed";
 }

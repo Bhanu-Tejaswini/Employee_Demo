@@ -5,16 +5,23 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table(name = "update-title")
+@Table(name = "update_title")
 public class UpdateTitle extends VSBaseModel {
 
 	@Column
 	private String title;
 	@Column
 	private String description;
+	@JsonIgnore
 	@OneToOne(targetEntity = Channels.class)
 	private Channels channel;
+	
+	public UpdateTitle() {
+		
+	}
 
 	public String getTitle() {
 		return title;

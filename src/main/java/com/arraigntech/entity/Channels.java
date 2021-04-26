@@ -1,20 +1,25 @@
 package com.arraigntech.entity;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
+
+import com.arraigntech.utility.AuthenticationProvider;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "channels")
 public class Channels extends VSBaseModel {
 
 	// stores social media account name
+	@Enumerated(EnumType.STRING)
 	@Column
-	private String account;
+	private AuthenticationProvider account;
 
 	@Column(name = "channel_name")
 	private String channelName;
@@ -26,6 +31,7 @@ public class Channels extends VSBaseModel {
 	@Type(type = "numeric_boolean")
 	private boolean active;
 
+	@JsonIgnore
 	@ManyToOne(targetEntity = User.class)
 	private User user;
 
@@ -33,11 +39,11 @@ public class Channels extends VSBaseModel {
 
 	}
 
-	public String getAccount() {
+	public AuthenticationProvider getAccount() {
 		return account;
 	}
 
-	public void setAccount(String account) {
+	public void setAccount(AuthenticationProvider account) {
 		this.account = account;
 	}
 

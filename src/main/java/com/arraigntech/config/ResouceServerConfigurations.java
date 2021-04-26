@@ -39,8 +39,8 @@ public class ResouceServerConfigurations extends ResourceServerConfigurerAdapter
         .authorizeRequests()
         .antMatchers("/actuator/**", "v2/api-docs/**", "/oauth/**","/oauth2/**", "/auth/**","/timezonelist","/userapplication","/forwardLogin").permitAll()
         .anyRequest().authenticated()
-        .and()
-        .oauth2Login()
+//        .and()
+//        .oauth2Login()
 ////        	.defaultSuccessUrl("/prevent",true)
 //        .permitAll()
 //    	.userInfoEndpoint().userService(oauth2UserService);

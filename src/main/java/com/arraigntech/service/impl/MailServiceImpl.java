@@ -2,7 +2,6 @@ package com.arraigntech.service.impl;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import com.arraigntech.model.Email;
 import com.arraigntech.service.MailService;
-import com.arraigntech.utility.MessageConstants;
 
 @Service
 public class MailServiceImpl implements MailService {
