@@ -26,7 +26,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@CrossOrigin(origins="*")
 @RequestMapping("/account")
 public class AccountUserController {
 	
@@ -41,7 +40,6 @@ public class AccountUserController {
 	@ApiOperation(value = "Update password")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/update-password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "*")
 	public BaseResponse<String> resetPassword(@RequestBody IVSPassword pass) {
 		return new BaseResponse<String>(userService.updateAccountPassword(pass.getPassword(),pass.getNewpassword())).withSuccess(true);
 	}
@@ -49,7 +47,6 @@ public class AccountUserController {
 	@ApiOperation(value = "Fetch email Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/email-settings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "*")
 	public BaseResponse<EmailSettingsModel> getEmailSettings() {
 		return new BaseResponse<EmailSettingsModel>(userService.getEmailSetting()).withSuccess(true);
 	}
@@ -57,7 +54,6 @@ public class AccountUserController {
 	@ApiOperation(value = "save email Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/email-settings", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "*")
 	public BaseResponse<String> postEmailSettings(@RequestBody EmailSettingsModel emailSettingsModel) {
 		return new BaseResponse<String>(userService.saveEmailSettings(emailSettingsModel)).withSuccess(true);
 	}
@@ -65,7 +61,6 @@ public class AccountUserController {
 	@ApiOperation(value = "Fetch user Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/user-settings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "*")
 	public BaseResponse<UserSettingsDTO> getUserSettings() {
 		return new BaseResponse<UserSettingsDTO>(accountSettingService.fetchUserSettings()).withSuccess(true);
 	}
@@ -83,7 +78,6 @@ public class AccountUserController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/sendOTP", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "*")
 	public BaseResponse<Boolean> sendOTPForUser(@RequestBody UserSettingsDTO userSettings) {
 		log.debug("send a OTP for user");
 		return new BaseResponse<Boolean>(accountSettingService.sendOTPForUser(userSettings.getMobilenumber()))
@@ -93,7 +87,6 @@ public class AccountUserController {
 	@ApiOperation(value = "save userName Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "username/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "*")
 	public BaseResponse<Boolean> userNameUpdate(@RequestBody UserSettingsDTO userSettings) {
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.saveUserName(userSettings.getUsername());
@@ -104,7 +97,6 @@ public class AccountUserController {
 	@ApiOperation(value = "save email Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "email/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "*")
 	public BaseResponse<Boolean> emailUpdate(@RequestBody UserSettingsDTO userSettings) {
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.updateEmail(userSettings.getEmail());
@@ -115,7 +107,6 @@ public class AccountUserController {
 	@ApiOperation(value = "save mobilenumber Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "mobilenumber/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "*")
 	public BaseResponse<Boolean> mobileNumberUpdate(@RequestBody UserSettingsDTO userSettings) {
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.updateMobileNumber(userSettings.getMobilenumber());
@@ -126,7 +117,6 @@ public class AccountUserController {
 	@ApiOperation(value = "save pincode Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "pincode/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "*")
 	public BaseResponse<Boolean> pincodeUpdate(@RequestBody UserSettingsDTO userSettings) {
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.updatePincode(userSettings.getPincode());
@@ -137,7 +127,6 @@ public class AccountUserController {
 	@ApiOperation(value = "save language Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "language/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "*")
 	public BaseResponse<Boolean> languageUpdate(@RequestBody UserSettingsDTO userSettings) {
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.updateLanguage(userSettings.getLanguage());
@@ -148,7 +137,6 @@ public class AccountUserController {
 	@ApiOperation(value = "save timeZone Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "timeZone/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "*")
 	public BaseResponse<Boolean> timeZoneUpdate(@RequestBody UserSettingsDTO userSettings) {
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.updateTimeZone(userSettings.getTimezone());
@@ -159,7 +147,6 @@ public class AccountUserController {
 	@ApiOperation(value = "verify OTP")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "verify/otp", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "*")
 	public BaseResponse<Boolean> otpVeriifcation(@RequestBody UserSettingsDTO userSettings) {
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.verifyCode(userSettings);

@@ -45,4 +45,5 @@ public class MessageConstants {
 	public final static String TITLE_SUCCESS="Channel Titles updated successfully";
 	public final static String CHANNEL_FAIL="Adding channel failed";
 	public final static String TITLE_FAIL="Updating the titles failed";
+	public final static String ACCOUNT_DISABLED="The account is not in active state";
 }

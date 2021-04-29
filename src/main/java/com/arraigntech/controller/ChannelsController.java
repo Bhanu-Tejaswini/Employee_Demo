@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.arraigntech.entity.Channels;
-import com.arraigntech.entity.UpdateTitle;
 import com.arraigntech.model.ChannelDTO;
 import com.arraigntech.model.ChannelStatus;
 import com.arraigntech.model.UpdateTitleDTO;

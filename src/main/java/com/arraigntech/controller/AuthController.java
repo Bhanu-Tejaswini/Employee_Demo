@@ -8,9 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.arraigntech.model.EmailDTO;
 import com.arraigntech.model.IVSResetPassword;
 import com.arraigntech.model.IVSTokenEmail;
 import com.arraigntech.model.LoginDetails;
@@ -33,7 +32,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -125,10 +123,26 @@ public class AuthController {
 	
 	@ApiOperation(value = "registration link verification")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-	@RequestMapping(value = "/verify/{token}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<Boolean> registerationLink(@PathVariable(value = "token") String token) {
+	@RequestMapping(value = "/verify/token", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<Boolean> registerationLink(@RequestHeader(name = "Authorization", required = true) String token) {
 		log.debug("registration link verification");
 		Boolean result = userService.verifyRegisterationToken(token);
+		BaseResponse<Boolean> response = new BaseResponse<>();
+		return result
+				? response.withSuccess(true)
+						.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.EMAIL_SUCCESS).build()
+				: response.withSuccess(false)
+						.withResponseMessage(MessageConstants.KEY_FAIL, MessageConstants.VERIFICATION_EMAIL_FAIL)
+						.build();
+
+	}
+	
+	@ApiOperation(value = "Resend registration link")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/resend-verifylink", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<Boolean> resendRegisterationLink(@RequestBody EmailDTO emailDTO) {
+		log.debug("Resend registration link");
+		Boolean result = userService.sendRegisterationLink(emailDTO.getEmail());
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		return result
 				? response.withSuccess(true)

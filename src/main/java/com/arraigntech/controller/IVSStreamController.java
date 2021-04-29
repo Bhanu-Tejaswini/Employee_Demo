@@ -18,7 +18,6 @@ import com.arraigntech.streamsModel.IVSLiveStream;
 import com.arraigntech.streamsModel.IVSLiveStreamResponse;
 
 @RestController
-@CrossOrigin(origins="*")
 @RequestMapping("/vstreem")
 public class IVSStreamController {
 	

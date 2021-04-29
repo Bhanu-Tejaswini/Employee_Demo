@@ -30,7 +30,6 @@ import com.arraigntech.service.impl.RoleServiceImpl;
 import com.arraigntech.service.impl.UserServiceImpl;
 
 @RestController
-@CrossOrigin(origins="*")
 public class AdminController {
 	
 	public static final Logger log = LoggerFactory.getLogger(AdminController.class);

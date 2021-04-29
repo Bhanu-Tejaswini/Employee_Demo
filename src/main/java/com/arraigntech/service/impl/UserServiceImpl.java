@@ -142,14 +142,14 @@ public class UserServiceImpl implements IVSService<User, String> {
 		newUser.setAccountNonExpired(true);
 		newUser.setAccountNonLocked(true);
 		newUser.setCredentialsNonExpired(true);
-		newUser.setActive(true);
+		newUser.setActive(false);
 
 		for (String str : userDTO.getRole()) {
 			Role role = roleRepo.findByName(str);
 			newUser.getRoles().add(role);
 		}
 		
-		flag = sendRegisterationLink(userDTO);
+		flag = sendRegisterationLink(userDTO.getEmail());
 		if(flag) {
 			newUser.setEnabled(true);
 		}
@@ -234,9 +234,12 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (!emailValidator.isValidEmail(login.getEmail())) {
 			throw new AppException(MessageConstants.INVALID_EMAIL);
 		}
-		User newUser = userRepo.findByEmail(login.getEmail());
+		User newUser = userRepo.findByEmailAll(login.getEmail());
 		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
+		}
+		if(newUser.isActive()==false) {
+			throw new AppException(MessageConstants.ACCOUNT_DISABLED);
 		}
 		if (!passwordEncoder.matches(login.getPassword(), newUser.getPassword())) {
 			throw new AppException(MessageConstants.WRONG_PASSWORD);
@@ -347,24 +350,24 @@ public class UserServiceImpl implements IVSService<User, String> {
 		return true;
 	}
 
-	public Boolean sendRegisterationLink(UserDTO user) {
+	public Boolean sendRegisterationLink(String userEmail) {
 		log.debug("sendRegisterationLink method start");
 		try {
-			if (user.getEmail() == null || !emailValidator.isValidEmail(user.getEmail())) {
+			if (userEmail == null || !emailValidator.isValidEmail(userEmail)) {
 				throw new AppException(MessageConstants.INVALID_EMAIL);
 			}
-			String token = jwtUtil.generateResetToken(user.getEmail());
+			String token = jwtUtil.generateResetToken(userEmail);
 			UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
 
-			String regisrationLink = builder.scheme(scheme).host(registrationBaseurl).path("/auth/login").queryParam("token", token)
+			String regisrationLink = builder.scheme(scheme).host(registrationBaseurl).path("/auth").queryParam("token", token)
 					.buildAndExpand(token).toUriString();
 			regisrationLink = "<p>Please use the below link to confirm the VStreem registration mail.<b></b><b></b></p>" +regisrationLink;
-			Email email = formEmailData.formEmail(formMail, user.getEmail(),
+			Email email = formEmailData.formEmail(formMail, userEmail,
 					MessageConstants.REGISTRATION_CONFIRMATION_LINK, regisrationLink);
 			mailService.sendEmail(email);
 			log.debug("sendRegisterationLink method end");
 		} catch (Exception e) {
-			log.error("Error in sending registration link : " + user.getEmail(), e);
+			log.error("Error in sending registration link : " + userEmail, e);
 			throw new AppException("Something went wrong, Please try again later.");
 		}
 
@@ -378,10 +381,12 @@ public class UserServiceImpl implements IVSService<User, String> {
 		}
 		iVSJwtUtil.validateToken(token);
 		String email = iVSJwtUtil.getUsernameFromToken(token);
-		User user = userRepo.findByEmail(email);
-		if (Objects.nonNull(user) && user.isEnabled()) {
+		User user = userRepo.findByEmailAll(email);
+		if (Objects.nonNull(user)) {
+			user.setActive(true);
+			userRepo.save(user);
 			return true;
-		}
+		}	
 		return false;
 	}
 
