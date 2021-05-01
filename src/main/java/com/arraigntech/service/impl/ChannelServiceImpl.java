@@ -80,6 +80,9 @@ public class ChannelServiceImpl {
 	}
 	
 	public String enableChannel(ChannelStatus channelStatus) {
+		if(!StringUtils.hasText(channelStatus.getChannelId())) {
+			throw new AppException(MessageConstants.DETAILS_MISSING);
+		}
 		Channels channel=channelRepo.findByChannelId(channelStatus.getChannelId());
 		if(Objects.isNull(channel)) {
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
@@ -90,6 +93,9 @@ public class ChannelServiceImpl {
 	}
 	
 	public String disableChannel(ChannelStatus channelStatus) {
+		if(!StringUtils.hasText(channelStatus.getChannelId())) {
+			throw new AppException(MessageConstants.DETAILS_MISSING);
+		}
 		Channels channel=channelRepo.findByChannelId(channelStatus.getChannelId());
 		if(Objects.isNull(channel)) {
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
@@ -110,6 +116,9 @@ public class ChannelServiceImpl {
 	}
 	
 	public boolean addUpdateTitle(UpdateTitleDTO updateTitleDTO) {
+		if(!StringUtils.hasText(updateTitleDTO.getTitle()) || !StringUtils.hasText(updateTitleDTO.getDescription()) || !StringUtils.hasText(updateTitleDTO.getChannelId())) {
+			throw new AppException(MessageConstants.DETAILS_MISSING);
+		}
 		Channels channel=channelRepo.findByChannelId(updateTitleDTO.getChannelId());
 		if(Objects.isNull(channel)) {
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
@@ -123,6 +132,9 @@ public class ChannelServiceImpl {
 	}
 	
 	public UpdateTitleDTO getUpdateTitle(ChannelStatus account) {
+		if(!StringUtils.hasText(account.getChannelId())) {
+			throw new AppException(MessageConstants.DETAILS_MISSING);
+		}
 		Channels channel=channelRepo.findByChannelId(account.getChannelId());
 		if(Objects.isNull(channel)) {
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);

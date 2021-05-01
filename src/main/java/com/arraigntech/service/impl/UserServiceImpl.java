@@ -114,6 +114,9 @@ public class UserServiceImpl implements IVSService<User, String> {
 	
 
 	public Boolean register(UserDTO userDTO) throws AppException {
+		if(Objects.isNull(userDTO) || !StringUtils.hasText(userDTO.getUsername()) || !StringUtils.hasText(userDTO.getPassword()) ) {
+			throw new AppException(MessageConstants.DETAILS_MISSING);
+		}
 		AuthenticationProvider provider = userDTO.getProvider(); 
 		Boolean flag = false;
 		if (userDTO.getEmail() == null || !emailValidator.isValidEmail(userDTO.getEmail())) {
@@ -201,7 +204,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 
 	public String updatePassword(String token, String newPassword) throws AppException {
 
-		if (token.isEmpty() || newPassword.isEmpty()) {
+		if (!StringUtils.hasText(token) || !StringUtils.hasText(newPassword)) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
 		if (!passwordValidator.isValid(newPassword)) {
@@ -229,7 +232,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 	}
 
 	public String generateToken(LoginDetails login, UriComponentsBuilder builder) throws AppException {
-		if (login.getEmail().isEmpty() || login.getPassword().isEmpty()) {
+		if (!StringUtils.hasText(login.getEmail()) || !StringUtils.hasText(login.getPassword())) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
 		if (!emailValidator.isValidEmail(login.getEmail())) {
@@ -279,7 +282,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 	}
 
 	public Boolean forgotPassword(String email) {
-		if (email == null || !emailValidator.isValidEmail(email)) {
+		if (!StringUtils.hasText(email) || !emailValidator.isValidEmail(email)) {
 			throw new AppException(MessageConstants.INVALID_EMAIL);
 		}
 		User newUser = userRepo.findByEmail(email);
@@ -305,7 +308,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 	}
 
 	public String updateAccountPassword(String oldPassword, String newPassword) {
-		if (oldPassword.isEmpty() || newPassword.isEmpty()) {
+		if (!StringUtils.hasText(oldPassword) || !StringUtils.hasText(newPassword)) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
 		if (!passwordValidator.isValid(newPassword)) {
@@ -363,7 +366,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 	public Boolean sendRegisterationLink(String userEmail) {
 		log.debug("sendRegisterationLink method start");
 		try {
-			if (userEmail == null || !emailValidator.isValidEmail(userEmail)) {
+			if (!StringUtils.hasText(userEmail) || !emailValidator.isValidEmail(userEmail)) {
 				throw new AppException(MessageConstants.INVALID_EMAIL);
 			}
 			String token = jwtUtil.generateResetToken(userEmail,verficationMailExpirationTime);
