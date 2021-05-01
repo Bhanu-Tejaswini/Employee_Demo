@@ -1,11 +1,11 @@
 package com.arraigntech.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.Channels;
@@ -17,6 +17,7 @@ import com.arraigntech.model.UpdateTitleDTO;
 import com.arraigntech.repository.ChannelsRepository;
 import com.arraigntech.repository.UpdateTitleRepository;
 import com.arraigntech.repository.UserRespository;
+import com.arraigntech.utility.AuthenticationProvider;
 import com.arraigntech.utility.CommonUtils;
 import com.arraigntech.utility.MessageConstants;
 
@@ -42,23 +43,44 @@ public class ChannelServiceImpl {
 	}
 	
 	public boolean createChannel(ChannelDTO channelDTO) {
-		Channels channels=channelRepo.findByAccount(channelDTO.getAccount());
-		if(Objects.nonNull(channels)) {
+		if(channelDTO.getItems().isEmpty()|| channelDTO.getItems().get(0).getId()==null) {
+			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
+		}
+		Channels channel=channelRepo.findByChannelId(channelDTO.getItems().get(0).getId());
+		if(Objects.nonNull(channel)) {
 			throw new AppException(MessageConstants.CHANNEL_EXISTS);
 		}
-		channels=new Channels();
+		
+		AuthenticationProvider channelAccount = null;
+		if(channelDTO.getItems().get(0).getKind().startsWith("youtube")) {
+			channelAccount=AuthenticationProvider.YOUTUBE;
+		}else if(channelDTO.getItems().get(0).getKind().startsWith("facebook")) {
+			channelAccount=AuthenticationProvider.FACEBOOK;
+		}
+		Channels channels = new Channels();
 		User newUser=getUser();
-		channels.setAccount(channelDTO.getAccount());
-		channels.setChannelName(channelDTO.getChannelName());
-		channels.setChannelUrl(channelDTO.getChannelUrl());
+		channels.setAccount(channelAccount);
+		channels.setChannelId(channelDTO.getItems().get(0).getId());
 		channels.setActive(true);
 		channels.setUser(newUser);
 		channelRepo.save(channels);
 		return true;		
 	}
 	
+	public boolean removechannel(String channelId) {
+		if(!StringUtils.hasText(channelId)){
+			throw new AppException(MessageConstants.DETAILS_MISSING);
+		}
+		Channels newchannel=channelRepo.findByChannelId(channelId);
+		if(Objects.isNull(newchannel)) {
+			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
+		}
+		channelRepo.delete(newchannel);
+		return true;
+	}
+	
 	public String enableChannel(ChannelStatus channelStatus) {
-		Channels channel=channelRepo.findByAccount(channelStatus.getAccount());
+		Channels channel=channelRepo.findByChannelId(channelStatus.getChannelId());
 		if(Objects.isNull(channel)) {
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
@@ -68,7 +90,7 @@ public class ChannelServiceImpl {
 	}
 	
 	public String disableChannel(ChannelStatus channelStatus) {
-		Channels channel=channelRepo.findByAccount(channelStatus.getAccount());
+		Channels channel=channelRepo.findByChannelId(channelStatus.getChannelId());
 		if(Objects.isNull(channel)) {
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
@@ -77,19 +99,18 @@ public class ChannelServiceImpl {
 		return MessageConstants.CHANNEL_DISABLED;
 	}
 	
-	public List<ChannelDTO> getUserChannels(){
+	public List<Channels> getUserChannels(){
 		User newUser=getUser();
 		List<Channels> userChannels = channelRepo.findByUser(newUser);
-		List<ChannelDTO> channelList=new ArrayList<>();
-		userChannels.forEach(channel->{
-			ChannelDTO channelDTO=new ChannelDTO(channel.getAccount(),channel.getChannelName(),channel.getChannelUrl());
-			channelList.add(channelDTO);
-		});
-		return channelList;
+		if(Objects.isNull(userChannels)) {
+			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
+		}
+		
+		return userChannels;
 	}
 	
 	public boolean addUpdateTitle(UpdateTitleDTO updateTitleDTO) {
-		Channels channel=channelRepo.findByAccount(updateTitleDTO.getAccount());
+		Channels channel=channelRepo.findByChannelId(updateTitleDTO.getChannelId());
 		if(Objects.isNull(channel)) {
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
@@ -102,15 +123,17 @@ public class ChannelServiceImpl {
 	}
 	
 	public UpdateTitleDTO getUpdateTitle(ChannelStatus account) {
-		Channels channel=channelRepo.findByAccount(account.getAccount());
+		Channels channel=channelRepo.findByChannelId(account.getChannelId());
 		if(Objects.isNull(channel)) {
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
 		UpdateTitle data = updateTitleRepo.findByChannel(channel);
+		if(Objects.isNull(data)) {
+			throw new AppException(MessageConstants.TITLE_NOT_FOUND);
+		}
 		UpdateTitleDTO updateTitleDTO=new UpdateTitleDTO();
 		updateTitleDTO.setTitle(data.getTitle());
 		updateTitleDTO.setDescription(data.getDescription());
 		return updateTitleDTO;
 	}
-
 }

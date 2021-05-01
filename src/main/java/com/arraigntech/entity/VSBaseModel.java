@@ -13,22 +13,28 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @MappedSuperclass
 public abstract class VSBaseModel {
 
 
+	@JsonIgnore
 	@Id
 	@GeneratedValue(generator = "system-uuid")
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	@Column(unique = true)
 	protected String id;
 
+	@JsonIgnore
 	protected Date createdAt;
 
+	@JsonIgnore
 	protected Date updatedAt;
 
+	@JsonIgnore
 	protected String createdBy;
-
+	@JsonIgnore
 	protected String updatedBy;
 
 	public String getId() {

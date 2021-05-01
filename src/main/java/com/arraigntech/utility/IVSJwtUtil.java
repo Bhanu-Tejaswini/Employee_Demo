@@ -4,10 +4,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.arraigntech.Exception.AppException;
+import com.arraigntech.service.impl.UserServiceImpl;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -22,16 +24,13 @@ import io.jsonwebtoken.UnsupportedJwtException;
 public class IVSJwtUtil {
 
 	private String secret;
-	private int resetTokenExpirationTime;
+	
+	@Autowired
+	private UserServiceImpl userService;
 
 	@Value("${jwt.secret}")
 	public void setSecret(String secret) {
 		this.secret = secret;
-	}
-
-	@Value("${jwt.resetTokenExpirationTime}")
-	public void setTokenExpirationTime(int time) {
-		this.resetTokenExpirationTime = time;
 	}
 
 	public String getUsernameFromToken(String token) {
@@ -51,20 +50,30 @@ public class IVSJwtUtil {
 		} catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException ex) {
 			throw new AppException(MessageConstants.INVALID_RESET_TOKEN);
 		} catch (ExpiredJwtException ex) {
-			throw ex;
+			throw new AppException(MessageConstants.TOKEN_EXPIRED);
+		}
+	}
+	
+	public boolean validateRegisterToken(String authToken) {
+		try {
+			Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(authToken);
+			return true;
+		} catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException ex) {
+			throw new AppException(MessageConstants.INVALID_RESET_TOKEN);
+		} catch (ExpiredJwtException ex) {
+			return false;
 		}
 	}
 
-	public String generateResetToken(String email) {
+	public String generateResetToken(String email, int expiryTime) {
 		Map<String, Object> claims = new HashMap<>();
-		return doGenerateResetToken(claims, email);
+		return doGenerateResetToken(claims, email, expiryTime);
 	}
 
-	private String doGenerateResetToken(Map<String, Object> claims, String subject) {
+	private String doGenerateResetToken(Map<String, Object> claims, String subject, int expiryTime) {
 
 		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + resetTokenExpirationTime))
+				.setExpiration(new Date(System.currentTimeMillis() + expiryTime))
 				.signWith(SignatureAlgorithm.HS512, secret).compact();
 	}
-
 }

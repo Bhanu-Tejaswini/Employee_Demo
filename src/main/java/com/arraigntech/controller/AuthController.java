@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.arraigntech.model.EmailDTO;
 import com.arraigntech.model.IVSResetPassword;
 import com.arraigntech.model.IVSTokenEmail;
 import com.arraigntech.model.LoginDetails;
@@ -140,7 +139,7 @@ public class AuthController {
 	@ApiOperation(value = "Resend registration link")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/resend-verifylink", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<Boolean> resendRegisterationLink(@RequestBody EmailDTO emailDTO) {
+	public BaseResponse<Boolean> resendRegisterationLink(@RequestBody IVSTokenEmail emailDTO) {
 		log.debug("Resend registration link");
 		Boolean result = userService.sendRegisterationLink(emailDTO.getEmail());
 		BaseResponse<Boolean> response = new BaseResponse<>();

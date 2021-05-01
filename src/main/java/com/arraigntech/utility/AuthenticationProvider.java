@@ -1,6 +1,6 @@
 package com.arraigntech.utility;
 
 public enum AuthenticationProvider {
-	LOCAL, GOOGLE, FACEBOOK,YOUTUBE
+	YOUTUBE,LOCAL, GOOGLE, FACEBOOK
 }
 	

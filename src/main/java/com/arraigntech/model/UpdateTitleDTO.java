@@ -1,19 +1,18 @@
 package com.arraigntech.model;
 
-import com.arraigntech.utility.AuthenticationProvider;
 
 public class UpdateTitleDTO {
 
-	private AuthenticationProvider account;
+	private String channelId;
 	private String title;
 	private String description;
 
-	public AuthenticationProvider getAccount() {
-		return account;
+	public String getChannelId() {
+		return channelId;
 	}
 
-	public void setAccount(AuthenticationProvider account) {
-		this.account = account;
+	public void setChannelId(String channelId) {
+		this.channelId = channelId;
 	}
 
 	public String getTitle() {

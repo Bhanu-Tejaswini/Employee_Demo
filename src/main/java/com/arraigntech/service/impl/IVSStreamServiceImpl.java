@@ -1,5 +1,7 @@
 package com.arraigntech.service.impl;
 
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -10,6 +12,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.Streams;
 import com.arraigntech.entity.User;
 import com.arraigntech.mongorepos.StreamResponseRepository;
@@ -19,6 +22,8 @@ import com.arraigntech.service.IVSStreamService;
 import com.arraigntech.streamsModel.IVSLiveStream;
 import com.arraigntech.streamsModel.IVSLiveStreamResponse;
 import com.arraigntech.streamsModel.LiveStreamState;
+import com.arraigntech.utility.CommonUtils;
+import com.arraigntech.utility.MessageConstants;
 
 @Service
 public class IVSStreamServiceImpl implements IVSStreamService {
@@ -47,13 +52,18 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 
 	@Autowired
 	private StreamResponseRepository streamResponseRepo;
-
-	public IVSLiveStreamResponse createStream(IVSLiveStream liveStream) {
+	
+	public MultiValueMap<String, String> getHeader() {
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 		headers.add("Content-Type", "application/json");
 		headers.set("wsc-api-key", wscApiKey);
 		headers.set("wsc-access-key", wscAccessKey);
+		return headers;
+	}
 
+	public IVSLiveStreamResponse createStream(IVSLiveStream liveStream) {
+		
+		MultiValueMap<String, String> headers = getHeader();
 		HttpEntity<IVSLiveStream> request = new HttpEntity<>(liveStream, headers);
 		ResponseEntity<IVSLiveStreamResponse> reponseEntity = restTemplate.exchange(baseUrl, HttpMethod.POST, request,
 				IVSLiveStreamResponse.class);
@@ -76,8 +86,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 				try {
 					Thread.sleep(3000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					throw new AppException(e.getMessage());
 				}
 			} else {
 				flag = false;
@@ -89,10 +98,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 
 	public String startStream(String id) {
 		String url = baseUrl + "/" + id + "/start";
-		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		headers.add("Content-Type", "application/json");
-		headers.set("wsc-api-key", wscApiKey);
-		headers.set("wsc-access-key", wscAccessKey);
+		MultiValueMap<String, String> headers = getHeader();
 
 		HttpEntity<String> request = new HttpEntity<>(headers);
 		ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, request, String.class);
@@ -107,10 +113,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 
 	public String stopStream(String id) {
 		String url = baseUrl + "/" + id + "/stop";
-		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		headers.add("Content-Type", "application/json");
-		headers.set("wsc-api-key", wscApiKey);
-		headers.set("wsc-access-key", wscAccessKey);
+		MultiValueMap<String, String> headers = getHeader();
 
 		HttpEntity<String> request = new HttpEntity<>(headers);
 		ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, request, String.class);
@@ -127,10 +130,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	// To fetch the status of the stream whether stream started, starting or stopped
 	public LiveStreamState fetchStreamState(String id) {
 		String url = "https://api.cloud.wowza.com/api/v1.6/live_streams/" + id + "/state";
-		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		headers.add("Content-Type", "application/json");
-		headers.set("wsc-api-key", wscApiKey);
-		headers.set("wsc-access-key", wscAccessKey);
+		MultiValueMap<String, String> headers = getHeader();
 
 		HttpEntity<String> request = new HttpEntity<>(headers);
 		ResponseEntity<LiveStreamState> responseEntity = restTemplate.exchange(url, HttpMethod.GET, request,
@@ -143,10 +143,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	public void saveStream(IVSLiveStreamResponse response) {
 		Streams stream = new Streams();
 
-//		 getting the authenticated user from security context
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		String str=authentication.getName();
-		User user=userRepo.findByEmail("bhaskaras1999@gmail.com");
+		User newUser=getUser();
 		stream.setStreamId(response.getLiveStreamResponse().getId());
 		stream.setApplicationName(
 				response.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(0).getApplication_name());
@@ -155,9 +152,18 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 				response.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(0).getName());
 		stream.setStatus(STARTED);
 		stream.setStreamUrl(response.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(0).getUrl());
-		stream.setUser(user);
+		stream.setUser(newUser);
 		streamRepo.save(stream);
 
 	}
+	
+	//returns currently logged in user details
+		private User getUser() {
+			User user = userRepo.findByEmail(CommonUtils.getUser());
+			if(Objects.isNull(user)) {	
+				throw new AppException(MessageConstants.USER_NOT_FOUND);
+			}
+			return user;
+		}
 
 }

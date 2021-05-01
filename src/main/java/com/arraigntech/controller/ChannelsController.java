@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.arraigntech.entity.Channels;
 import com.arraigntech.model.ChannelDTO;
 import com.arraigntech.model.ChannelStatus;
 import com.arraigntech.model.UpdateTitleDTO;
@@ -73,9 +74,9 @@ public class ChannelsController {
 	@ApiOperation(value = "Get the list of channels of user")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<List<ChannelDTO>> getChannelList() {
+	public BaseResponse<List<Channels>> getChannelList() {
 		log.debug("Get the list of channels of user");
-		return new BaseResponse<List<ChannelDTO>>(channelService.getUserChannels()).withSuccess(true);
+		return new BaseResponse<List<Channels>>(channelService.getUserChannels()).withSuccess(true);
 	}
 	
 	
@@ -91,6 +92,22 @@ public class ChannelsController {
 						.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.TITLE_SUCCESS).build()
 				: response.withSuccess(false)
 						.withResponseMessage(MessageConstants.KEY_FAIL, MessageConstants.TITLE_FAIL)
+						.build();
+
+	}
+	
+	@ApiOperation(value = "Remove the channel")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<Boolean> addChannel(@RequestBody ChannelStatus channelStatus) {
+		log.debug("Remove the channel");
+		Boolean result = channelService.removechannel(channelStatus.getChannelId());
+		BaseResponse<Boolean> response = new BaseResponse<>();
+		return result
+				? response.withSuccess(true)
+						.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.CHANNEL_REMOVED).build()
+				: response.withSuccess(false)
+						.withResponseMessage(MessageConstants.KEY_FAIL, MessageConstants.CHANNEL_REMOVED_FAIL)
 						.build();
 
 	}

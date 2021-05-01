@@ -1,16 +1,14 @@
 package com.arraigntech.model;
 
-import com.arraigntech.utility.AuthenticationProvider;
-
 public class ChannelStatus {
-	private AuthenticationProvider account;
+	private String channelId;
 
-	public AuthenticationProvider getAccount() {
-		return account;
+	public String getChannelId() {
+		return channelId;
 	}
 
-	public void setAccount(AuthenticationProvider account) {
-		this.account = account;
+	public void setChannelId(String channelId) {
+		this.channelId = channelId;
 	}
 
 }

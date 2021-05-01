@@ -1,10 +1,12 @@
 package com.arraigntech.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -21,11 +23,8 @@ public class Channels extends VSBaseModel {
 	@Column
 	private AuthenticationProvider account;
 
-	@Column(name = "channel_name")
-	private String channelName;
-
-	@Column(name = "channel_url")
-	private String channelUrl;
+	@Column(name = "channel_id")
+	private String channelId;
 
 	@Column(name = "active")
 	@Type(type = "numeric_boolean")
@@ -35,6 +34,8 @@ public class Channels extends VSBaseModel {
 	@ManyToOne(targetEntity = User.class)
 	private User user;
 
+	@OneToOne(mappedBy="channel",cascade=CascadeType.ALL)
+	private UpdateTitle updateTitle;
 	public Channels() {
 
 	}
@@ -47,20 +48,12 @@ public class Channels extends VSBaseModel {
 		this.account = account;
 	}
 
-	public String getChannelName() {
-		return channelName;
+	public String getChannelId() {
+		return channelId;
 	}
 
-	public void setChannelName(String channelName) {
-		this.channelName = channelName;
-	}
-
-	public String getChannelUrl() {
-		return channelUrl;
-	}
-
-	public void setChannelUrl(String channelUrl) {
-		this.channelUrl = channelUrl;
+	public void setChannelId(String channelId) {
+		this.channelId = channelId;
 	}
 
 	public boolean isActive() {
@@ -78,5 +71,14 @@ public class Channels extends VSBaseModel {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	public UpdateTitle getUpdateTitle() {
+		return updateTitle;
+	}
+
+	public void setUpdateTitle(UpdateTitle updateTitle) {
+		this.updateTitle = updateTitle;
+	}
+	
 
 }

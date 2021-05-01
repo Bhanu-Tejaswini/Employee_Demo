@@ -76,6 +76,10 @@ public class User extends VSBaseModel {
 
 	private String otp;
 
+	@Column(name = "email_verified")
+	@Type(type = "numeric_boolean")
+	private boolean emailVerified;
+
 	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "role_user", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
@@ -230,14 +234,11 @@ public class User extends VSBaseModel {
 		this.roles = roles;
 	}
 
-	@Override
-	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", email=" + email + ", enabled=" + enabled
-				+ ", accountNonExpired=" + accountNonExpired + ", credentialsNonExpired=" + credentialsNonExpired
-				+ ", accountNonLocked=" + accountNonLocked + ", mobileNumber=" + mobileNumber + ", pincode=" + pincode
-				+ ", language=" + language + ", timeZone=" + timeZone + ", active=" + active + ", provider=" + provider
-				+ ", codeSentCounter=" + codeSentCounter + ", invalidCodeAttemptCount=" + invalidCodeAttemptCount
-				+ ", verificationEndTime=" + verificationEndTime + ", otp=" + otp + ", roles=" + roles + "]";
+	public boolean isEmailVerified() {
+		return emailVerified;
 	}
 
+	public void setEmailVerified(boolean emailVerified) {
+		this.emailVerified = emailVerified;
+	}
 }

@@ -58,7 +58,7 @@ public class MailServiceImpl implements MailService {
 		helper.setTo(email.getTo());
 		helper.setText(email.getMessageBody(), true);
 		helper.setSubject(email.getSubject());
-		helper.setFrom(email.getFrom());
+		helper.setFrom(email.getFrom(),"Vstream Support");
 		mailSender.send(message);
 		log.debug("Sending email to {} ended", email.getTo());
 		return Boolean.TRUE;

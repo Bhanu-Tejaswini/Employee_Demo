@@ -21,6 +21,7 @@ public class MessageConstants {
 	public static final String USER_SETTINGS_UPDATED="User settings updated successfully";
 	public static final String KEY_SUCCESS = "Success";
 	public static final String TOKEN_EXPIRED="Token has been expired";
+	public static final String TOKEN_EXPIRED_RESENDMAIL="Token has been expired, New link has been sent successfully. Please check your email.";
 	public final static String INVALID_PHONE_NUMBER = "Phone Number is Invalid";
 	public static final String USERNAME_UPDATE="UserName updated successfully";
 	public static final String MOBILENUMBER_UPDATE="Mobile number updated successfully";
@@ -36,14 +37,19 @@ public class MessageConstants {
 	public static final String INVALID_REGISTER_TOKEN="Invalid registration token";
 	public static final String EMAIL_SUCCESS = "Email verified successfully";
 	public static final String VERIFICATION_EMAIL_FAIL = "Email verification failed";
+	public static final String VERIFICATION_MAIL_ALREADYSENT="Verification mail is already sent. Please check your mailbox";
 	public final static String KEY_FAIL = "fail";
 	public final static String CHANNEL_EXISTS="Channel already exists";
 	public final static String CHANNEL_ENABLED="Channel enabled";
 	public final static String CHANNEL_DISABLED="Channel Disabled";
-	public final static String CHANNEL_NOT_FOUND="Channel does not found";
+	public final static String CHANNEL_NOT_FOUND="Channel does not exists.";
+	public final static String CHANNEL_REMOVED="Channel removed successfuly";
+	public final static String CHANNEL_REMOVED_FAIL="Channel removing failed.";
 	public final static String CHANNEL_SUCCESS="Channel added successfully";
 	public final static String TITLE_SUCCESS="Channel Titles updated successfully";
 	public final static String CHANNEL_FAIL="Adding channel failed";
 	public final static String TITLE_FAIL="Updating the titles failed";
 	public final static String ACCOUNT_DISABLED="The account is not in active state";
+	public final static String TITLE_NOT_FOUND="Title and description does not exist";
+	
 }
