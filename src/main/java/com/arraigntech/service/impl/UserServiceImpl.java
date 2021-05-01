@@ -240,7 +240,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
 		if(newUser.isEmailVerified()==false) {
-			if(System.currentTimeMillis()> newUser.getCreatedAt().getTime()+90000) {
+			if(System.currentTimeMillis()> newUser.getCreatedAt().getTime()+900000) {
 				return MessageConstants.VERIFICATION_MAIL_ALREADYSENT;
 			}
 			else {
