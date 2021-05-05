@@ -1,18 +1,9 @@
 package com.arraigntech.model;
 
-public class UpdateTitleDTO {
+public class UpdateAllTitleDTO {
 
-	private String channelId;
 	private String title;
 	private String description;
-
-	public String getChannelId() {
-		return channelId;
-	}
-
-	public void setChannelId(String channelId) {
-		this.channelId = channelId;
-	}
 
 	public String getTitle() {
 		return title;
@@ -29,15 +20,9 @@ public class UpdateTitleDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	public UpdateTitleDTO()
-	{
-		
-	}
 
-	public UpdateTitleDTO(String channelId, String title, String description) {
+	public UpdateAllTitleDTO(String title, String description) {
 		super();
-		this.channelId = channelId;
 		this.title = title;
 		this.description = description;
 	}

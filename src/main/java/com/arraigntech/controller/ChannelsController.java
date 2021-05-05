@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.arraigntech.entity.Channels;
 import com.arraigntech.model.ChannelDTO;
 import com.arraigntech.model.ChannelStatus;
+import com.arraigntech.model.UpdateAllTitleDTO;
 import com.arraigntech.model.UpdateTitleDTO;
 import com.arraigntech.model.response.BaseResponse;
 import com.arraigntech.service.impl.ChannelServiceImpl;
@@ -80,12 +81,43 @@ public class ChannelsController {
 	}
 	
 	
-	@ApiOperation(value = "update channel title")
+	@ApiOperation(value = "add channel title")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/title", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> addChannel(@RequestBody UpdateTitleDTO updateTitleDTO) {
 		log.debug("update channel title");
 		Boolean result = channelService.addUpdateTitle(updateTitleDTO);
+		BaseResponse<Boolean> response = new BaseResponse<>();
+		return result
+				? response.withSuccess(true)
+						.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.TITLE_SUCCESS).build()
+				: response.withSuccess(false)
+						.withResponseMessage(MessageConstants.KEY_FAIL, MessageConstants.TITLE_FAIL)
+						.build();
+
+	}
+	
+	@ApiOperation(value = "update channel title")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/title", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<Boolean> updateChannelTitle(@RequestBody UpdateTitleDTO updateTitleDTO) {
+		log.debug("update channel title");
+		Boolean result = channelService.addUpdateTitle(updateTitleDTO);
+		BaseResponse<Boolean> response = new BaseResponse<>();
+		return result
+				? response.withSuccess(true)
+						.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.TITLE_SUCCESS).build()
+				: response.withSuccess(false)
+						.withResponseMessage(MessageConstants.KEY_FAIL, MessageConstants.TITLE_FAIL)
+						.build();
+
+	}
+	@ApiOperation(value = "Add all channel title")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/title/all", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<Boolean> updateChannelTitleAll(@RequestBody UpdateAllTitleDTO updateAllTitleDTO) {
+		log.debug("Add all channel title");
+		Boolean result = channelService.updateAllTitles(updateAllTitleDTO);
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		return result
 				? response.withSuccess(true)

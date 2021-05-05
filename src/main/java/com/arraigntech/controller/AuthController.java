@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.arraigntech.model.IVSResetPassword;
 import com.arraigntech.model.IVSTokenEmail;
 import com.arraigntech.model.LoginDetails;
+import com.arraigntech.model.LoginResponseDTO;
 import com.arraigntech.model.SocialLoginDTO;
 import com.arraigntech.model.UserDTO;
 import com.arraigntech.model.response.BaseResponse;
@@ -42,10 +44,8 @@ public class AuthController {
 	@Autowired
 	private SocialLoginServiceImpl socialLoginService;
 
-
-
 	@GetMapping("/user")
-	@PreAuthorize("hasAuthority('update_profile')")
+//	@PreAuthorize("hasAuthority('update_profile')")
 	public Principal getUser(Principal principal) {
 		return principal;
 	}
@@ -78,9 +78,14 @@ public class AuthController {
 	public BaseResponse<String> login(@RequestBody LoginDetails login, UriComponentsBuilder builder) {
 		log.debug("User Login");
 		BaseResponse<String> response = new BaseResponse<>();
-		String generateToken = userService.generateToken(login, builder);
-		return response.withSuccess(true)
-				.withResponseMessage(MessageConstants.KEY_SUCCESS, generateToken).build();
+		LoginResponseDTO responseMessage = userService.generateToken(login, builder);
+		return responseMessage.isFlag()
+				? response.withSuccess(true)
+						.withResponseMessage("Token", responseMessage.getResult()).build()
+				: response.withSuccess(false)
+						.withResponseMessage("Message", responseMessage.getResult())
+						.build();
+
 	}
 
 	@ApiOperation(value = "Reseting the password")

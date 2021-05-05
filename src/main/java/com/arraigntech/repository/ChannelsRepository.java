@@ -11,8 +11,6 @@ import com.arraigntech.utility.AuthenticationProvider;
 
 public interface ChannelsRepository extends JpaRepository<Channels, String> {
 	
-	Channels findByAccount(AuthenticationProvider account);
-	
 	List<Channels> findByUser(User newUser);
 	
 	Channels findByChannelId(String id);

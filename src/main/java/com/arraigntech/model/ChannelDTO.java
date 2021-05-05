@@ -8,7 +8,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ChannelDTO {
 
 	@JsonProperty("items")
-	private List<ChannelItems> items=new ArrayList<>();
+	private List<ChannelItems> items = new ArrayList<>();
+
+	private String graphDomain;
+
+	private String accessToken;
 
 	public List<ChannelItems> getItems() {
 		return items;
@@ -18,4 +22,19 @@ public class ChannelDTO {
 		this.items = items;
 	}
 
+	public String getGraphDomain() {
+		return graphDomain;
+	}
+
+	public void setGraphDomain(String graphDomain) {
+		this.graphDomain = graphDomain;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
 }

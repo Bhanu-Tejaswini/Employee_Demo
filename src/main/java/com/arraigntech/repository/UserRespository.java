@@ -13,6 +13,9 @@ public interface UserRespository extends JpaRepository<User, String> {
 
 	@Query(value = "SELECT * FROM app_user u WHERE u.username = ?1 and u.active=1", nativeQuery = true)
 	Optional<User> findByUsername(String name);
+	
+	@Query(value = "SELECT * FROM app_user u WHERE u.username = ?1", nativeQuery = true)
+	Optional<User> findByUsernameAll(String name);
 
 	@Query(value = "SELECT * FROM app_user u WHERE u.email = ?1 and u.active=1", nativeQuery = true)
 	User findByEmail(String email);

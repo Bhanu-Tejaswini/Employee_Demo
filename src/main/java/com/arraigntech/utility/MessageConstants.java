@@ -21,7 +21,7 @@ public class MessageConstants {
 	public static final String USER_SETTINGS_UPDATED="User settings updated successfully";
 	public static final String KEY_SUCCESS = "Success";
 	public static final String TOKEN_EXPIRED="Token has been expired";
-	public static final String TOKEN_EXPIRED_RESENDMAIL="Token has been expired, New link has been sent successfully. Please check your email.";
+	public static final String TOKEN_EXPIRED_RESENDMAIL="New link has been sent successfully. Please check your email.";
 	public final static String INVALID_PHONE_NUMBER = "Phone Number is Invalid";
 	public static final String USERNAME_UPDATE="UserName updated successfully";
 	public static final String MOBILENUMBER_UPDATE="Mobile number updated successfully";

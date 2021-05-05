@@ -33,6 +33,7 @@ import com.arraigntech.entity.User;
 import com.arraigntech.model.Email;
 import com.arraigntech.model.EmailSettingsModel;
 import com.arraigntech.model.LoginDetails;
+import com.arraigntech.model.LoginResponseDTO;
 import com.arraigntech.model.TokenResponse;
 import com.arraigntech.model.UserDTO;
 import com.arraigntech.model.UserToken;
@@ -122,12 +123,12 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (userDTO.getEmail() == null || !emailValidator.isValidEmail(userDTO.getEmail())) {
 			throw new AppException(MessageConstants.INVALID_EMAIL);
 		}
-		User newUser = userRepo.findByEmail(userDTO.getEmail());
+		User newUser = userRepo.findByEmailAll(userDTO.getEmail());
 
 		if (Objects.nonNull(newUser)) {
 			throw new AppException(MessageConstants.USER_EXISTS);
 		}
-		Optional<User> newUser1 = userRepo.findByUsername(userDTO.getUsername());
+		Optional<User> newUser1 = userRepo.findByUsernameAll(userDTO.getUsername());
 		if (newUser1.isPresent()) {
 			throw new AppException(MessageConstants.USER_EXISTS_USERNAME);
 		}
@@ -147,17 +148,11 @@ public class UserServiceImpl implements IVSService<User, String> {
 		newUser.setCredentialsNonExpired(true);
 		newUser.setActive(false);
 		newUser.setEmailVerified(false);
-
-		for (String str : userDTO.getRole()) {
-			Role role = roleRepo.findByName(str);
-			newUser.getRoles().add(role);
-		}
-		
-		flag = sendRegisterationLink(userDTO.getEmail());
-		if(flag) {
-			newUser.setEnabled(true);
-		}
+		Role role = roleRepo.findByName("ROLE_USER");
+		newUser.getRoles().add(role);
+		newUser.setEnabled(true);
 		userRepo.save(newUser);
+		sendRegisterationLink(userDTO.getEmail());
 		return true;
 	}
 
@@ -231,7 +226,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		return MessageConstants.PASSWORDMESSAGE;
 	}
 
-	public String generateToken(LoginDetails login, UriComponentsBuilder builder) throws AppException {
+	public LoginResponseDTO generateToken(LoginDetails login, UriComponentsBuilder builder) throws AppException {
 		if (!StringUtils.hasText(login.getEmail()) || !StringUtils.hasText(login.getPassword())) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
@@ -242,13 +237,13 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		if(newUser.isEmailVerified()==false) {
-			if(System.currentTimeMillis()> newUser.getCreatedAt().getTime()+900000) {
-				return MessageConstants.VERIFICATION_MAIL_ALREADYSENT;
+		if(!newUser.isEmailVerified()) {
+			if(System.currentTimeMillis()< newUser.getUpdatedAt().getTime()+900000) {
+				return new LoginResponseDTO(MessageConstants.VERIFICATION_MAIL_ALREADYSENT,false);
 			}
 			else {
 			sendRegisterationLink(login.getEmail());
-			return MessageConstants.TOKEN_EXPIRED_RESENDMAIL;
+			return new LoginResponseDTO(MessageConstants.TOKEN_EXPIRED_RESENDMAIL,false);
 			}
 		}
 		if(newUser.isActive()==false) {
@@ -269,7 +264,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		ResponseEntity<TokenResponse> reponseEntity = restTemplate.exchange(uri, HttpMethod.POST, request,
 				TokenResponse.class);
 		TokenResponse response = reponseEntity.getBody();
-		return response.getAccess_token();
+		return new LoginResponseDTO(response.getAccess_token(),true);
 	}
 
 	@Override
@@ -379,7 +374,11 @@ public class UserServiceImpl implements IVSService<User, String> {
 					 + "\">Click here to login</a></b></p>";
 			Email email = formEmailData.formEmail(formMail, userEmail,
 					MessageConstants.REGISTRATION_CONFIRMATION_LINK, regisrationLink);
+			User newUser=userRepo.findByEmailAll(userEmail);
+			newUser.setUpdatedAt(new Date());
+			userRepo.save(newUser);
 			mailService.sendEmail(email);
+			
 			log.debug("sendRegisterationLink method end");
 		} catch (Exception e) {
 			log.error("Error in sending registration link : " + userEmail, e);

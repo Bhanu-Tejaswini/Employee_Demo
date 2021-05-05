@@ -1,5 +1,6 @@
 package com.arraigntech.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -13,7 +14,7 @@ public class UpdateTitle extends VSBaseModel {
 
 	@Column
 	private String title;
-	@Column
+	@Column(nullable=true)
 	private String description;
 	@JsonIgnore
 	@OneToOne(targetEntity = Channels.class)

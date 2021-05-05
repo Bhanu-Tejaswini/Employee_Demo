@@ -21,7 +21,7 @@ public class Channels extends VSBaseModel {
 	// stores social media account name
 	@Enumerated(EnumType.STRING)
 	@Column
-	private AuthenticationProvider account;
+	private AuthenticationProvider type;
 
 	@Column(name = "channel_id")
 	private String channelId;
@@ -29,6 +29,9 @@ public class Channels extends VSBaseModel {
 	@Column(name = "active")
 	@Type(type = "numeric_boolean")
 	private boolean active;
+	
+	@Column(name="access_token", nullable=true)
+	private String accessToken;
 
 	@JsonIgnore
 	@ManyToOne(targetEntity = User.class)
@@ -38,14 +41,6 @@ public class Channels extends VSBaseModel {
 	private UpdateTitle updateTitle;
 	public Channels() {
 
-	}
-
-	public AuthenticationProvider getAccount() {
-		return account;
-	}
-
-	public void setAccount(AuthenticationProvider account) {
-		this.account = account;
 	}
 
 	public String getChannelId() {
@@ -78,6 +73,22 @@ public class Channels extends VSBaseModel {
 
 	public void setUpdateTitle(UpdateTitle updateTitle) {
 		this.updateTitle = updateTitle;
+	}
+
+	public AuthenticationProvider getType() {
+		return type;
+	}
+
+	public void setType(AuthenticationProvider type) {
+		this.type = type;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
 	}
 	
 
