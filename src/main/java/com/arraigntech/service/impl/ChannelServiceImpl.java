@@ -196,17 +196,17 @@ public class ChannelServiceImpl {
 		return true;
 	}
 	
-	public UpdateTitleDTO getUpdateTitle(ChannelStatus account) {
-		if(!StringUtils.hasText(account.getChannelId())) {
+	public UpdateTitleDTO getUpdateTitle(String channelId) {
+		if(!StringUtils.hasText(channelId)) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
-		Channels channel=channelRepo.findByChannelId(account.getChannelId());
+		Channels channel=channelRepo.findByChannelId(channelId);
 		if(Objects.isNull(channel)) {
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
 		UpdateTitle data = updateTitleRepo.findByChannel(channel);
 		if(Objects.isNull(data)) {
-			throw new AppException(MessageConstants.TITLE_NOT_FOUND);
+			return new UpdateTitleDTO();
 		}
 		UpdateTitleDTO updateTitleDTO=new UpdateTitleDTO();
 		updateTitleDTO.setTitle(data.getTitle());

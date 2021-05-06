@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -97,26 +98,11 @@ public class ChannelsController {
 
 	}
 	
-	@ApiOperation(value = "update channel title")
-	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-	@RequestMapping(value = "/title", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<Boolean> updateChannelTitle(@RequestBody UpdateTitleDTO updateTitleDTO) {
-		log.debug("update channel title");
-		Boolean result = channelService.addUpdateTitle(updateTitleDTO);
-		BaseResponse<Boolean> response = new BaseResponse<>();
-		return result
-				? response.withSuccess(true)
-						.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.TITLE_SUCCESS).build()
-				: response.withSuccess(false)
-						.withResponseMessage(MessageConstants.KEY_FAIL, MessageConstants.TITLE_FAIL)
-						.build();
-
-	}
 	@ApiOperation(value = "Add all channel title")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/title/all", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> updateChannelTitleAll(@RequestBody UpdateAllTitleDTO updateAllTitleDTO) {
-		log.debug("Add all channel title");
+		log.debug("Add all channel title	");
 		Boolean result = channelService.updateAllTitles(updateAllTitleDTO);
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		return result
@@ -130,10 +116,10 @@ public class ChannelsController {
 	
 	@ApiOperation(value = "Remove the channel")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-	@RequestMapping(value = "/", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<Boolean> addChannel(@RequestBody ChannelStatus channelStatus) {
+	@RequestMapping(value = "/{channelId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<Boolean> addChannel(@PathVariable String channelId) {
 		log.debug("Remove the channel");
-		Boolean result = channelService.removechannel(channelStatus.getChannelId());
+		Boolean result = channelService.removechannel(channelId);
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		return result
 				? response.withSuccess(true)
@@ -146,10 +132,10 @@ public class ChannelsController {
 	
 	@ApiOperation(value = "Get the title of the channel")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-	@RequestMapping(value = "/title", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<UpdateTitleDTO> getChannelTitle(@RequestBody ChannelStatus channelStatus) {
+	@RequestMapping(value = "/title/{channelId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<UpdateTitleDTO> getChannelTitle(@PathVariable("channelId") String channelId) {
 		log.debug("Get the title of the channel");
-		return new BaseResponse<UpdateTitleDTO>(channelService.getUpdateTitle(channelStatus)).withSuccess(true);
+		return new BaseResponse<UpdateTitleDTO>(channelService.getUpdateTitle(channelId)).withSuccess(true);
 	}
 	
 

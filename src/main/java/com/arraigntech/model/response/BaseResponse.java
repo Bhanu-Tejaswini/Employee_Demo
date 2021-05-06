@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.arraigntech.entity.Channels;
+import com.arraigntech.model.UpdateTitleDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -67,7 +68,4 @@ public class BaseResponse<T> implements Serializable {
 	public BaseResponse<T> build() {
 		return this;
 	}
-
-
-
 }
