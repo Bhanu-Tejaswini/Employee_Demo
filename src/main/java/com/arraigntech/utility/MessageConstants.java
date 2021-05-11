@@ -51,5 +51,11 @@ public class MessageConstants {
 	public final static String TITLE_FAIL="Updating the titles failed";
 	public final static String ACCOUNT_DISABLED="The account is not in active state";
 	public final static String TITLE_NOT_FOUND="Title and description does not exist";
+	public static final String DIAL_CODE= "diaCode";
+	public static final String COUNTRY_CODE= "countryCode";
+	public static final String E164_NUMBER= "e164Number";
+	public static final String INTERNATIONAL_NUMBER= "internationalNumber";
+	public static final String NATIONAL_NUMBER= "nationalNumber";
+	public static final String NUMBER_MOBILE= "number";
 	
 }

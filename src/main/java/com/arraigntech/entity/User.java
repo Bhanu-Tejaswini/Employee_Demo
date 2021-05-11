@@ -60,7 +60,19 @@ public class User extends VSBaseModel {
 	private String language;
 	@Column(name = "time_zone")
 	private String timeZone;
-
+	@Column(name = "dial_code")
+	private String dialCode;
+	@Column(name = "country_code")
+	private String countryCode;
+	@Column(name = "e164_number")
+	private String e164Number;
+	@Column(name = "international_number")
+	private String internationalNumber;
+	@Column(name = "national_number")
+	private String nationalNumber;
+	@Column(name = "number")
+	private String number;
+	private String code;
 	@Column
 	@Type(type = "numeric_boolean")
 	private boolean active;
@@ -144,14 +156,6 @@ public class User extends VSBaseModel {
 
 	public void setAccountNonLocked(boolean accountNonLocked) {
 		this.accountNonLocked = accountNonLocked;
-	}
-
-	public String getMobileNumber() {
-		return mobileNumber;
-	}
-
-	public void setMobileNumber(String mobileNumber) {
-		this.mobileNumber = mobileNumber;
 	}
 
 	public String getPincode() {
@@ -241,4 +245,53 @@ public class User extends VSBaseModel {
 	public void setEmailVerified(boolean emailVerified) {
 		this.emailVerified = emailVerified;
 	}
+
+	public String getDialCode() {
+		return dialCode;
+	}
+
+	public void setDialCode(String dialCode) {
+		this.dialCode = dialCode;
+	}
+
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
+	}
+
+	public String getE164Number() {
+		return e164Number;
+	}
+
+	public void setE164Number(String e164Number) {
+		this.e164Number = e164Number;
+	}
+
+	public String getInternationalNumber() {
+		return internationalNumber;
+	}
+
+	public void setInternationalNumber(String internationalNumber) {
+		this.internationalNumber = internationalNumber;
+	}
+
+	public String getNationalNumber() {
+		return nationalNumber;
+	}
+
+	public void setNationalNumber(String nationalNumber) {
+		this.nationalNumber = nationalNumber;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+	
 }

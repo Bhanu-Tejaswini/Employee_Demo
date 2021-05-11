@@ -80,7 +80,7 @@ public class AccountUserController {
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> sendOTPForUser(@RequestBody UserSettingsDTO userSettings) {
 		log.debug("send a OTP for user");
-		return new BaseResponse<Boolean>(accountSettingService.sendOTPForUser(userSettings.getMobilenumber()))
+		return new BaseResponse<Boolean>(accountSettingService.sendOTPForUser(userSettings))
 				.withSuccess(true);
 	}
 	
@@ -104,15 +104,15 @@ public class AccountUserController {
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.EMAILSETTINGSMESSAGE).build();
 	}
 	
-	@ApiOperation(value = "save mobilenumber Settings")
-	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-	@RequestMapping(value = "mobilenumber/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<Boolean> mobileNumberUpdate(@RequestBody UserSettingsDTO userSettings) {
-		BaseResponse<Boolean> response = new BaseResponse<>();
-		accountSettingService.updateMobileNumber(userSettings.getMobilenumber());
-		return response.withSuccess(true)
-				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.MOBILENUMBER_UPDATE).build();
-	}
+//	@ApiOperation(value = "save mobilenumber Settings")
+//	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+//	@RequestMapping(value = "mobilenumber/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//	public BaseResponse<Boolean> mobileNumberUpdate(@RequestBody UserSettingsDTO userSettings) {
+//		BaseResponse<Boolean> response = new BaseResponse<>();
+//		accountSettingService.updateMobileNumber(userSettings.getMobilenumber());
+//		return response.withSuccess(true)
+//				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.MOBILENUMBER_UPDATE).build();
+//	}
 	
 	@ApiOperation(value = "save pincode Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })

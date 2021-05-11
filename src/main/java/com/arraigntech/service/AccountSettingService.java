@@ -15,7 +15,7 @@ public interface AccountSettingService {
 	
 	AccountSettingVO getTimeZonesList();
 
-	Boolean sendOTPForUser(String mobilenumber);
+	Boolean sendOTPForUser(UserSettingsDTO userSettings);
 	
 	Boolean saveUserName(String name);
 	
