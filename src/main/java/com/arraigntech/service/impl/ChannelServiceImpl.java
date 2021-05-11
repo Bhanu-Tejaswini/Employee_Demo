@@ -19,13 +19,14 @@ import com.arraigntech.entity.Channels;
 import com.arraigntech.entity.UpdateTitle;
 import com.arraigntech.entity.User;
 import com.arraigntech.model.ChannelDTO;
+import com.arraigntech.model.ChannelIngestionInfo;
 import com.arraigntech.model.ChannelStatus;
 import com.arraigntech.model.UpdateAllTitleDTO;
 import com.arraigntech.model.UpdateTitleDTO;
 import com.arraigntech.repository.ChannelsRepository;
 import com.arraigntech.repository.UpdateTitleRepository;
 import com.arraigntech.repository.UserRespository;
-import com.arraigntech.utility.AuthenticationProvider;
+import com.arraigntech.utility.ChannelTypeProvider;
 import com.arraigntech.utility.CommonUtils;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.utility.RandomIdGenerator;
@@ -69,24 +70,29 @@ public class ChannelServiceImpl {
 		if(channelDTO.getGraphDomain()!=null && channelDTO.getGraphDomain().startsWith("facebook")) {
 			return addFaceBookChannel(channelDTO);
 		}
-		if(channelDTO.getItems().isEmpty()|| channelDTO.getItems().get(0).getId()==null) {
+		String channelid=channelDTO.getItems().get(1).getSnippet().getChannelId();
+		if(channelDTO.getItems().isEmpty()|| !StringUtils.hasText(channelid))  {
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
-		Channels channel=channelRepo.findByChannelId(channelDTO.getItems().get(0).getId());
+		Channels channel=channelRepo.findByChannelId(channelid);
 		if(Objects.nonNull(channel)) {
 			throw new AppException(MessageConstants.CHANNEL_EXISTS);
 		}
 		
-		AuthenticationProvider channelAccount = null;
-		if(channelDTO.getItems().get(0).getKind().startsWith("youtube")) {
-			channelAccount=AuthenticationProvider.YOUTUBE;
+		ChannelTypeProvider channelAccount = null;
+		if(channelDTO.getItems().get(1).getKind().startsWith("youtube")) {
+			channelAccount=ChannelTypeProvider.YOUTUBE;
 		}else if(channelDTO.getItems().get(0).getKind().startsWith("facebook")) {
-			channelAccount=AuthenticationProvider.FACEBOOK;
+			channelAccount=ChannelTypeProvider.FACEBOOK;
 		}
+		ChannelIngestionInfo ingestionInfo = channelDTO.getItems().get(1).getCdn().getIngestionInfo();
 		Channels channels = new Channels();
 		User newUser=getUser();
 		channels.setType(channelAccount);
-		channels.setChannelId(channelDTO.getItems().get(0).getId());
+		channels.setChannelId(channelid);
+		channels.setStreamName(ingestionInfo.getStreamName());
+		channels.setPrimaryUrl(ingestionInfo.getIngestionAddress());
+		channels.setBackupUrl(ingestionInfo.getBackupIngestionAddress());
 		channels.setActive(true);
 		channels.setUser(newUser);
 		channelRepo.save(channels);
@@ -96,7 +102,7 @@ public class ChannelServiceImpl {
 	private boolean addFaceBookChannel(ChannelDTO channelDTO) {
 		Channels channels = new Channels();
 		User newUser=getUser();
-		channels.setType(AuthenticationProvider.FACEBOOK);
+		channels.setType(ChannelTypeProvider.FACEBOOK);
 		channels.setAccessToken(channelDTO.getAccessToken());
 		channels.setChannelId(RandomIdGenerator.generate());
 		channels.setActive(true);

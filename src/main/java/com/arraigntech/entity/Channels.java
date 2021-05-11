@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 import com.arraigntech.utility.AuthenticationProvider;
+import com.arraigntech.utility.ChannelTypeProvider;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -21,24 +22,34 @@ public class Channels extends VSBaseModel {
 	// stores social media account name
 	@Enumerated(EnumType.STRING)
 	@Column
-	private AuthenticationProvider type;
+	private ChannelTypeProvider type;
 
 	@Column(name = "channel_id")
 	private String channelId;
 
+	@Column(name = "stream_name")
+	private String streamName;
+
+	@Column(name = "primary_url")
+	private String primaryUrl;
+
+	@Column(name = "backup_url")
+	private String backupUrl;
+
 	@Column(name = "active")
 	@Type(type = "numeric_boolean")
 	private boolean active;
-	
-	@Column(name="access_token", nullable=true)
+
+	@Column(name = "access_token", nullable = true)
 	private String accessToken;
 
 	@JsonIgnore
 	@ManyToOne(targetEntity = User.class)
 	private User user;
 
-	@OneToOne(mappedBy="channel",cascade=CascadeType.ALL)
+	@OneToOne(mappedBy = "channel", cascade = CascadeType.ALL)
 	private UpdateTitle updateTitle;
+
 	public Channels() {
 
 	}
@@ -75,11 +86,11 @@ public class Channels extends VSBaseModel {
 		this.updateTitle = updateTitle;
 	}
 
-	public AuthenticationProvider getType() {
+	public ChannelTypeProvider getType() {
 		return type;
 	}
 
-	public void setType(AuthenticationProvider type) {
+	public void setType(ChannelTypeProvider type) {
 		this.type = type;
 	}
 
@@ -90,6 +101,28 @@ public class Channels extends VSBaseModel {
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-	
 
+	public String getStreamName() {
+		return streamName;
+	}
+
+	public void setStreamName(String streamName) {
+		this.streamName = streamName;
+	}
+
+	public String getPrimaryUrl() {
+		return primaryUrl;
+	}
+
+	public void setPrimaryUrl(String primaryUrl) {
+		this.primaryUrl = primaryUrl;
+	}
+
+	public String getBackupUrl() {
+		return backupUrl;
+	}
+
+	public void setBackupUrl(String backupUrl) {
+		this.backupUrl = backupUrl;
+	}
 }

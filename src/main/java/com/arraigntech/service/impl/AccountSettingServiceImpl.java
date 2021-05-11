@@ -180,6 +180,8 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		}
 		User user = getUser();
 		// generate OTP
+		user.setMobileNumber(mobilenumber);
+		userRepo.save(user);
 		String otp = otpGenerator.generateOTP(userSmsOTPLength);
 		user.setOtp(otp);
 		Twilio.init(twilioAccountId, twilioAccessToken);

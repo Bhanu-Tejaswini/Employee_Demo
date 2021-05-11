@@ -1,24 +1,33 @@
 package com.arraigntech.controller;
 
+import java.net.HttpURLConnection;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.arraigntech.entity.Channels;
+import com.arraigntech.model.response.BaseResponse;
 import com.arraigntech.service.impl.IVSStreamServiceImpl;
 import com.arraigntech.streamsModel.IVSLiveStream;
-import com.arraigntech.streamsModel.IVSLiveStreamResponse;
+import com.arraigntech.streamsModel.StreamSourceConnectionInformation;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping("/vstreem")
+@RequestMapping("/stream")
 public class IVSStreamController {
 	
 	public static final Logger log = LoggerFactory.getLogger(IVSStreamController.class);
@@ -26,10 +35,12 @@ public class IVSStreamController {
 	@Autowired
 	private IVSStreamServiceImpl streamService;
 
-	@PostMapping("/create")
-	public IVSLiveStreamResponse createStream(@RequestBody IVSLiveStream liveStream) {
-		IVSLiveStreamResponse liveStreamResponse = streamService.createStream(liveStream);
-		return liveStreamResponse;
+	@ApiOperation(value = "Creating the live stream")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<StreamSourceConnectionInformation> createStream(@RequestBody IVSLiveStream liveStream) {
+		log.debug("Creating the live stream");
+		return new BaseResponse<StreamSourceConnectionInformation>(streamService.createStream(liveStream)).withSuccess(true);
 	}
 
 //	@PutMapping("/start/{id}")
@@ -48,5 +59,4 @@ public class IVSStreamController {
 	                    String username) {
 	    return "Hello, " + username + "!";
 	}
-
 }

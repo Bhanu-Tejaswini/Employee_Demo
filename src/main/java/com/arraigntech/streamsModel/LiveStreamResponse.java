@@ -17,9 +17,9 @@ public class LiveStreamResponse {
 	private String delivery_method;
 	ArrayList<Object> delivery_protocols = new ArrayList<Object>();
 	private String delivery_type;
-
+	private StreamSourceConnectionInformation source_connection_information;
 	@JsonProperty("direct_playback_urls")
-	public DirectPlaybackUrls direct_playback_urls;
+	private DirectPlaybackUrls direct_playback_urls;
 	private String encoder;
 	private boolean hosted_page;
 	private String hosted_page_description;
@@ -389,6 +389,14 @@ public class LiveStreamResponse {
 
 	public void setLow_latency(boolean low_latency) {
 		this.low_latency = low_latency;
+	}
+
+	public StreamSourceConnectionInformation getSource_connection_information() {
+		return source_connection_information;
+	}
+
+	public void setSource_connection_information(StreamSourceConnectionInformation source_connection_information) {
+		this.source_connection_information = source_connection_information;
 	}
 
 }

@@ -1,10 +1,14 @@
 package com.arraigntech.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ChannelItems {
 
 	private String kind;
-	private String etag;
-	private String id;
+	@JsonProperty("snippet")
+	private ChannelSnippet snippet;
+	@JsonProperty("cdn")
+	private ChannelCdn cdn;
 
 	public String getKind() {
 		return kind;
@@ -14,20 +18,20 @@ public class ChannelItems {
 		this.kind = kind;
 	}
 
-	public String getEtag() {
-		return etag;
+	public ChannelSnippet getSnippet() {
+		return snippet;
 	}
 
-	public void setEtag(String etag) {
-		this.etag = etag;
+	public void setSnippet(ChannelSnippet snippet) {
+		this.snippet = snippet;
 	}
 
-	public String getId() {
-		return id;
+	public ChannelCdn getCdn() {
+		return cdn;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setCdn(ChannelCdn cdn) {
+		this.cdn = cdn;
 	}
 
 }

@@ -3,10 +3,11 @@ package com.arraigntech.service;
 import com.arraigntech.streamsModel.IVSLiveStream;
 import com.arraigntech.streamsModel.IVSLiveStreamResponse;
 import com.arraigntech.streamsModel.LiveStreamState;
+import com.arraigntech.streamsModel.StreamSourceConnectionInformation;
 
 public interface IVSStreamService {
 
-	public IVSLiveStreamResponse createStream(IVSLiveStream liveStream);
+	public StreamSourceConnectionInformation createStream(IVSLiveStream liveStream);
 	
 	public String startStream(String id);
 	
