@@ -1,5 +1,8 @@
 package com.arraigntech.model;
 
+import java.util.List;
+import java.util.Map;
+
 public class UserSettingsDTO {
 
 	private String email;
@@ -8,8 +11,15 @@ public class UserSettingsDTO {
 	private String username;
 	private String language;
 	private String timezone;
-	
+	private String dialCode;
+	private String countryCode;
+	private String e164Number;
+	private String internationalNumber;
+	private String nationalNumber;
+	private String number;
 	private String code;
+	private Map<String, String> mobileNumbersMap; 
+	
 
 	public UserSettingsDTO() {
 
@@ -63,7 +73,6 @@ public class UserSettingsDTO {
 		this.timezone = timezone;
 	}
 	
-
 	public String getCode() {
 		return code;
 	}
@@ -71,16 +80,80 @@ public class UserSettingsDTO {
 	public void setCode(String code) {
 		this.code = code;
 	}
+	
+	public String getDialCode() {
+		return dialCode;
+	}
 
-	public UserSettingsDTO(String email, String mobilenumber, String pincode, String username, String language,
-			String timezone) {
+	public void setDialCode(String dialCode) {
+		this.dialCode = dialCode;
+	}
+
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
+	}
+
+	public String getE164Number() {
+		return e164Number;
+	}
+
+	public void setE164Number(String e164Number) {
+		this.e164Number = e164Number;
+	}
+
+	public String getInternationalNumber() {
+		return internationalNumber;
+	}
+
+	public void setInternationalNumber(String internationalNumber) {
+		this.internationalNumber = internationalNumber;
+	}
+
+	public String getNationalNumber() {
+		return nationalNumber;
+	}
+
+	public void setNationalNumber(String nationalNumber) {
+		this.nationalNumber = nationalNumber;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+	
+	public Map<String, String> getMobileNumbersMap() {
+		return mobileNumbersMap;
+	}
+
+	public void setMobileNumbersMap(Map<String, String> mobileNumbersMap) {
+		this.mobileNumbersMap = mobileNumbersMap;
+	}
+
+	public UserSettingsDTO(String email, String pincode, String username, String language,
+			String timezone, Map<String, String> mobileNumbersMap) {
 		super();
 		this.email = email;
-		this.mobilenumber = mobilenumber;
 		this.pincode = pincode;
 		this.username = username;
 		this.language = language;
 		this.timezone = timezone;
+//		this.dialCode = dialCode;
+//		this.countryCode = countryCode;
+//		this.e164Number = e164Number;
+//		this.internationalNumber = internationalNumber;
+//		this.nationalNumber = nationalNumber;
+//		this.number = number;
+		this.mobileNumbersMap = mobileNumbersMap;
 	}
+
+	
 
 }

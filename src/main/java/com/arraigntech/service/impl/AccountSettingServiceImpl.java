@@ -3,10 +3,13 @@ package com.arraigntech.service.impl;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -163,30 +166,41 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 			throw new AppException(MessageConstants.DATA_MISSING);
 		}
 		User user = getUser();
-		user.setMobileNumber(mobileNumber);
+		user.setNumber(mobileNumber);
 		userRepo.save(user);
 		return true;
 	}
 	
 	public UserSettingsDTO fetchUserSettings() {
 		User newUser=getUser();
-		return new UserSettingsDTO(newUser.getEmail(),newUser.getMobileNumber(),newUser.getPincode(),newUser.getUsername(),
-				newUser.getLanguage(),newUser.getTimeZone());
+		Map<String, String> mobileNumbersMap = new HashMap<>();
+		mobileNumbersMap.put(MessageConstants.DIAL_CODE, newUser.getDialCode());
+		mobileNumbersMap.put(MessageConstants.COUNTRY_CODE, newUser.getCountryCode());
+		mobileNumbersMap.put(MessageConstants.E164_NUMBER, newUser.getE164Number());
+		mobileNumbersMap.put(MessageConstants.NATIONAL_NUMBER, newUser.getNationalNumber());
+		mobileNumbersMap.put(MessageConstants.INTERNATIONAL_NUMBER, newUser.getInternationalNumber());
+		mobileNumbersMap.put(MessageConstants.NUMBER_MOBILE, newUser.getNumber());
+		return new UserSettingsDTO(newUser.getEmail(),newUser.getPincode(),newUser.getUsername(),
+				newUser.getLanguage(),newUser.getTimeZone(), mobileNumbersMap);
 	}
 	@Override
-	public Boolean sendOTPForUser(String mobilenumber) {
-		if (!StringUtils.hasText(mobilenumber)) {
+	public Boolean sendOTPForUser(UserSettingsDTO userSettings) {
+		if (!StringUtils.hasText(userSettings.getInternationalNumber())) {
 			throw new AppException(MessageConstants.INVALID_PHONE_NUMBER);
 		}
 		User user = getUser();
 		// generate OTP
-		user.setMobileNumber(mobilenumber);
-		userRepo.save(user);
+		user.setDialCode(userSettings.getDialCode());
+		user.setCountryCode(userSettings.getCountryCode());
+		user.setInternationalNumber(userSettings.getInternationalNumber());
+		user.setE164Number(userSettings.getE164Number());
+		user.setNationalNumber(userSettings.getNationalNumber());
+		user.setNumber(userSettings.getNumber());
 		String otp = otpGenerator.generateOTP(userSmsOTPLength);
 		user.setOtp(otp);
 		Twilio.init(twilioAccountId, twilioAccessToken);
 		Message.creator(
-		                new com.twilio.type.PhoneNumber(mobilenumber),//The phone number you are sending text to
+		                new com.twilio.type.PhoneNumber(userSettings.getInternationalNumber()),//The phone number you are sending text to
 		                new com.twilio.type.PhoneNumber(twilioPhoneNumber),//The Twilio phone number
 		                "Please enter the OTP:" +otp)
 		           .create();
