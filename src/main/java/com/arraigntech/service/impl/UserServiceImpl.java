@@ -117,6 +117,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 
 	@Transactional
 	public Boolean register(UserDTO userDTO) throws AppException {
+		log.debug("register start");
 		if(Objects.isNull(userDTO) || !StringUtils.hasText(userDTO.getUsername()) || !StringUtils.hasText(userDTO.getPassword()) ) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
@@ -155,6 +156,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		newUser.setEnabled(true);
 		userRepo.save(newUser);
 		sendRegisterationLink(userDTO.getEmail());
+		log.debug("register end");
 		return true;
 	}
 
@@ -200,7 +202,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 	}
 
 	public String updatePassword(String token, String newPassword) throws AppException {
-
+		log.debug("reset password start");
 		if (!StringUtils.hasText(token) || !StringUtils.hasText(newPassword)) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
@@ -225,10 +227,12 @@ public class UserServiceImpl implements IVSService<User, String> {
 		userRepo.save(newUser);
 		// deleting the token after reseting the password
 		resetTokenRepo.deleteById(resetToken.getId());
+		log.debug(email);
 		return MessageConstants.PASSWORDMESSAGE;
 	}
 
 	public LoginResponseDTO generateToken(LoginDetails login, UriComponentsBuilder builder) throws AppException {
+		log.debug("generateToken start");
 		if (!StringUtils.hasText(login.getEmail()) || !StringUtils.hasText(login.getPassword())) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
@@ -263,9 +267,16 @@ public class UserServiceImpl implements IVSService<User, String> {
 		String uri = localUrl + "?grant_type=password&username=" + login.getEmail() + "&password="
 				+ login.getPassword();
 		HttpEntity<UserToken> request = new HttpEntity<>(headers);
+		TokenResponse response=null;
+		try {
 		ResponseEntity<TokenResponse> reponseEntity = restTemplate.exchange(uri, HttpMethod.POST, request,
 				TokenResponse.class);
-		TokenResponse response = reponseEntity.getBody();
+		response = reponseEntity.getBody();
+		}catch(Exception e) {
+			log.error("Failed to get access token for the given credentials");
+			throw new AppException(e.getMessage());
+		}
+		log.debug("generateToken end");
 		return new LoginResponseDTO(response.getAccess_token(),true);
 	}
 
@@ -279,6 +290,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 	}
 
 	public Boolean forgotPassword(String email) {
+		log.debug("forgotPassword start");
 		if (!StringUtils.hasText(email) || !emailValidator.isValidEmail(email)) {
 			throw new AppException(MessageConstants.INVALID_EMAIL);
 		}
@@ -301,10 +313,12 @@ public class UserServiceImpl implements IVSService<User, String> {
 		} catch (UnsupportedEncodingException | MessagingException e) {
 			throw new AppException(e.getMessage());
 		}
+		log.debug("forgotPassword end");
 		return true;
 	}
 
 	public String updateAccountPassword(String oldPassword, String newPassword) {
+		log.debug("updateAccountPassword start");
 		if (!StringUtils.hasText(oldPassword) || !StringUtils.hasText(newPassword)) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
@@ -318,21 +332,25 @@ public class UserServiceImpl implements IVSService<User, String> {
 			throw new AppException(MessageConstants.WRONG_PASSWORD);
 		}
 		userRepo.save(newUser);
+		log.debug("updateAccountPassword end");
 		return MessageConstants.PASSWORDMESSAGE;
 	}
 
 	public EmailSettingsModel getEmailSetting() {
+		log.debug("getEmailSetting start");
 		User newUser = getUser();
 		EmailSettings emailSettings = emailSettingsRepo.findByUser(newUser);
 		if (Objects.isNull(emailSettings)) {
 			return new EmailSettingsModel(true, true, true, true, true, true);
 		}
+		log.debug("getEmailSettings end");
 		return new EmailSettingsModel(emailSettings.isSystemAlerts(), emailSettings.isMonthlyStreamingReports(),
 				emailSettings.isInstantStreamingReport(), emailSettings.isPromotions(),
 				emailSettings.isProductUpdates(), emailSettings.isBlogDigest());
 	}
 
 	public String saveEmailSettings(EmailSettingsModel emailSettings) {
+		log.debug("saveEmailSettings start");
 		if (Objects.isNull(emailSettings)) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
@@ -344,11 +362,12 @@ public class UserServiceImpl implements IVSService<User, String> {
 		} else {
 			persistEmailSettings(checkSettings, emailSettings, newUser);
 		}
-
+		log.debug("saveEmailSettings end");
 		return MessageConstants.EMAILSETTINGSMESSAGE;
 	}
 
 	public boolean persistEmailSettings(EmailSettings settings, EmailSettingsModel emailSettings, User user) {
+		log.debug("persistEmailSettings start");
 		settings.setUser(user);
 		settings.setSystemAlerts(emailSettings.getSystemAlerts());
 		settings.setMonthlyStreamingReports(emailSettings.getMonthlyStreamingReports());
@@ -357,6 +376,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		settings.setProductUpdates(emailSettings.getProductUpdates());
 		settings.setBlogDigest(emailSettings.getBlogDigest());
 		emailSettingsRepo.save(settings);
+		log.debug("persistEmailSettings end");
 		return true;
 	}
 

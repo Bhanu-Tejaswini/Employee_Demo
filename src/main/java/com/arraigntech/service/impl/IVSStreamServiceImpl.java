@@ -3,6 +3,8 @@ package com.arraigntech.service.impl;
 import java.util.List;
 import java.util.Objects;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -38,6 +40,8 @@ import com.arraigntech.utility.RandomIdGenerator;
 @Service
 public class IVSStreamServiceImpl implements IVSStreamService {
 
+	public static final Logger log = LoggerFactory.getLogger(IVSStreamServiceImpl.class);
+
 	final static String STARTING = "starting";
 	final static String STARTED = "started";
 	final static String STOPPED = "stopped";
@@ -50,7 +54,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 
 	@Autowired
 	private UserRespository userRepo;
-	
+
 	@Autowired
 	private ChannelsRepository channelRepo;
 
@@ -67,20 +71,29 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	private StreamResponseRepository streamResponseRepo;
 
 	public MultiValueMap<String, String> getHeader() {
+		log.debug("wowza header start");
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 		headers.add("Content-Type", "application/json");
 		headers.set("wsc-api-key", wscApiKey);
 		headers.set("wsc-access-key", wscAccessKey);
+		log.debug("wowza header end");
 		return headers;
 	}
 
 	public StreamSourceConnectionInformation createStream(IVSLiveStream liveStream) {
+		log.debug("create stream start");
 		String url = baseUrl + "/live_streams";
 		MultiValueMap<String, String> headers = getHeader();
 		HttpEntity<IVSLiveStream> request = new HttpEntity<>(liveStream, headers);
-		ResponseEntity<IVSLiveStreamResponse> reponseEntity = restTemplate.exchange(url, HttpMethod.POST, request,
-				IVSLiveStreamResponse.class);
-		IVSLiveStreamResponse liveStreamResponse = reponseEntity.getBody();
+		IVSLiveStreamResponse liveStreamResponse;
+		try {
+			ResponseEntity<IVSLiveStreamResponse> reponseEntity = restTemplate.exchange(url, HttpMethod.POST, request,
+					IVSLiveStreamResponse.class);
+			liveStreamResponse = reponseEntity.getBody();
+		} catch (Exception e) {
+			log.error("error occurred while creating the live stream");
+			throw new AppException(e.getMessage());
+		}
 
 		// saving the response data to mongodb
 		streamResponseRepo.save(liveStreamResponse);
@@ -91,9 +104,10 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		// checking whether stream has been started completly, if started return the
 		// response
 		String streamId = liveStreamResponse.getLiveStreamResponse().getId();
-		String outputId=liveStreamResponse.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(3).getOutput_id();
-		//adds youtube channels in the target
-		youtubeStream(streamId,outputId);
+		String outputId = liveStreamResponse.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(3)
+				.getOutput_id();
+		// adds youtube channels in the target
+		youtubeStream(streamId, outputId);
 		startStream(streamId);
 
 		boolean flag = true;
@@ -109,65 +123,89 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 				flag = false;
 			}
 		}
-
+		log.debug("create stream end");
 		return liveStreamResponse.getLiveStreamResponse().getSource_connection_information();
 	}
-	
+
 	public boolean youtubeStream(String streamId, String outputId) {
-		User newUser=getUser();
+		log.debug("youtubestream start");
+		User newUser = getUser();
 		List<Channels> userChannels = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.YOUTUBE);
-		userChannels.forEach(channel->{
-			String streamTargetId = createStreamTarget(new StreamTarget("streamtarget"+RandomIdGenerator.generate(),channel.getPrimaryUrl(),channel.getStreamName(),channel.getBackupUrl()));
-			addStreamTarget(streamId,outputId,streamTargetId);
+		userChannels.forEach(channel -> {
+			String streamTargetId = createStreamTarget(new StreamTarget("streamtarget" + RandomIdGenerator.generate(),
+					channel.getPrimaryUrl(), channel.getStreamName(), channel.getBackupUrl()));
+			addStreamTarget(streamId, outputId, streamTargetId);
 		});
+		log.debug("youtubestream end");
 		return true;
 	}
 
 	public String startStream(String id) {
+		log.debug("startStream start");
 		String url = baseUrl + "/live_streams/" + id + "/start";
 		MultiValueMap<String, String> headers = getHeader();
 
 		HttpEntity<String> request = new HttpEntity<>(headers);
-		ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, request, String.class);
-		String response = responseEntity.getBody();
-
+		String response = null;
+		try {
+			ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, request, String.class);
+			response = responseEntity.getBody();
+		} catch (Exception e) {
+			log.error("error occurred while starting the live stream");
+			throw new AppException(e.getMessage());
+		}
 		Streams stream = streamRepo.findByStreamId(id);
 		stream.setStatus(STARTED);
 		streamRepo.save(stream);
-
+		log.debug("startStream end");
 		return response;
 	}
 
 	public String stopStream(String id) {
+		log.debug("stopStream start");
 		String url = baseUrl + "/live_streams/" + id + "/stop";
 		MultiValueMap<String, String> headers = getHeader();
 
 		HttpEntity<String> request = new HttpEntity<>(headers);
-		ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, request, String.class);
-		String response = responseEntity.getBody();
-
+		String response = null;
+		try {
+			ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, request, String.class);
+			response = responseEntity.getBody();
+		} catch (Exception e) {
+			log.error("error occurred while stoping the live stream");
+			throw new AppException(e.getMessage());
+		}
 		// updating the status of the stream
 		Streams stream = streamRepo.findByStreamId(id);
 		stream.setStatus(STOPPED);
 		streamRepo.save(stream);
-
+		log.debug("stopStream end");
 		return response;
 	}
 
 	// To fetch the status of the stream whether stream started, starting or stopped
 	public LiveStreamState fetchStreamState(String id) {
+		log.debug("fetchStreamState start");
 		String url = baseUrl + "/live_streams/" + id + "/state";
 		MultiValueMap<String, String> headers = getHeader();
 
 		HttpEntity<String> request = new HttpEntity<>(headers);
-		ResponseEntity<LiveStreamState> responseEntity = restTemplate.exchange(url, HttpMethod.GET, request,
-				LiveStreamState.class);
-		LiveStreamState response = responseEntity.getBody();
+		LiveStreamState response;
+		try {
+			ResponseEntity<LiveStreamState> responseEntity = restTemplate.exchange(url, HttpMethod.GET, request,
+					LiveStreamState.class);
+			response = responseEntity.getBody();
+		}catch (Exception e) {
+			log.error("error occurred while fetching stream state");
+			throw new AppException(e.getMessage());
+		}
+		log.debug("fetchstreamState end");
 		return response;
 	}
 
 	// saving the necessary stream details to stream database
 	public void saveStream(IVSLiveStreamResponse response) {
+		log.debug("saveStream start");
 		Streams stream = new Streams();
 
 		User newUser = getUser();
@@ -181,7 +219,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		stream.setStreamUrl(response.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(0).getUrl());
 		stream.setUser(newUser);
 		streamRepo.save(stream);
-
+		log.debug("saveStream end");
 	}
 
 	// returns currently logged in user details
@@ -193,8 +231,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		return user;
 	}
 
-	// create stream target	
+	// create stream target
 	public String createStreamTarget(StreamTarget streamTarget) {
+		log.debug("createStreamTarget start");
 		String url = baseUrl + "/stream_targets/custom";
 		MultiValueMap<String, String> headers = getHeader();
 		System.out.println(url);
@@ -204,25 +243,36 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		// setting the provider to rtmp
 		
 		HttpEntity<StreamTargetDTO> request = new HttpEntity<>(streamTargetDTO, headers);
-		ResponseEntity<StreamTargetDTO> reponseEntity = restTemplate.exchange(url, HttpMethod.POST, request,
-				StreamTargetDTO.class);
-		StreamTargetDTO streamTargetResponse = reponseEntity.getBody();
-
+		StreamTargetDTO streamTargetResponse;
+		try {
+			ResponseEntity<StreamTargetDTO> reponseEntity = restTemplate.exchange(url, HttpMethod.POST, request,
+					StreamTargetDTO.class);
+			streamTargetResponse = reponseEntity.getBody();
+		}catch (Exception e) {
+			log.error("error occurred while creating stream target");
+			throw new AppException(e.getMessage());
+		}
+		log.debug("createStreaTarget end");
 		return streamTargetResponse.getStreamTarget().getId();
 	}
-	
-	//ADD created stream target to existing output stream
+
+	// ADD created stream target to existing output stream
 	public boolean addStreamTarget(String transcoderId, String outputId, String streamTargetId) {
-		String url = baseUrl +"/transcoders/"+transcoderId+"/outputs/"+outputId+"/output_stream_targets";
+		log.debug("addStreamTarget start");
+		String url = baseUrl + "/transcoders/" + transcoderId + "/outputs/" + outputId + "/output_stream_targets";
 		MultiValueMap<String, String> headers = getHeader();
 
-		OutputStreamTarget outputStreamTarget=new OutputStreamTarget(streamTargetId,true);
-		OutputStreamTargetDTO outputStreamTargetDTO=new OutputStreamTargetDTO(outputStreamTarget);
+		OutputStreamTarget outputStreamTarget = new OutputStreamTarget(streamTargetId, true);
+		OutputStreamTargetDTO outputStreamTargetDTO = new OutputStreamTargetDTO(outputStreamTarget);
 		HttpEntity<OutputStreamTargetDTO> request = new HttpEntity<>(outputStreamTargetDTO, headers);
-		ResponseEntity<OutputStreamTargetDTO> reponseEntity = restTemplate.exchange(url, HttpMethod.POST, request,
-				OutputStreamTargetDTO.class);
-//		OutputStreamTargetDTO outputStreamTargetDTO = reponseEntity.getBody()	
+		try {
+				restTemplate.exchange(url, HttpMethod.POST, request,
+					OutputStreamTargetDTO.class);
+		}catch (Exception e) {
+			log.error("error occurred while adding stream target");
+			throw new AppException(e.getMessage());
+		}
+		log.debug("addStreamTarget end");
 		return true;
 	}
-
 }
