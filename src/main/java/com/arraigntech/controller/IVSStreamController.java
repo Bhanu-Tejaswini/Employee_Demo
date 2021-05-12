@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.arraigntech.model.response.BaseResponse;
 import com.arraigntech.service.IVSStreamService;
 import com.arraigntech.streamsModel.IVSLiveStream;
-import com.arraigntech.streamsModel.StreamSourceConnectionInformation;
+import com.arraigntech.streamsModel.StreamUIResponse;
 import com.arraigntech.utility.MessageConstants;
 
 import io.swagger.annotations.ApiOperation;
@@ -34,9 +34,9 @@ public class IVSStreamController {
 	@ApiOperation(value = "Creating the live stream")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<StreamSourceConnectionInformation> createStream(@RequestBody IVSLiveStream liveStream) {
+	public BaseResponse<StreamUIResponse> createStream(@RequestBody IVSLiveStream liveStream) {
 		log.debug("Creating the live stream");
-		return new BaseResponse<StreamSourceConnectionInformation>(streamService.createStream(liveStream)).withSuccess(true);
+		return new BaseResponse<StreamUIResponse>(streamService.createStream(liveStream)).withSuccess(true);
 	}
 
 	@ApiOperation(value = "Stop the live stream")
@@ -47,6 +47,22 @@ public class IVSStreamController {
 		String result = streamService.stopStream(id);
 		BaseResponse<String> response=new BaseResponse<>();
 		return response.withSuccess(true).withResponseMessage(MessageConstants.KEY_SUCCESS, result).build();
+	}
+	
+	@ApiOperation(value = "Stop the live stream")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/{streamId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<String> deleteStream(@PathVariable("streamId") String id) {
+		log.debug("Stop the live stream");
+		boolean result = streamService.deleteStream(id);
+		BaseResponse<String> response=new BaseResponse<>();
+		return result
+				? response.withSuccess(true)
+						.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.STREAM_REMOVED).build()
+				: response.withSuccess(false)
+						.withResponseMessage(MessageConstants.KEY_FAIL, MessageConstants.STREAM_REMOVED_FAIL)
+						.build();
+
 	}
 
 }

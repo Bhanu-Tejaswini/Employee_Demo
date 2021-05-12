@@ -5,14 +5,17 @@ import com.arraigntech.streamsModel.IVSLiveStreamResponse;
 import com.arraigntech.streamsModel.LiveStreamState;
 import com.arraigntech.streamsModel.StreamSourceConnectionInformation;
 import com.arraigntech.streamsModel.StreamTarget;
+import com.arraigntech.streamsModel.StreamUIResponse;
 
 public interface IVSStreamService {
 
-	public StreamSourceConnectionInformation createStream(IVSLiveStream liveStream);
+	public StreamUIResponse createStream(IVSLiveStream liveStream);
 	
 	public String startStream(String id);
 	
 	public String stopStream(String id);
+	
+	public boolean deleteStream(String streamId);
 	
 	public LiveStreamState fetchStreamState(String id);
 	

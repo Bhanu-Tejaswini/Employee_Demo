@@ -11,6 +11,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -32,6 +33,7 @@ import com.arraigntech.streamsModel.OutputStreamTargetDTO;
 import com.arraigntech.streamsModel.StreamSourceConnectionInformation;
 import com.arraigntech.streamsModel.StreamTarget;
 import com.arraigntech.streamsModel.StreamTargetDTO;
+import com.arraigntech.streamsModel.StreamUIResponse;
 import com.arraigntech.utility.ChannelTypeProvider;
 import com.arraigntech.utility.CommonUtils;
 import com.arraigntech.utility.MessageConstants;
@@ -80,7 +82,8 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		return headers;
 	}
 
-	public StreamSourceConnectionInformation createStream(IVSLiveStream liveStream) {
+	@Transactional
+	public StreamUIResponse createStream(IVSLiveStream liveStream) {
 		log.debug("create stream start");
 		String url = baseUrl + "/live_streams";
 		MultiValueMap<String, String> headers = getHeader();
@@ -124,13 +127,36 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			}
 		}
 		log.debug("create stream end");
-		return liveStreamResponse.getLiveStreamResponse().getSource_connection_information();
+		StreamSourceConnectionInformation response = liveStreamResponse.getLiveStreamResponse()
+				.getSource_connection_information();
+		return new StreamUIResponse(response.getSdp_url(), response.getApplication_name(), response.getStream_name(),
+				streamId);
+	}
+
+	public boolean deleteStream(String streamId) {
+		log.debug("deleteStream start");
+		String url = baseUrl + "/live_streams/" + streamId;
+		MultiValueMap<String, String> headers = getHeader();
+
+		HttpEntity<String> request = new HttpEntity<>(headers);
+		try {
+			restTemplate.exchange(url, HttpMethod.DELETE, request, String.class);
+		} catch (Exception e) {
+			log.error("error occurred while deleting the stream");
+			throw new AppException(e.getMessage());
+		}
+		log.debug("deleteStream end");
+		return true;
 	}
 
 	public boolean youtubeStream(String streamId, String outputId) {
 		log.debug("youtubestream start");
 		User newUser = getUser();
 		List<Channels> userChannels = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.YOUTUBE);
+		if(userChannels.isEmpty()) {
+			deleteStream(streamId);
+			throw new AppException("Please add the channels to start the live stream.");
+		}
 		userChannels.forEach(channel -> {
 			String streamTargetId = createStreamTarget(new StreamTarget("streamtarget" + RandomIdGenerator.generate(),
 					channel.getPrimaryUrl(), channel.getStreamName(), channel.getBackupUrl()));
@@ -195,7 +221,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			ResponseEntity<LiveStreamState> responseEntity = restTemplate.exchange(url, HttpMethod.GET, request,
 					LiveStreamState.class);
 			response = responseEntity.getBody();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			log.error("error occurred while fetching stream state");
 			throw new AppException(e.getMessage());
 		}
@@ -238,17 +264,17 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		MultiValueMap<String, String> headers = getHeader();
 		System.out.println(url);
 		streamTarget.setProvider("rtmp");
-		StreamTargetDTO streamTargetDTO=new StreamTargetDTO();
+		StreamTargetDTO streamTargetDTO = new StreamTargetDTO();
 		streamTargetDTO.setStreamTarget(streamTarget);
 		// setting the provider to rtmp
-		
+
 		HttpEntity<StreamTargetDTO> request = new HttpEntity<>(streamTargetDTO, headers);
 		StreamTargetDTO streamTargetResponse;
 		try {
 			ResponseEntity<StreamTargetDTO> reponseEntity = restTemplate.exchange(url, HttpMethod.POST, request,
 					StreamTargetDTO.class);
 			streamTargetResponse = reponseEntity.getBody();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			log.error("error occurred while creating stream target");
 			throw new AppException(e.getMessage());
 		}
@@ -266,9 +292,8 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		OutputStreamTargetDTO outputStreamTargetDTO = new OutputStreamTargetDTO(outputStreamTarget);
 		HttpEntity<OutputStreamTargetDTO> request = new HttpEntity<>(outputStreamTargetDTO, headers);
 		try {
-				restTemplate.exchange(url, HttpMethod.POST, request,
-					OutputStreamTargetDTO.class);
-		}catch (Exception e) {
+			restTemplate.exchange(url, HttpMethod.POST, request, OutputStreamTargetDTO.class);
+		} catch (Exception e) {
 			log.error("error occurred while adding stream target");
 			throw new AppException(e.getMessage());
 		}

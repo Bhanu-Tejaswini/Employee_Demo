@@ -293,5 +293,20 @@ public class User extends VSBaseModel {
 	public void setNumber(String number) {
 		this.number = number;
 	}
-	
+
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 }

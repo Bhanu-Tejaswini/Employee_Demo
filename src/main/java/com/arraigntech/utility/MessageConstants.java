@@ -57,5 +57,7 @@ public class MessageConstants {
 	public static final String INTERNATIONAL_NUMBER= "internationalNumber";
 	public static final String NATIONAL_NUMBER= "nationalNumber";
 	public static final String NUMBER_MOBILE= "number";
+	public static final String STREAM_REMOVED="Stream has been deleted successfully.";
+	public static final String STREAM_REMOVED_FAIL="Unable to delete the stream.";
 	
 }
