@@ -17,6 +17,10 @@ import com.arraigntech.repository.RoleRepository;
 import com.arraigntech.service.IVSService;
 import com.arraigntech.utility.MessageConstants;
 
+/**
+ * @author Bhaskara S
+ *
+ */
 @Service
 public class RoleServiceImpl implements IVSService<Role, String> {
 
@@ -32,6 +36,12 @@ public class RoleServiceImpl implements IVSService<Role, String> {
 	}
 
 
+	/**
+	 * Creates the role.
+	 *
+	 * @param role the role
+	 * @return the role
+	 */
 	public Role createRole(RoleDTO role) {
 		Role newRole=new Role();
 		newRole.setName(role.getName());

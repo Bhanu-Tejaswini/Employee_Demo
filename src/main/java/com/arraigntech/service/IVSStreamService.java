@@ -5,11 +5,12 @@ import com.arraigntech.streamsModel.IVSLiveStreamResponse;
 import com.arraigntech.streamsModel.LiveStreamState;
 import com.arraigntech.streamsModel.StreamSourceConnectionInformation;
 import com.arraigntech.streamsModel.StreamTarget;
+import com.arraigntech.streamsModel.StreamUIRequest;
 import com.arraigntech.streamsModel.StreamUIResponse;
 
 public interface IVSStreamService {
 
-	public StreamUIResponse createStream(IVSLiveStream liveStream);
+	public StreamUIResponse createStream(StreamUIRequest streamRequest);
 	
 	public String startStream(String id);
 	

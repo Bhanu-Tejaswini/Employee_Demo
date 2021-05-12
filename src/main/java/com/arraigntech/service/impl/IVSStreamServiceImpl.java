@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.arraigntech.service.impl;
 
 import java.util.List;
@@ -27,27 +30,42 @@ import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.IVSStreamService;
 import com.arraigntech.streamsModel.IVSLiveStream;
 import com.arraigntech.streamsModel.IVSLiveStreamResponse;
+import com.arraigntech.streamsModel.LiveStream;
 import com.arraigntech.streamsModel.LiveStreamState;
 import com.arraigntech.streamsModel.OutputStreamTarget;
 import com.arraigntech.streamsModel.OutputStreamTargetDTO;
 import com.arraigntech.streamsModel.StreamSourceConnectionInformation;
 import com.arraigntech.streamsModel.StreamTarget;
 import com.arraigntech.streamsModel.StreamTargetDTO;
+import com.arraigntech.streamsModel.StreamUIRequest;
 import com.arraigntech.streamsModel.StreamUIResponse;
 import com.arraigntech.utility.ChannelTypeProvider;
 import com.arraigntech.utility.CommonUtils;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.utility.RandomIdGenerator;
 
+
+/**
+ * The Class IVSStreamServiceImpl.
+ *
+ * @author Bhaskara S
+ */
 @Service
 public class IVSStreamServiceImpl implements IVSStreamService {
 
+	/** The Constant log. */
 	public static final Logger log = LoggerFactory.getLogger(IVSStreamServiceImpl.class);
-
-	final static String STARTING = "starting";
-	final static String STARTED = "started";
-	final static String STOPPED = "stopped";
-
+	public static final String BILLINT_MODE="pay_as_you_go";
+	public static final String BROADCAST_LOCATION="asia_pacific_india";
+	public static final String ENCODER="other_webrtc";
+	public static final String TRANSCODER_TYPE="transcoded";
+	public static final String DELIVERY_METHOD="push";
+	public static final String DELIVERY_TYPE="single-bitrate";
+	public static final boolean PLAYER_RESPONSIVE=true;
+	public static final boolean RECORDING=false; 
+	public static final String STARTING = "starting";
+	public static final String STARTED = "started";
+	public static final String STOPPED = "stopped";
 	@Autowired
 	private RestTemplate restTemplate;
 
@@ -72,6 +90,11 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	@Autowired
 	private StreamResponseRepository streamResponseRepo;
 
+	/**
+	 * Gets the header.
+	 *
+	 * @return the header
+	 */
 	public MultiValueMap<String, String> getHeader() {
 		log.debug("wowza header start");
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
@@ -82,9 +105,17 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		return headers;
 	}
 
+	/**
+	 * Creates the stream.
+	 *
+	 * @param streamRequest the stream request
+	 * @return the stream UI response
+	 */
+	@Override
 	@Transactional
-	public StreamUIResponse createStream(IVSLiveStream liveStream) {
+	public StreamUIResponse createStream(StreamUIRequest streamRequest) {
 		log.debug("create stream start");
+		IVSLiveStream liveStream=populateStreamData(streamRequest);
 		String url = baseUrl + "/live_streams";
 		MultiValueMap<String, String> headers = getHeader();
 		HttpEntity<IVSLiveStream> request = new HttpEntity<>(liveStream, headers);
@@ -133,6 +164,37 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 				streamId);
 	}
 
+
+	/**
+	 * @param streamRequest
+	 * @return
+	 */
+	
+	private IVSLiveStream populateStreamData(StreamUIRequest streamRequest) {
+		IVSLiveStream ivsLiveStream=new IVSLiveStream();
+		LiveStream liveStream=new LiveStream();
+		liveStream.setAspect_ratio_height(streamRequest.getAspectRatioHeight());
+		liveStream.setAspect_ratio_width(streamRequest.getAspectRatioWidth());
+		liveStream.setBilling_mode(BILLINT_MODE);
+		liveStream.setBroadcast_location(BROADCAST_LOCATION);
+		liveStream.setDelivery_method(DELIVERY_METHOD);
+		liveStream.setDelivery_type(DELIVERY_TYPE);
+		liveStream.setEncoder(ENCODER);
+		liveStream.setName("STREAM_"+RandomIdGenerator.generate());
+		liveStream.setPlayer_responsive(PLAYER_RESPONSIVE);
+		liveStream.setRecording(RECORDING);
+		liveStream.setTranscoder_type(TRANSCODER_TYPE);
+		
+		ivsLiveStream.setLiveStream(liveStream);
+		return ivsLiveStream;
+	}
+
+	/**
+	 * Delete stream.
+	 *
+	 * @param streamId the stream id
+	 * @return true, if successful
+	 */
 	public boolean deleteStream(String streamId) {
 		log.debug("deleteStream start");
 		String url = baseUrl + "/live_streams/" + streamId;
@@ -149,6 +211,16 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		return true;
 	}
 
+	/**
+	 * Youtube stream.
+	 *
+	 * @param streamId the stream id
+	 * @param outputId the output id
+	 * @return true, if successful
+	 */
+	/**
+	 *
+	 */
 	public boolean youtubeStream(String streamId, String outputId) {
 		log.debug("youtubestream start");
 		User newUser = getUser();
@@ -158,7 +230,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			throw new AppException("Please add the channels to start the live stream.");
 		}
 		userChannels.forEach(channel -> {
-			String streamTargetId = createStreamTarget(new StreamTarget("streamtarget" + RandomIdGenerator.generate(),
+			String streamTargetId = createStreamTarget(new StreamTarget("STREAMTARGET_" + RandomIdGenerator.generate(),
 					channel.getPrimaryUrl(), channel.getStreamName(), channel.getBackupUrl()));
 			addStreamTarget(streamId, outputId, streamTargetId);
 		});
@@ -166,6 +238,12 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		return true;
 	}
 
+	/**
+	 * Start stream.
+	 *
+	 * @param id the id
+	 * @return the string
+	 */
 	public String startStream(String id) {
 		log.debug("startStream start");
 		String url = baseUrl + "/live_streams/" + id + "/start";
@@ -187,6 +265,12 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		return response;
 	}
 
+	/**
+	 * Stop stream.
+	 *
+	 * @param id the id
+	 * @return the string
+	 */
 	public String stopStream(String id) {
 		log.debug("stopStream start");
 		String url = baseUrl + "/live_streams/" + id + "/stop";
@@ -209,7 +293,12 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		return response;
 	}
 
-	// To fetch the status of the stream whether stream started, starting or stopped
+	/**
+	 * Fetch stream state.
+	 *
+	 * @param id the id
+	 * @return the live stream state
+	 */
 	public LiveStreamState fetchStreamState(String id) {
 		log.debug("fetchStreamState start");
 		String url = baseUrl + "/live_streams/" + id + "/state";
@@ -229,7 +318,11 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		return response;
 	}
 
-	// saving the necessary stream details to stream database
+	/**
+	 * Save stream.
+	 *
+	 * @param response the response
+	 */
 	public void saveStream(IVSLiveStreamResponse response) {
 		log.debug("saveStream start");
 		Streams stream = new Streams();
@@ -248,7 +341,11 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		log.debug("saveStream end");
 	}
 
-	// returns currently logged in user details
+	/**
+	 * Gets the user.
+	 *
+	 * @return the user
+	 */
 	private User getUser() {
 		User user = userRepo.findByEmail(CommonUtils.getUser());
 		if (Objects.isNull(user)) {
@@ -257,7 +354,12 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		return user;
 	}
 
-	// create stream target
+	/**
+	 * Creates the stream target.
+	 *
+	 * @param streamTarget the stream target
+	 * @return the string
+	 */
 	public String createStreamTarget(StreamTarget streamTarget) {
 		log.debug("createStreamTarget start");
 		String url = baseUrl + "/stream_targets/custom";
@@ -282,7 +384,14 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		return streamTargetResponse.getStreamTarget().getId();
 	}
 
-	// ADD created stream target to existing output stream
+	/**
+	 * Adds the stream target.
+	 *
+	 * @param transcoderId the transcoder id
+	 * @param outputId the output id
+	 * @param streamTargetId the stream target id
+	 * @return true, if successful
+	 */
 	public boolean addStreamTarget(String transcoderId, String outputId, String streamTargetId) {
 		log.debug("addStreamTarget start");
 		String url = baseUrl + "/transcoders/" + transcoderId + "/outputs/" + outputId + "/output_stream_targets";
