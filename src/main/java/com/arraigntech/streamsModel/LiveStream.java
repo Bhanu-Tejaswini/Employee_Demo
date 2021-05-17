@@ -86,14 +86,6 @@ public class LiveStream {
 		return delivery_type;
 	}
 
-	/**
-	 * Sets the delivery type.
-	 *
-	 * @param delivery_type the new delivery type
-	 */
-	/**
-	 * @param delivery_type
-	 */
 	public void setDelivery_type(String delivery_type) {
 		this.delivery_type = delivery_type;
 	}

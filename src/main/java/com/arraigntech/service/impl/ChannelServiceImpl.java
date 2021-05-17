@@ -20,6 +20,7 @@ import com.arraigntech.entity.UpdateTitle;
 import com.arraigntech.entity.User;
 import com.arraigntech.model.ChannelDTO;
 import com.arraigntech.model.ChannelIngestionInfo;
+import com.arraigntech.model.ChannelItems;
 import com.arraigntech.model.ChannelStatus;
 import com.arraigntech.model.UpdateAllTitleDTO;
 import com.arraigntech.model.UpdateTitleDTO;
@@ -70,7 +71,14 @@ public class ChannelServiceImpl {
 		if(channelDTO.getGraphDomain()!=null && channelDTO.getGraphDomain().startsWith("facebook")) {
 			return addFaceBookChannel(channelDTO);
 		}
-		String channelid=channelDTO.getItems().get(1).getSnippet().getChannelId();
+		String channelid;
+		System.out.println(channelDTO.getItems().size());
+		if(channelDTO.getItems().size()>1) {
+			channelid=channelDTO.getItems().get(1).getSnippet().getChannelId();
+		}else {
+			channelid=channelDTO.getItems().get(0).getSnippet().getChannelId();
+		}
+		
 		if(channelDTO.getItems().isEmpty()|| !StringUtils.hasText(channelid))  {
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
@@ -79,16 +87,23 @@ public class ChannelServiceImpl {
 			throw new AppException(MessageConstants.CHANNEL_EXISTS);
 		}
 		
-		ChannelTypeProvider channelAccount = null;
-		if(channelDTO.getItems().get(1).getKind().startsWith("youtube")) {
-			channelAccount=ChannelTypeProvider.YOUTUBE;
-		}else if(channelDTO.getItems().get(0).getKind().startsWith("facebook")) {
-			channelAccount=ChannelTypeProvider.FACEBOOK;
+//		ChannelTypeProvider channelAccount = null;
+//		if(channelDTO.getItems().get(1).getKind().startsWith("youtube")) {
+//			channelAccount=ChannelTypeProvider.YOUTUBE;
+//		}else if(channelDTO.getItems().get(0).getKind().startsWith("facebook")) {
+//			channelAccount=ChannelTypeProvider.FACEBOOK;
+//		}
+		
+		ChannelIngestionInfo ingestionInfo;
+		if(channelDTO.getItems().size()>1) {
+			ingestionInfo = channelDTO.getItems().get(1).getCdn().getIngestionInfo();
+		}else {
+			ingestionInfo = channelDTO.getItems().get(0).getCdn().getIngestionInfo();
 		}
-		ChannelIngestionInfo ingestionInfo = channelDTO.getItems().get(1).getCdn().getIngestionInfo();
+		
 		Channels channels = new Channels();
 		User newUser=getUser();
-		channels.setType(channelAccount);
+		channels.setType(ChannelTypeProvider.YOUTUBE);
 		channels.setChannelId(channelid);
 		channels.setStreamName(ingestionInfo.getStreamName());
 		channels.setPrimaryUrl(ingestionInfo.getIngestionAddress());

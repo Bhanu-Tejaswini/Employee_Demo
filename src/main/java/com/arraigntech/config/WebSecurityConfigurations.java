@@ -63,20 +63,4 @@ public class WebSecurityConfigurations extends WebSecurityConfigurerAdapter {
 	                                   "/swagger-ui.html",
 	                                   "/webjars/**");
 	    }
-	 
-
-//	@Override
-//	protected void configure(HttpSecurity http) throws Exception {
-////		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().httpBasic()
-////				.and().csrf().disable();
-//		 http.cors().and().csrf().disable()
-//         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//         .and()
-//         .authorizeRequests()
-//         .antMatchers("/role").permitAll()
-//         .antMatchers("/user").hasAnyAuthority("create_profile")
-//         .anyRequest().authenticated();
-//
-//	}
-	
 }

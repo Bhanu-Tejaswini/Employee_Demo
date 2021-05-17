@@ -6,8 +6,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class OutputStreamTarget {
 
+	private String id;
 	private String stream_target_id;
 	private boolean use_stream_target_backup_url;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getStream_target_id() {
 		return stream_target_id;

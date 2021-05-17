@@ -1,9 +1,14 @@
 package com.arraigntech.streamsModel;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Document(collection="output_stream_target")
 public class OutputStreamTargetDTO {
 
+	@Field
 	@JsonProperty("output_stream_target")
 	private OutputStreamTarget outputStreamTarget;
 

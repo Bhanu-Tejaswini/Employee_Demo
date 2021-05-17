@@ -88,6 +88,7 @@ public abstract class VSBaseModel {
 	public void prePersist() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		this.setCreatedAt(new Date());
+		this.setUpdatedAt(new Date());
 		this.setCreatedBy(authentication.getName());
 	}
 }

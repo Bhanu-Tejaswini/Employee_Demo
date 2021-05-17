@@ -1,6 +1,15 @@
 package com.arraigntech.streamsModel;
 
-public class StreamTarget {
+import org.springframework.data.mongodb.core.mapping.Document;
+
+public class StreamTargetModel {
+	
+	private String id;
+	private String name;
+	private String provider;
+	private String primary_url;
+	private String stream_name;
+	private String backup_url;
 
 	public String getId() {
 		return id;
@@ -9,13 +18,6 @@ public class StreamTarget {
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	private String id;
-	private String name;
-	private String provider;
-	private String primary_url;
-	private String stream_name;
-	private String backup_url;
 
 	public String getName() {
 		return name;
@@ -57,17 +59,16 @@ public class StreamTarget {
 		this.backup_url = backup_url;
 	}
 
-	public StreamTarget(String name, String primary_url, String stream_name,
-			String backup_url) {
+	public StreamTargetModel(String name, String primary_url, String stream_name, String backup_url) {
 		super();
 		this.name = name;
 		this.primary_url = primary_url;
 		this.stream_name = stream_name;
 		this.backup_url = backup_url;
 	}
-	
-	public StreamTarget() {
-		
+
+	public StreamTargetModel() {
+
 	}
 
 }

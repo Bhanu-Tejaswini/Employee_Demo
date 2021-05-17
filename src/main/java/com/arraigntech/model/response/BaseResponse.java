@@ -11,10 +11,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseResponse<T> implements Serializable {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5957134042349800463L;
 
 	private Map<String, String> responseMessages = new HashMap<>();

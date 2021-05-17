@@ -1,38 +1,48 @@
 package com.arraigntech.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 @Entity
-@Table(name="streams")
-public class Streams extends VSBaseModel{
-	
-	@Column(name="stream_id", unique=true)
+@Table(name = "streams")
+public class Streams extends VSBaseModel {
+
+	@Column(name = "stream_id", unique = true)
 	private String streamId;
-	
-	@Column(name="stream_name", unique=true)
+
+	@Column(name = "stream_name", unique = true)
 	private String streamName;
-	
+
 	@Column
-	private String status;
-	
-	@Column(name="stream_url", unique=true)
+	@Type(type = "numeric_boolean")
+	private boolean active;
+
+	@Column(name = "stream_url", unique = true)
 	private String streamUrl;
-	
-	@Column(name="application_name")
+
+	@Column(name = "application_name")
 	private String applicationName;
-	
-	@Column(name="source_stream_name")
+
+	@Column(name = "source_stream_name")
 	private String sourceStreamName;
-	
-	@ManyToOne(targetEntity=User.class, cascade=CascadeType.ALL)
+
+	@ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
 	private User user;
+	
+	@OneToMany(mappedBy="stream")
+	private List<StreamTarget> streamTarget=new ArrayList();
 
 	public Streams() {
-		
+
 	}
 
 	public String getStreamId() {
@@ -51,12 +61,12 @@ public class Streams extends VSBaseModel{
 		this.streamName = streamName;
 	}
 
-	public String getStatus() {
-		return status;
+	public boolean isActive() {
+		return active;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	public String getStreamUrl() {
@@ -89,5 +99,13 @@ public class Streams extends VSBaseModel{
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public List<StreamTarget> getStreamTarget() {
+		return streamTarget;
+	}
+
+	public void setStreamTarget(List<StreamTarget> streamTarget) {
+		this.streamTarget = streamTarget;
 	}
 }

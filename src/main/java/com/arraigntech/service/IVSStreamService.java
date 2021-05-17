@@ -4,7 +4,7 @@ import com.arraigntech.streamsModel.IVSLiveStream;
 import com.arraigntech.streamsModel.IVSLiveStreamResponse;
 import com.arraigntech.streamsModel.LiveStreamState;
 import com.arraigntech.streamsModel.StreamSourceConnectionInformation;
-import com.arraigntech.streamsModel.StreamTarget;
+import com.arraigntech.streamsModel.StreamTargetModel;
 import com.arraigntech.streamsModel.StreamUIRequest;
 import com.arraigntech.streamsModel.StreamUIResponse;
 
@@ -24,7 +24,9 @@ public interface IVSStreamService {
 	
 	public boolean youtubeStream(String streamId, String outputId);
 	
-	public String createStreamTarget(StreamTarget streamTarget);
+	public String createStreamTarget(StreamTargetModel streamTarget, String streamId);
+	
+	public boolean deleteStreamTarget(String streamId);
 	
 	public boolean addStreamTarget(String transcoderId, String outputId, String streamTargetId);
 

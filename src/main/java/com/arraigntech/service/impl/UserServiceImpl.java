@@ -104,24 +104,24 @@ public class UserServiceImpl implements IVSService<User, String> {
 
 	@Value("${spring.mail.username}")
 	private String formMail;
-	
+
 	@Value("${jwt.resetTokenExpirationTime}")
 	private int resetTokenExpirationTime;
-	
+
 	@Value("${jwt.verification.mail.expiryTime}")
 	private int verficationMailExpirationTime;
 
 	@Autowired
 	private IVSJwtUtil iVSJwtUtil;
-	
 
 	@Transactional
 	public Boolean register(UserDTO userDTO) throws AppException {
 		log.debug("register start");
-		if(Objects.isNull(userDTO) || !StringUtils.hasText(userDTO.getUsername()) || !StringUtils.hasText(userDTO.getPassword()) ) {
+		if (Objects.isNull(userDTO) || !StringUtils.hasText(userDTO.getUsername())
+				|| !StringUtils.hasText(userDTO.getPassword())) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
-		AuthenticationProvider provider = userDTO.getProvider(); 
+		AuthenticationProvider provider = userDTO.getProvider();
 		Boolean flag = false;
 		if (userDTO.getEmail() == null || !emailValidator.isValidEmail(userDTO.getEmail())) {
 			throw new AppException(MessageConstants.INVALID_EMAIL);
@@ -145,7 +145,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		newUser.setProvider(userDTO.getProvider());
 		newUser.setUsername(userDTO.getUsername());
 		newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-		newUser.setEmail(userDTO.getEmail());	
+		newUser.setEmail(userDTO.getEmail());
 		newUser.setAccountNonExpired(true);
 		newUser.setAccountNonLocked(true);
 		newUser.setCredentialsNonExpired(true);
@@ -243,16 +243,15 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		if(!newUser.isEmailVerified()) {
-			if(System.currentTimeMillis()< newUser.getUpdatedAt().getTime()+900000) {
-				return new LoginResponseDTO(MessageConstants.VERIFICATION_MAIL_ALREADYSENT,false);
-			}
-			else {
-			sendRegisterationLink(login.getEmail());
-			return new LoginResponseDTO(MessageConstants.TOKEN_EXPIRED_RESENDMAIL,false);
+		if (!newUser.isEmailVerified()) {
+			if (System.currentTimeMillis() < newUser.getUpdatedAt().getTime() + 900000) {
+				return new LoginResponseDTO(MessageConstants.VERIFICATION_MAIL_ALREADYSENT, false);
+			} else {
+				sendRegisterationLink(login.getEmail());
+				return new LoginResponseDTO(MessageConstants.TOKEN_EXPIRED_RESENDMAIL, false);
 			}
 		}
-		if(newUser.isActive()==false) {
+		if (newUser.isActive() == false) {
 			throw new AppException(MessageConstants.ACCOUNT_DISABLED);
 		}
 		if (!passwordEncoder.matches(login.getPassword(), newUser.getPassword())) {
@@ -267,17 +266,17 @@ public class UserServiceImpl implements IVSService<User, String> {
 		String uri = localUrl + "?grant_type=password&username=" + login.getEmail() + "&password="
 				+ login.getPassword();
 		HttpEntity<UserToken> request = new HttpEntity<>(headers);
-		TokenResponse response=null;
+		TokenResponse response = null;
 		try {
-		ResponseEntity<TokenResponse> reponseEntity = restTemplate.exchange(uri, HttpMethod.POST, request,
-				TokenResponse.class);
-		response = reponseEntity.getBody();
-		}catch(Exception e) {
+			ResponseEntity<TokenResponse> reponseEntity = restTemplate.exchange(uri, HttpMethod.POST, request,
+					TokenResponse.class);
+			response = reponseEntity.getBody();
+		} catch (Exception e) {
 			log.error("Failed to get access token for the given credentials");
 			throw new AppException(e.getMessage());
 		}
 		log.debug("generateToken end");
-		return new LoginResponseDTO(response.getAccess_token(),true);
+		return new LoginResponseDTO(response.getAccess_token(), true);
 	}
 
 	@Override
@@ -299,7 +298,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
 		// generating the token
-		String token = jwtUtil.generateResetToken(email,resetTokenExpirationTime);
+		String token = jwtUtil.generateResetToken(email, resetTokenExpirationTime);
 		// saving the resettoken in the database
 		ResetToken resetToken = new ResetToken(token, newUser);
 		resetTokenRepo.save(resetToken);
@@ -386,21 +385,20 @@ public class UserServiceImpl implements IVSService<User, String> {
 			if (!StringUtils.hasText(userEmail) || !emailValidator.isValidEmail(userEmail)) {
 				throw new AppException(MessageConstants.INVALID_EMAIL);
 			}
-			String token = jwtUtil.generateResetToken(userEmail,verficationMailExpirationTime);
+			String token = jwtUtil.generateResetToken(userEmail, verficationMailExpirationTime);
 			UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
 
-			String regisrationLink = builder.scheme(scheme).host(registrationBaseurl).path("/auth").queryParam("token", token)
-					.buildAndExpand(token).toUriString();
+			String regisrationLink = builder.scheme(scheme).host(registrationBaseurl).path("/auth")
+					.queryParam("token", token).buildAndExpand(token).toUriString();
 			regisrationLink = "<p>Please use the below link to confirm the VStreem registration mail.</p>"
-					 + "<p><b><a href=\"" +regisrationLink
-					 + "\">Click here to login</a></b></p>";
-			Email email = formEmailData.formEmail(formMail, userEmail,
-					MessageConstants.REGISTRATION_CONFIRMATION_LINK, regisrationLink);
-			User newUser=userRepo.findByEmailAll(userEmail);
+					+ "<p><b><a href=\"" + regisrationLink + "\">Click here to login</a></b></p>";
+			Email email = formEmailData.formEmail(formMail, userEmail, MessageConstants.REGISTRATION_CONFIRMATION_LINK,
+					regisrationLink);
+			User newUser = userRepo.findByEmailAll(userEmail);
 			newUser.setUpdatedAt(new Date());
 			userRepo.save(newUser);
 			mailService.sendEmail(email);
-			
+
 			log.debug("sendRegisterationLink method end");
 		} catch (Exception e) {
 			log.error("Error in sending registration link : " + userEmail, e);
@@ -415,7 +413,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (!StringUtils.hasText(token)) {
 			throw new AppException(MessageConstants.INVALID_REGISTER_TOKEN);
 		}
-		if(!iVSJwtUtil.validateRegisterToken(token)) {
+		if (!iVSJwtUtil.validateRegisterToken(token)) {
 			return false;
 		}
 		String email = iVSJwtUtil.getUsernameFromToken(token);
@@ -425,7 +423,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 			user.setEmailVerified(true);
 			userRepo.save(user);
 			return true;
-		}	
+		}
 		return false;
 	}
 
