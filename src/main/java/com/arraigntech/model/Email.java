@@ -20,7 +20,7 @@ public class Email {
 
 	private Boolean status;
 
-	private String messageBody;
+	private Map messageBody;
 
 	private String templateName;
 
@@ -72,15 +72,15 @@ public class Email {
 		this.status = status;
 	}
 
-	public String getMessageBody() {
+    public Map getMessageBody() {
 		return messageBody;
 	}
 
-	public void setMessageBody(String messageBody) {
+	public void setMessageBody(Map messageBody) {
 		this.messageBody = messageBody;
 	}
 
-    public String getTemplateName() {
+	public String getTemplateName() {
         return templateName;
     }
 
