@@ -30,6 +30,10 @@ public class StreamTarget extends VSBaseModel {
 
 	@ManyToOne()
 	private Streams stream;
+	
+	public StreamTarget() {
+		
+	}
 
 	public String getStreamTargetId() {
 		return streamTargetId;

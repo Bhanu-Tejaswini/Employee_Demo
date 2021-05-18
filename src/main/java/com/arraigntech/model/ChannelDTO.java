@@ -14,6 +14,9 @@ public class ChannelDTO {
 
 	private String accessToken;
 
+	@JsonProperty("userID")
+	private String userId;
+
 	public List<ChannelItems> getItems() {
 		return items;
 	}
@@ -36,5 +39,13 @@ public class ChannelDTO {
 
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 }

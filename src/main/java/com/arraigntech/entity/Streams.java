@@ -38,7 +38,7 @@ public class Streams extends VSBaseModel {
 	@ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
 	private User user;
 	
-	@OneToMany(mappedBy="stream")
+	@OneToMany(mappedBy="stream", cascade=CascadeType.ALL)
 	private List<StreamTarget> streamTarget=new ArrayList();
 
 	public Streams() {

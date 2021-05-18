@@ -3,8 +3,7 @@
  */
 package com.arraigntech.service.impl;
 
-import static com.arraigntech.utility.PerformanceCheck.startTimer;
-import static com.arraigntech.utility.PerformanceCheck.timeTaken;
+
 
 import java.util.List;
 import java.util.Objects;
@@ -129,8 +128,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	@Override
 	public StreamUIResponse createStream(StreamUIRequest streamRequest) {
 		log.debug("create stream start");
-		
-		startTimer();
+
 		
 		IVSLiveStream liveStream = populateStreamData(streamRequest);
 		String url = baseUrl + "/live_streams";
@@ -176,8 +174,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		log.debug("create stream end");
 		StreamSourceConnectionInformation response = liveStreamResponse.getLiveStreamResponse()
 				.getSource_connection_information();
-		
-		timeTaken();
+
 		return new StreamUIResponse(response.getSdp_url(), response.getApplication_name(), response.getStream_name(),
 				streamId);
 	}
