@@ -73,11 +73,14 @@ public class ChannelServiceImpl {
 			return addFaceBookChannel(channelDTO);
 		}
 		String channelid;
-		System.out.println(channelDTO.getItems().size());
-		if (channelDTO.getItems().size() > 1) {
-			channelid = channelDTO.getItems().get(1).getSnippet().getChannelId();
-		} else {
-			channelid = channelDTO.getItems().get(0).getSnippet().getChannelId();
+		try {
+			if (channelDTO.getItems().size() > 1) {
+				channelid = channelDTO.getItems().get(1).getSnippet().getChannelId();
+			} else {
+				channelid = channelDTO.getItems().get(0).getSnippet().getChannelId();
+			}
+		} catch (IndexOutOfBoundsException e) {
+			throw new AppException(MessageConstants.CHANNEL_NOT_EXISTS);
 		}
 
 		if (channelDTO.getItems().isEmpty() || !StringUtils.hasText(channelid)) {
@@ -96,10 +99,14 @@ public class ChannelServiceImpl {
 //		}
 
 		ChannelIngestionInfo ingestionInfo;
-		if (channelDTO.getItems().size() > 1) {
-			ingestionInfo = channelDTO.getItems().get(1).getCdn().getIngestionInfo();
-		} else {
-			ingestionInfo = channelDTO.getItems().get(0).getCdn().getIngestionInfo();
+		try {
+			if (channelDTO.getItems().size() > 1) {
+				ingestionInfo = channelDTO.getItems().get(1).getCdn().getIngestionInfo();
+			} else {
+				ingestionInfo = channelDTO.getItems().get(0).getCdn().getIngestionInfo();
+			}
+		} catch (IndexOutOfBoundsException e) {
+			throw new AppException(MessageConstants.CHANNEL_NOT_EXISTS);
 		}
 
 		Channels channels = new Channels();
