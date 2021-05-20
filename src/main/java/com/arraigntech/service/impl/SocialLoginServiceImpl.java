@@ -1,4 +1,4 @@
-package com.arraigntech.service.impl;
+	package com.arraigntech.service.impl;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,7 +54,7 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 		String getEmail=socialLogin.getEmail();
 		String getUsername=socialLogin.getUsername();
 		String role=ROLE;
-		User checkUser=userRepo.findByEmail(getEmail);
+		User checkUser=userRepo.findByEmailAll(getEmail);
 		if(Objects.isNull(checkUser)) {
 			userService.register(new UserDTO(getUsername,getEmail,"Google123",Arrays.asList(role),AuthenticationProvider.GOOGLE));
 		}
@@ -73,7 +73,7 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 		String getEmail=socialLogin.getEmail();
 		String getUsername=socialLogin.getUsername();
 		String role=ROLE;
-		User checkUser=userRepo.findByEmail(getEmail);
+		User checkUser=userRepo.findByEmailAll(getEmail);
 		if(Objects.isNull(checkUser)) {
 			userService.register(new UserDTO(getUsername,getEmail,"Facebook123",Arrays.asList(role),AuthenticationProvider.FACEBOOK));
 		}

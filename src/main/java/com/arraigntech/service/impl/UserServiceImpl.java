@@ -2,7 +2,9 @@ package com.arraigntech.service.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -114,7 +116,6 @@ public class UserServiceImpl implements IVSService<User, String> {
 	@Autowired
 	private IVSJwtUtil iVSJwtUtil;
 
-	@Transactional
 	public Boolean register(UserDTO userDTO) throws AppException {
 		log.debug("register start");
 		if (Objects.isNull(userDTO) || !StringUtils.hasText(userDTO.getUsername())
@@ -155,7 +156,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		newUser.getRoles().add(role);
 		newUser.setEnabled(true);
 		userRepo.save(newUser);
-		sendRegisterationLink(userDTO.getEmail());
+//		sendRegisterationLink(userDTO.getEmail());
 		log.debug("register end");
 		return true;
 	}
@@ -300,7 +301,12 @@ public class UserServiceImpl implements IVSService<User, String> {
 		// generating the token
 		String token = jwtUtil.generateResetToken(email, resetTokenExpirationTime);
 		// saving the resettoken in the database
-		ResetToken resetToken = new ResetToken(token, newUser);
+		ResetToken resetToken=resetTokenRepo.findByUser(newUser);
+		if(Objects.nonNull(resetToken)) {
+			resetToken.setToken(token);
+		}else {
+			resetToken=new ResetToken(token, newUser);
+		}
 		resetTokenRepo.save(resetToken);
 		// Generating the password reset link
 		UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
@@ -388,13 +394,18 @@ public class UserServiceImpl implements IVSService<User, String> {
 			String token = jwtUtil.generateResetToken(userEmail, verficationMailExpirationTime);
 			UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
 
-			String regisrationLink = builder.scheme(scheme).host(registrationBaseurl).path("/auth")
-					.queryParam("token", token).buildAndExpand(token).toUriString();
-			regisrationLink = "<p>Please use the below link to confirm the VStreem registration mail.</p>"
-					+ "<p><b><a href=\"" + regisrationLink + "\">Click here to login</a></b></p>";
-			Email email = formEmailData.formEmail(formMail, userEmail, MessageConstants.REGISTRATION_CONFIRMATION_LINK,
-					regisrationLink);
-			User newUser = userRepo.findByEmailAll(userEmail);
+			String regisrationLink = builder.scheme("https").host(registrationBaseurl).path("/auth").queryParam("token", token)
+					.buildAndExpand(token).toUriString();
+//			regisrationLink = "<p>Please use the below link to confirm the VStreem registration mail.</p>"
+//					 + "<p><b><a href=\"" +regisrationLink
+//					 + "\">Click here to login</a></b></p>";
+			Map model = new HashMap();
+			model.put("userMail", userEmail);
+			model.put("regisrationLink", regisrationLink);
+			Email email = formEmailData.formEmail(formMail, userEmail,
+					MessageConstants.REGISTRATION_CONFIRMATION_LINK, regisrationLink, "VerificationEmailTemplate.ftl", model);
+			User newUser=userRepo.findByEmailAll(userEmail);
+
 			newUser.setUpdatedAt(new Date());
 			userRepo.save(newUser);
 			mailService.sendEmail(email);

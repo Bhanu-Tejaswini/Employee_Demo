@@ -59,5 +59,6 @@ public class MessageConstants {
 	public static final String NUMBER_MOBILE= "number";
 	public static final String STREAM_REMOVED="Stream has been deleted successfully.";
 	public static final String STREAM_REMOVED_FAIL="Unable to delete the stream.";
+	public static final String CHANNEL_NOT_EXISTS="Either stream is not enabled or channel does not exists.";
 	
 }

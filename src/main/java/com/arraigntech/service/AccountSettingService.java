@@ -25,7 +25,7 @@ public interface AccountSettingService {
 	
 	Boolean updateTimeZone(String name);
 	
-	Boolean updateMobileNumber(String name);
+	Boolean verifyMobileNumber();
 	
 	Boolean updateEmail(String email);
 	

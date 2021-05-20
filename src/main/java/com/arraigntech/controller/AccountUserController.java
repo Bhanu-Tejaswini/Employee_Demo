@@ -164,4 +164,18 @@ public class AccountUserController {
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.USER_DELETED).build();
 	}
+	
+	
+	@ApiOperation(value = "verify mobile number")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/verify/mobilenumber", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<Boolean> verifyMobileNumber() {
+		BaseResponse<Boolean> response = new BaseResponse<>();
+		log.debug("verify mobile number");
+		Boolean result = accountSettingService.verifyMobileNumber();
+		return response.withSuccess(true)
+						.withResponseMessage("MobileNumberVerified", result.toString());
+	}
+	
+	
 }

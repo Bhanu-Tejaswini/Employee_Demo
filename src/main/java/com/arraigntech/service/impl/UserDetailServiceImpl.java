@@ -27,7 +27,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String email) {
 		log.debug("loadUserByUsername method start");
 
-		User newUser = userRepository.findByEmail(email);
+		User newUser = userRepository.findByEmailAll(email);
 
 		if(Objects.isNull(newUser)) {
 			throw new AppException("Username or password is Invalid");
