@@ -52,8 +52,6 @@ public class User extends VSBaseModel {
 	@Column(name = "accountnonlocked")
 	@Type(type = "numeric_boolean")
 	private boolean accountNonLocked;
-	@Column(name = "mobile_number")
-	private String mobileNumber;
 	@Column
 	private String pincode;
 	@Column
@@ -292,14 +290,6 @@ public class User extends VSBaseModel {
 
 	public void setNumber(String number) {
 		this.number = number;
-	}
-
-	public String getMobileNumber() {
-		return mobileNumber;
-	}
-
-	public void setMobileNumber(String mobileNumber) {
-		this.mobileNumber = mobileNumber;
 	}
 
 	public String getCode() {
