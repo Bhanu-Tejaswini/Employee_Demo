@@ -156,7 +156,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		newUser.getRoles().add(role);
 		newUser.setEnabled(true);
 		userRepo.save(newUser);
-//		sendRegisterationLink(userDTO.getEmail());
+		sendRegisterationLink(userDTO.getEmail());
 		log.debug("register end");
 		return true;
 	}
@@ -263,9 +263,9 @@ public class UserServiceImpl implements IVSService<User, String> {
 		headers.add("Authorization", basicAuth);
 
 		String localUrl = builder.path("/oauth/token").build().toUriString();
-
 		String uri = localUrl + "?grant_type=password&username=" + login.getEmail() + "&password="
 				+ login.getPassword();
+		System.out.println(uri);
 		HttpEntity<UserToken> request = new HttpEntity<>(headers);
 		TokenResponse response = null;
 		try {

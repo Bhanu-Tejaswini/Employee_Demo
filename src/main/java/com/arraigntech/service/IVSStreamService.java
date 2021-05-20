@@ -1,5 +1,8 @@
 package com.arraigntech.service;
 
+import java.util.List;
+
+import com.arraigntech.entity.Channels;
 import com.arraigntech.streamsModel.IVSLiveStream;
 import com.arraigntech.streamsModel.IVSLiveStreamResponse;
 import com.arraigntech.streamsModel.LiveStreamState;
@@ -22,7 +25,7 @@ public interface IVSStreamService {
 	
 	public void saveStream(IVSLiveStreamResponse response);
 	
-	public boolean youtubeStream(String streamId, String outputId);
+	public void youtubeStream(List<Channels> youtubeChannels, String streamId, String outputId);
 	
 	public String createStreamTarget(StreamTargetModel streamTarget, String streamId);
 	

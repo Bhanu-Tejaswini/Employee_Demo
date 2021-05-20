@@ -74,10 +74,10 @@ public class AuthController {
 	@ApiOperation(value = "User Login")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<String> login(@RequestBody LoginDetails login, UriComponentsBuilder builder) {
+	public BaseResponse<String> login(@RequestBody LoginDetails login,UriComponentsBuilder builder) {
 		log.debug("User Login");
 		BaseResponse<String> response = new BaseResponse<>();
-		LoginResponseDTO responseMessage = userService.generateToken(login, builder);
+		LoginResponseDTO responseMessage = userService.generateToken(login,builder);
 		return responseMessage.isFlag()
 				? response.withSuccess(true)
 						.withResponseMessage("Token", responseMessage.getResult()).build()

@@ -128,7 +128,7 @@ public class ChannelServiceImpl {
 		channels.setType(ChannelTypeProvider.FACEBOOK);
 		channels.setFacebookUserId(channelDTO.getUserId());
 		channels.setAccessToken(execute(channelDTO.getAccessToken()));
-		channels.setChannelId(RandomIdGenerator.generate());
+		channels.setChannelId(RandomIdGenerator.generate(10));
 		channels.setActive(true);
 		channels.setUser(newUser);
 		channelRepo.save(channels);

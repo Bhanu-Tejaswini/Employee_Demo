@@ -1,9 +1,4 @@
-/*
- * 
- */
 package com.arraigntech.service.impl;
-
-
 
 import java.util.List;
 import java.util.Objects;
@@ -19,12 +14,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.Channels;
 import com.arraigntech.entity.StreamTarget;
 import com.arraigntech.entity.Streams;
 import com.arraigntech.entity.User;
+import com.arraigntech.model.FacebookLongLivedTokenResponse;
 import com.arraigntech.mongorepos.MongoStreamResponseRepository;
 import com.arraigntech.mongorepos.MongoStreamTargetRepository;
 import com.arraigntech.mongorepos.OutputStreamTargetRepository;
@@ -33,6 +30,8 @@ import com.arraigntech.repository.StreamRepository;
 import com.arraigntech.repository.StreamTargetRepository;
 import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.IVSStreamService;
+import com.arraigntech.streamsModel.FacebookStreamRequest;
+import com.arraigntech.streamsModel.FacebookStreamResponse;
 import com.arraigntech.streamsModel.IVSLiveStream;
 import com.arraigntech.streamsModel.IVSLiveStreamResponse;
 import com.arraigntech.streamsModel.LiveStream;
@@ -59,17 +58,21 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 
 	/** The Constant log. */
 	public static final Logger log = LoggerFactory.getLogger(IVSStreamServiceImpl.class);
-	public static final String BILLINT_MODE = "pay_as_you_go";
-	public static final String BROADCAST_LOCATION = "asia_pacific_india";
-	public static final String ENCODER = "other_webrtc";
-	public static final String TRANSCODER_TYPE = "transcoded";
-	public static final String DELIVERY_METHOD = "push";
-	public static final String DELIVERY_TYPE = "single-bitrate";
-	public static final boolean PLAYER_RESPONSIVE = true;
-	public static final boolean RECORDING = false;
-	public static final String STARTING = "starting";
-	public static final String STARTED = "started";
-	public static final String STOPPED = "stopped";
+	private static final String BILLINT_MODE = "pay_as_you_go";
+	private static final String BROADCAST_LOCATION = "asia_pacific_india";
+	private static final String ENCODER = "other_webrtc";
+	private static final String TRANSCODER_TYPE = "transcoded";
+	private static final String DELIVERY_METHOD = "push";
+	private static final String DELIVERY_TYPE = "single-bitrate";
+	private static final boolean PLAYER_RESPONSIVE = true;
+	private static final boolean RECORDING = false;
+	private static final String STARTING = "starting";
+	private static final String STATUS = "status";
+	private static final String LIVE_NOW = "LIVE_NOW";
+	private static final String ACCESS_TOKEN = "access_token";
+	public static final String RTMPS="rtmps";
+	public static final String RTMP="rtmp";
+
 	@Autowired
 	private RestTemplate restTemplate;
 
@@ -91,6 +94,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	@Value("${wsc-access-key}")
 	private String wscAccessKey;
 
+	@Value("${facebook.streamurl}")
+	private String graphUrl;
+
 	@Autowired
 	private MongoStreamResponseRepository streamResponseRepo;
 
@@ -99,10 +105,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 
 	@Autowired
 	private OutputStreamTargetRepository outputStreamTargetRepo;
-	
+
 	@Autowired
 	private StreamTargetRepository streamTargetRepo;
-	
 
 	/**
 	 * Gets the header.
@@ -129,7 +134,6 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	public StreamUIResponse createStream(StreamUIRequest streamRequest) {
 		log.debug("create stream start");
 
-		
 		IVSLiveStream liveStream = populateStreamData(streamRequest);
 		String url = baseUrl + "/live_streams";
 		MultiValueMap<String, String> headers = getHeader();
@@ -144,8 +148,8 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			throw new AppException(e.getMessage());
 		}
 
-			// saving the response data to mongodb
-			streamResponseRepo.save(liveStreamResponse);
+		// saving the response data to mongodb
+		streamResponseRepo.save(liveStreamResponse);
 		// saving necessary details to postgresql
 		saveStream(liveStreamResponse);
 
@@ -155,7 +159,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		String outputId = liveStreamResponse.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(3)
 				.getOutput_id();
 		// adds youtube channels in the target
-		youtubeStream(streamId, outputId);
+		channelsStream(streamId, outputId);
 		startStream(streamId);
 
 		boolean flag = true;
@@ -193,7 +197,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		liveStream.setDelivery_method(DELIVERY_METHOD);
 		liveStream.setDelivery_type(DELIVERY_TYPE);
 		liveStream.setEncoder(ENCODER);
-		liveStream.setName("STREAM_" + RandomIdGenerator.generate());
+		liveStream.setName("STREAM_" + RandomIdGenerator.generate(10));
 		liveStream.setPlayer_responsive(PLAYER_RESPONSIVE);
 		liveStream.setRecording(RECORDING);
 		liveStream.setTranscoder_type(TRANSCODER_TYPE);
@@ -227,38 +231,92 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			throw new AppException(e.getMessage());
 		}
 		// Also deleting the stream target
-		stream.getStreamTarget()
-				.stream()
-				.forEach(streamTarget -> deleteStreamTarget(streamTarget.getStreamTargetId()));
+		stream.getStreamTarget().stream().forEach(streamTarget -> deleteStreamTarget(streamTarget.getStreamTargetId()));
 		log.debug("deleteStream end");
 		return true;
 	}
 
+	public Boolean channelsStream(String streamId, String outputId) {
+		log.debug("channelStream method start");
+		User newUser = getUser();
+		List<Channels> youtubeChannels = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.YOUTUBE);
+		List<Channels> facebookChannels = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.FACEBOOK);
+
+		// if there are no channels added means
+		if (youtubeChannels.isEmpty() && facebookChannels.isEmpty()) {
+			deleteStream(streamId);
+			throw new AppException(MessageConstants.NO_CHANNELS_TO_STREAM);
+		}
+		youtubeStream(youtubeChannels, streamId, outputId);
+		facebookStream(facebookChannels, streamId, outputId);
+		return true;
+	}
+
+	/**
+	 * @param facebookChannels
+	 * @param streamId
+	 * @param outputId
+	 */
+	private void facebookStream(List<Channels> facebookChannels, String streamId, String outputId) {
+		log.debug("facebookStream start");
+		facebookChannels.stream().forEach(channel -> {
+			FacebookStreamRequest facebookStreamRequest = getFacebookStreamData(channel);
+			String streamTargetId = createStreamTarget(
+					new StreamTargetModel("FACEBOOK_" + RandomIdGenerator.generate(5),RTMPS,
+							facebookStreamRequest.getPrimaryUrl(), facebookStreamRequest.getStreamName()),
+					streamId);
+			addStreamTarget(streamId, outputId, streamTargetId);
+		});
+		log.debug("facebookStream end");
+	}
+
+	/**
+	 * @return
+	 */
+	private FacebookStreamRequest getFacebookStreamData(Channels channel) {
+		log.debug("getFacebookStreamData start");
+		String uri = graphUrl + channel.getFacebookUserId() + "/live_videos";
+		UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
+		String url = builder.scheme("https").host(uri).queryParam(STATUS, LIVE_NOW)
+				.queryParam(ACCESS_TOKEN, channel.getAccessToken()).build().toString();
+
+		FacebookStreamResponse facebookStreamResponse;
+		try {
+			ResponseEntity<FacebookStreamResponse> responseBody = restTemplate.exchange(url, HttpMethod.POST,
+					HttpEntity.EMPTY, FacebookStreamResponse.class);
+			facebookStreamResponse = responseBody.getBody();
+		} catch (Exception e) {
+			throw new AppException(e.getMessage());
+		}
+
+		String[] responseData = facebookStreamResponse.getStream_url().split("/");
+		FacebookStreamRequest facebookStreamRequest = new FacebookStreamRequest();
+		facebookStreamRequest.setPrimaryUrl(responseData[0] + "//" + responseData[2] + "/" + responseData[3] + "/");
+		facebookStreamRequest.setStreamName(responseData[4]);
+		log.debug("getFacebookStreamData end");
+		return facebookStreamRequest;
+	}
+
 	/**
 	 * Youtube stream.
+	 * 
+	 * @param youtubeChannels
 	 *
-	 * @param streamId the stream id
-	 * @param outputId the output id
+	 * @param streamId        the stream id
+	 * @param outputId        the output id
 	 * @return true, if successful
 	 */
 	@Override
-	public boolean youtubeStream(String streamId, String outputId) {
+	public void youtubeStream(List<Channels> youtubeChannels, String streamId, String outputId) {
 		log.debug("youtubestream start");
-		User newUser = getUser();
-		List<Channels> userChannels = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.YOUTUBE);
-		if (userChannels.isEmpty()) {
-			deleteStream(streamId);
-			throw new AppException("Please add the channels to start the live stream.");
-		}
-		userChannels
-		.stream()
-		.forEach(channel -> {
-			String streamTargetId = createStreamTarget(new StreamTargetModel("STREAMTARGET_" + RandomIdGenerator.generate(),
-					channel.getPrimaryUrl(), channel.getStreamName(), channel.getBackupUrl()), streamId);
+		youtubeChannels.stream().forEach(channel -> {
+			String streamTargetId = createStreamTarget(
+					new StreamTargetModel("YOUTUBE_" + RandomIdGenerator.generate(5),RTMP, channel.getPrimaryUrl(),
+							channel.getStreamName(), channel.getBackupUrl()),
+					streamId);
 			addStreamTarget(streamId, outputId, streamTargetId);
 		});
 		log.debug("youtubestream end");
-		return true;
 	}
 
 	/**
@@ -372,19 +430,6 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	}
 
 	/**
-	 * Gets the user.
-	 *
-	 * @return the user
-	 */
-	private User getUser() {
-		User user = userRepo.findByEmail(CommonUtils.getUser());
-		if (Objects.isNull(user)) {
-			throw new AppException(MessageConstants.USER_NOT_FOUND);
-		}
-		return user;
-	}
-
-	/**
 	 * Creates the stream target.
 	 *
 	 * @param streamTarget the stream target
@@ -395,11 +440,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		log.debug("createStreamTarget start");
 		String url = baseUrl + "/stream_targets/custom";
 		MultiValueMap<String, String> headers = getHeader();
-		streamTargetModel.setProvider("rtmp");
 		StreamTargetDTO streamTargetDTO = new StreamTargetDTO();
 		streamTargetDTO.setStreamTarget(streamTargetModel);
-		// setting the provider to rtmp
-
+		
 		HttpEntity<StreamTargetDTO> request = new HttpEntity<>(streamTargetDTO, headers);
 		StreamTargetDTO streamTargetResponse;
 		try {
@@ -416,7 +459,8 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		// saving the streamTargetId in the database
 		Streams stream = streamRepo.findByStreamId(streamId);
 		StreamTargetModel streamTarResponse = streamTargetResponse.getStreamTarget();
-		StreamTarget streamTarget = new StreamTarget(streamTarResponse.getId(), streamTarResponse.getPrimary_url(), streamTarResponse.getStream_name(), streamTarResponse.getBackup_url(), stream);
+		StreamTarget streamTarget = new StreamTarget(streamTarResponse.getId(), streamTarResponse.getPrimary_url(),
+				streamTarResponse.getStream_name(), streamTarResponse.getBackup_url(), stream);
 		streamTargetRepo.save(streamTarget);
 		log.debug("createStreaTarget end");
 		return streamTarResponse.getId();
@@ -470,5 +514,18 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		}
 		log.debug("deleteStreamTarget end");
 		return true;
+	}
+
+	/**
+	 * Gets the user.
+	 *
+	 * @return the user
+	 */
+	private User getUser() {
+		User user = userRepo.findByEmail(CommonUtils.getUser());
+		if (Objects.isNull(user)) {
+			throw new AppException(MessageConstants.USER_NOT_FOUND);
+		}
+		return user;
 	}
 }
