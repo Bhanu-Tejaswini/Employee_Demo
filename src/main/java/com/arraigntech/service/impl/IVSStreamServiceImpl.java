@@ -2,6 +2,7 @@ package com.arraigntech.service.impl;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -161,13 +163,13 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 				.getOutput_id();
 		// adds youtube channels in the target
 		channelsStream(streamId, outputId);
-		String startStreamResponse = startStream(streamId);
+		CompletableFuture.runAsync(() -> startStream(streamId));
 		
 		StreamSourceConnectionInformation response = liveStreamResponse.getLiveStreamResponse()
 				.getSource_connection_information();
 		log.debug("create stream end");
 		return new StreamUIResponse(response.getSdp_url(), response.getApplication_name(), response.getStream_name(),
-				streamId,startStreamResponse);
+				streamId,"starting");
 	}
 
 	/**
@@ -236,6 +238,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		}
 		youtubeStream(youtubeChannels, streamId, outputId);
 		facebookStream(facebookChannels, streamId, outputId);
+		
 		log.debug("channelStream method end");
 		return true;
 	}
@@ -253,7 +256,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 					new StreamTargetModel("FACEBOOK_" + RandomIdGenerator.generate(5),RTMPS,
 							facebookStreamRequest.getPrimaryUrl(), facebookStreamRequest.getStreamName(), facebookStreamRequest.getPrimaryUrl()),
 					streamId);
-			addStreamTarget(streamId, outputId, streamTargetId);
+			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId));
 		});
 		log.debug("facebookStream end");
 	}
@@ -302,7 +305,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 					new StreamTargetModel("YOUTUBE_" + RandomIdGenerator.generate(5),RTMP, channel.getPrimaryUrl(),
 							channel.getStreamName(), channel.getBackupUrl()),
 					streamId);
-			addStreamTarget(streamId, outputId, streamTargetId);
+			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId));
 		});
 		log.debug("youtubestream end");
 	}
@@ -314,7 +317,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @return the string
 	 */
 	@Override
-	public String startStream(String id) {
+	public void startStream(String id) {
 		log.debug("startStream start");
 		String url = baseUrl + "/live_streams/" + id + "/start";
 		MultiValueMap<String, String> headers = getHeader();
@@ -333,7 +336,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		;
 		streamRepo.save(stream);
 		log.debug("startStream end");
-		return response.getLiveStreamState().getState();
+//		return response.getLiveStreamState().getState();
 	}
 
 	/**
@@ -360,7 +363,6 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		// updating the status of the stream
 		Streams stream = streamRepo.findByStreamId(id);
 		stream.setActive(false);
-		;
 		streamRepo.save(stream);
 		log.debug("stopStream end");
 		return response.getLiveStreamState().getState();

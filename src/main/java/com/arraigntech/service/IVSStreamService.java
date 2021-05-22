@@ -13,7 +13,7 @@ public interface IVSStreamService {
 
 	public StreamUIResponse createStream(StreamUIRequest streamRequest);
 	
-	public String startStream(String id);
+	public void startStream(String id);
 	
 	public String stopStream(String id);
 	
