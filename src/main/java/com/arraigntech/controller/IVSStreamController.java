@@ -72,7 +72,7 @@ public class IVSStreamController {
 		log.debug("Fetch Stream status");
 		String result = streamService.fetchStreamState(id);
 		BaseResponse<String> response=new BaseResponse<>();
-		return response.withSuccess(true).withResponseMessage(MessageConstants.KEY_SUCCESS, result).build();
+		return response.withSuccess(true).withResponseMessage("status", result).build();
 	}
 
 }
