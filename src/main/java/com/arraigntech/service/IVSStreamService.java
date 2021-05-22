@@ -3,10 +3,8 @@ package com.arraigntech.service;
 import java.util.List;
 
 import com.arraigntech.entity.Channels;
-import com.arraigntech.streamsModel.IVSLiveStream;
+import com.arraigntech.streamsModel.FetchStreamUIResponse;
 import com.arraigntech.streamsModel.IVSLiveStreamResponse;
-import com.arraigntech.streamsModel.LiveStreamState;
-import com.arraigntech.streamsModel.StreamSourceConnectionInformation;
 import com.arraigntech.streamsModel.StreamTargetModel;
 import com.arraigntech.streamsModel.StreamUIRequest;
 import com.arraigntech.streamsModel.StreamUIResponse;
@@ -21,7 +19,7 @@ public interface IVSStreamService {
 	
 	public boolean deleteStream(String streamId);
 	
-	public String fetchStreamState(String id);
+	public FetchStreamUIResponse fetchStreamState(String id);
 	
 	public void saveStream(IVSLiveStreamResponse response);
 	

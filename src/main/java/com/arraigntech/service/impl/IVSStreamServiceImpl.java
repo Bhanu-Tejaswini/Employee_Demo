@@ -21,7 +21,6 @@ import com.arraigntech.entity.Channels;
 import com.arraigntech.entity.StreamTarget;
 import com.arraigntech.entity.Streams;
 import com.arraigntech.entity.User;
-import com.arraigntech.model.FacebookLongLivedTokenResponse;
 import com.arraigntech.mongorepos.MongoStreamResponseRepository;
 import com.arraigntech.mongorepos.MongoStreamTargetRepository;
 import com.arraigntech.mongorepos.OutputStreamTargetRepository;
@@ -32,6 +31,7 @@ import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.IVSStreamService;
 import com.arraigntech.streamsModel.FacebookStreamRequest;
 import com.arraigntech.streamsModel.FacebookStreamResponse;
+import com.arraigntech.streamsModel.FetchStreamUIResponse;
 import com.arraigntech.streamsModel.IVSLiveStream;
 import com.arraigntech.streamsModel.IVSLiveStreamResponse;
 import com.arraigntech.streamsModel.LiveStream;
@@ -373,7 +373,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @return the live stream state
 	 */
 	@Override
-	public String fetchStreamState(String id) {
+	public FetchStreamUIResponse fetchStreamState(String id) {
 		log.debug("fetchStreamState start");
 		String url = baseUrl + "/live_streams/" + id + "/state";
 		MultiValueMap<String, String> headers = getHeader();
@@ -389,7 +389,8 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			throw new AppException(e.getMessage());
 		}
 		log.debug("fetchstreamState end");
-		return response.getLiveStreamState().getState();
+		FetchStreamUIResponse result= new FetchStreamUIResponse(response.getLiveStreamState().getState());
+		return result;
 	}
 
 	/**
