@@ -87,6 +87,7 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 		return token.toString();
 	}
 
+	
 	public OAuth2AccessToken getAccessToken(User user) {
 		HashMap<String, String> authorizationParameters = new HashMap<String, String>();
 		authorizationParameters.put("scope", "read");

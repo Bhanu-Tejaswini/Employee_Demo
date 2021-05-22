@@ -61,5 +61,5 @@ public class MessageConstants {
 	public static final String STREAM_REMOVED_FAIL="Unable to delete the stream.";
 	public static final String CHANNEL_NOT_EXISTS="Either stream is not enabled in youtube or channel does not exists.";
 	public static final String NO_CHANNELS_TO_STREAM="Channels are not added to start the stream.";
-	
+	public static final String SOCIALMEDIA_NO_PASSWORD_RESET="Password can be reset for the social media logins";
 }

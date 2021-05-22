@@ -5,6 +5,7 @@ public class StreamUIResponse {
 	private String applicationName;
 	private String streamName;
 	private String streamId;
+	private String streamStatus;
 
 	public String getSdpUrl() {
 		return sdpUrl;
@@ -38,15 +39,25 @@ public class StreamUIResponse {
 		this.streamId = streamId;
 	}
 
-	public StreamUIResponse(String sdpUrl, String applicationName, String streamName, String streamId) {
+	public String getStreamStatus() {
+		return streamStatus;
+	}
+
+	public void setStreamStatus(String streamStatus) {
+		this.streamStatus = streamStatus;
+	}
+
+	public StreamUIResponse() {
+
+	}
+
+	public StreamUIResponse(String sdpUrl, String applicationName, String streamName, String streamId,
+			String streamStatus) {
 		super();
 		this.sdpUrl = sdpUrl;
 		this.applicationName = applicationName;
 		this.streamName = streamName;
 		this.streamId = streamId;
-	}
-	
-	public StreamUIResponse() {
-		
+		this.streamStatus = streamStatus;
 	}
 }

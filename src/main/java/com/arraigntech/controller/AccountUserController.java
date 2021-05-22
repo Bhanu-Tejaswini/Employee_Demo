@@ -30,6 +30,7 @@ import io.swagger.annotations.ApiResponses;
 public class AccountUserController {
 	
 	public static final Logger log = LoggerFactory.getLogger(AccountUserController.class);
+	public static final String MOBILENUMBER_VERIFIED="MobileNumberVerified";
 	
 	@Autowired
 	private UserServiceImpl userService;
@@ -165,17 +166,16 @@ public class AccountUserController {
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.USER_DELETED).build();
 	}
 	
-	
 	@ApiOperation(value = "verify mobile number")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-	@RequestMapping(value = "/verify/mobilenumber", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<Boolean> verifyMobileNumber() {
+	@RequestMapping(value = "verify/mobilenumber", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<Boolean> mobilenumberVerification() {
 		BaseResponse<Boolean> response = new BaseResponse<>();
-		log.debug("verify mobile number");
 		Boolean result = accountSettingService.verifyMobileNumber();
-		return response.withSuccess(true)
-						.withResponseMessage("MobileNumberVerified", result.toString());
-	}
-	
-	
+		return result?
+				response.withSuccess(true)
+				.withResponseMessage(MessageConstants.KEY_SUCCESS, "true")
+			:	response.withSuccess(true)
+				.withResponseMessage(MessageConstants.KEY_SUCCESS, "false");
+	}	
 }

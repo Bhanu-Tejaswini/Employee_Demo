@@ -72,6 +72,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	private static final String ACCESS_TOKEN = "access_token";
 	public static final String RTMPS="rtmps";
 	public static final String RTMP="rtmp";
+	private static final String STOPPED="stopped";
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -160,27 +161,13 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 				.getOutput_id();
 		// adds youtube channels in the target
 		channelsStream(streamId, outputId);
-		startStream(streamId);
-
-		boolean flag = true;
-		while (flag) {
-			LiveStreamState response = fetchStreamState(streamId);
-			if (response.getLiveStreamState().getState().equals(STARTING)) {
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					throw new AppException(e.getMessage());
-				}
-			} else {
-				flag = false;
-			}
-		}
-		log.debug("create stream end");
+		String startStreamResponse = startStream(streamId);
+		
 		StreamSourceConnectionInformation response = liveStreamResponse.getLiveStreamResponse()
 				.getSource_connection_information();
-
+		log.debug("create stream end");
 		return new StreamUIResponse(response.getSdp_url(), response.getApplication_name(), response.getStream_name(),
-				streamId);
+				streamId,startStreamResponse);
 	}
 
 	/**
@@ -217,9 +204,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		log.debug("deleteStream start");
 		Streams stream = streamRepo.findByStreamId(streamId);
 		if (stream.isActive()) {
+			if(!fetchStreamState(streamId).equals(STOPPED))
 			stopStream(streamId);
 		}
-
 		String url = baseUrl + "/live_streams/" + streamId;
 		MultiValueMap<String, String> headers = getHeader();
 
@@ -249,6 +236,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		}
 		youtubeStream(youtubeChannels, streamId, outputId);
 		facebookStream(facebookChannels, streamId, outputId);
+		log.debug("channelStream method end");
 		return true;
 	}
 
@@ -263,7 +251,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			FacebookStreamRequest facebookStreamRequest = getFacebookStreamData(channel);
 			String streamTargetId = createStreamTarget(
 					new StreamTargetModel("FACEBOOK_" + RandomIdGenerator.generate(5),RTMPS,
-							facebookStreamRequest.getPrimaryUrl(), facebookStreamRequest.getStreamName()),
+							facebookStreamRequest.getPrimaryUrl(), facebookStreamRequest.getStreamName(), facebookStreamRequest.getPrimaryUrl()),
 					streamId);
 			addStreamTarget(streamId, outputId, streamTargetId);
 		});
@@ -332,9 +320,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		MultiValueMap<String, String> headers = getHeader();
 
 		HttpEntity<String> request = new HttpEntity<>(headers);
-		String response = null;
+		LiveStreamState response;
 		try {
-			ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, request, String.class);
+			ResponseEntity<LiveStreamState> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, request, LiveStreamState.class);
 			response = responseEntity.getBody();
 		} catch (Exception e) {
 			log.error("error occurred while starting the live stream");
@@ -345,7 +333,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		;
 		streamRepo.save(stream);
 		log.debug("startStream end");
-		return response;
+		return response.getLiveStreamState().getState();
 	}
 
 	/**
@@ -361,9 +349,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		MultiValueMap<String, String> headers = getHeader();
 
 		HttpEntity<String> request = new HttpEntity<>(headers);
-		String response = null;
+		LiveStreamState response;
 		try {
-			ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, request, String.class);
+			ResponseEntity<LiveStreamState> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, request, LiveStreamState.class);
 			response = responseEntity.getBody();
 		} catch (Exception e) {
 			log.error("error occurred while stoping the live stream");
@@ -375,7 +363,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		;
 		streamRepo.save(stream);
 		log.debug("stopStream end");
-		return response;
+		return response.getLiveStreamState().getState();
 	}
 
 	/**
@@ -385,7 +373,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @return the live stream state
 	 */
 	@Override
-	public LiveStreamState fetchStreamState(String id) {
+	public String fetchStreamState(String id) {
 		log.debug("fetchStreamState start");
 		String url = baseUrl + "/live_streams/" + id + "/state";
 		MultiValueMap<String, String> headers = getHeader();
@@ -401,7 +389,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			throw new AppException(e.getMessage());
 		}
 		log.debug("fetchstreamState end");
-		return response;
+		return response.getLiveStreamState().getState();
 	}
 
 	/**

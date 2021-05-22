@@ -35,7 +35,7 @@ import com.arraigntech.utility.RandomIdGenerator;
 public class ChannelServiceImpl {
 
 	private static final String CLIENT_ID = "client_id";
-	private static final String APP_SECRET = "app_secret";
+//	private static final String APP_SECRET = "app_secret";
 	private static final String GRAPH_API_URL = "graph.facebook.com/oauth/access_token";
 	private static final String FB_EXCHANGE_TOKEN1 = "fb_exchange_token";
 	private static final String FB_EXCHANGE_TOKEN = "fb_exchange_token";
@@ -239,12 +239,16 @@ public class ChannelServiceImpl {
 		UpdateTitleDTO updateTitleDTO = new UpdateTitleDTO();
 		updateTitleDTO.setTitle(data.getTitle());
 		updateTitleDTO.setDescription(data.getDescription());
+		updateTitleDTO.setChannelId(channelId);
 		return updateTitleDTO;
 	}
 
 	public boolean updateAllTitles(UpdateAllTitleDTO updateAllTitleDTO) {
 		User newUser = getUser();
 		List<Channels> channelList = channelRepo.findByUser(newUser);
+		if(channelList.isEmpty()) {
+			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
+		}
 		channelList.forEach(channel -> {
 			addUpdateTitle(new UpdateTitleDTO(channel.getChannelId(), updateAllTitleDTO.getTitle(),
 					updateAllTitleDTO.getDescription()));

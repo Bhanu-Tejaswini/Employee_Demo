@@ -20,6 +20,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
@@ -94,10 +95,19 @@ public class UserServiceImpl implements IVSService<User, String> {
 
 	@Value("${reset-password-scheme}")
 	private String scheme;
+	
+	@Value("${app.scheme}")
+	private String appScheme;
+	
+	@Value("${app.schemeHost}")
+	private String appSchemeHost;
 
 	@Autowired
 	private ResetTokenRepository resetTokenRepo;
 
+	@Autowired
+	private SocialLoginServiceImpl socialLoginService;
+	
 	@Autowired
 	private FormEmailData formEmailData;
 
@@ -232,7 +242,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		return MessageConstants.PASSWORDMESSAGE;
 	}
 
-	public LoginResponseDTO generateToken(LoginDetails login, UriComponentsBuilder builder) throws AppException {
+	public LoginResponseDTO generateToken(LoginDetails login) throws AppException {
 		log.debug("generateToken start");
 		if (!StringUtils.hasText(login.getEmail()) || !StringUtils.hasText(login.getPassword())) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
@@ -252,32 +262,40 @@ public class UserServiceImpl implements IVSService<User, String> {
 				return new LoginResponseDTO(MessageConstants.TOKEN_EXPIRED_RESENDMAIL, false);
 			}
 		}
-		if (newUser.isActive() == false) {
+		if (!newUser.isActive()) {
 			throw new AppException(MessageConstants.ACCOUNT_DISABLED);
 		}
 		if (!passwordEncoder.matches(login.getPassword(), newUser.getPassword())) {
 			throw new AppException(MessageConstants.WRONG_PASSWORD);
 		}
-
-		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		headers.add("Authorization", basicAuth);
-
-		String localUrl = builder.path("/oauth/token").build().toUriString();
-		String uri = localUrl + "?grant_type=password&username=" + login.getEmail() + "&password="
-				+ login.getPassword();
-		System.out.println(uri);
-		HttpEntity<UserToken> request = new HttpEntity<>(headers);
-		TokenResponse response = null;
-		try {
-			ResponseEntity<TokenResponse> reponseEntity = restTemplate.exchange(uri, HttpMethod.POST, request,
-					TokenResponse.class);
-			response = reponseEntity.getBody();
-		} catch (Exception e) {
-			log.error("Failed to get access token for the given credentials");
-			throw new AppException(e.getMessage());
-		}
+		
+		
+		OAuth2AccessToken accessToken = socialLoginService.getAccessToken(newUser);
+//		UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
+//		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+//		headers.add("Authorization", basicAuth);
+//
+//		String localUrl = builder
+//				.scheme(appScheme)
+//				.host(appSchemeHost)
+//				.path("/oauth/token").build().toUriString();
+//		System.out.println(localUrl);
+//		String uri = localUrl + "?grant_type=password&username=" + login.getEmail() + "&password="
+//				+ login.getPassword();
+//		System.out.println(uri);
+//		HttpEntity<UserToken> request = new HttpEntity<>(headers);
+//		TokenResponse response = null;
+//		try {
+//			ResponseEntity<TokenResponse> reponseEntity = restTemplate.exchange(uri, HttpMethod.POST, request,
+//					TokenResponse.class);
+//			response = reponseEntity.getBody();
+//		} catch (Exception e) {
+//			log.error("Failed to get access token for the given credentials");
+//			throw new AppException(e.getMessage());
+//		}
 		log.debug("generateToken end");
-		return new LoginResponseDTO(response.getAccess_token(), true);
+		return new LoginResponseDTO(accessToken.toString(), true);
+		
 	}
 
 	@Override
@@ -294,9 +312,15 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (!StringUtils.hasText(email) || !emailValidator.isValidEmail(email)) {
 			throw new AppException(MessageConstants.INVALID_EMAIL);
 		}
-		User newUser = userRepo.findByEmail(email);
+		User newUser = userRepo.findByEmailAll(email);
 		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
+		}
+		if(!newUser.isActive()) {
+			throw new AppException(MessageConstants.ACCOUNT_DISABLED);	
+		}
+		if(StringUtils.hasText(newUser.getProvider().toString())) {
+			throw new AppException(MessageConstants.SOCIALMEDIA_NO_PASSWORD_RESET);
 		}
 		// generating the token
 		String token = jwtUtil.generateResetToken(email, resetTokenExpirationTime);

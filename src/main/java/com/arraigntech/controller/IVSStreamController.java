@@ -49,11 +49,11 @@ public class IVSStreamController {
 		return response.withSuccess(true).withResponseMessage(MessageConstants.KEY_SUCCESS, result).build();
 	}
 	
-	@ApiOperation(value = "Stop the live stream")
+	@ApiOperation(value = "delete the live stream")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/{streamId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<String> deleteStream(@PathVariable("streamId") String id) {
-		log.debug("Stop the live stream");
+		log.debug("delete the live stream");
 		boolean result = streamService.deleteStream(id);
 		BaseResponse<String> response=new BaseResponse<>();
 		return result
@@ -63,6 +63,16 @@ public class IVSStreamController {
 						.withResponseMessage(MessageConstants.KEY_FAIL, MessageConstants.STREAM_REMOVED_FAIL)
 						.build();
 
+	}
+	
+	@ApiOperation(value = "Fetch Stream status")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/status/{streamId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<String> fetchStreamStatus(@PathVariable("streamId") String id) {
+		log.debug("Fetch Stream status");
+		String result = streamService.fetchStreamState(id);
+		BaseResponse<String> response=new BaseResponse<>();
+		return response.withSuccess(true).withResponseMessage(MessageConstants.KEY_SUCCESS, result).build();
 	}
 
 }

@@ -21,7 +21,7 @@ public interface IVSStreamService {
 	
 	public boolean deleteStream(String streamId);
 	
-	public LiveStreamState fetchStreamState(String id);
+	public String fetchStreamState(String id);
 	
 	public void saveStream(IVSLiveStreamResponse response);
 	

@@ -59,14 +59,6 @@ public class StreamTargetModel {
 		this.backup_url = backup_url;
 	}
 
-	public StreamTargetModel(String name, String provider, String primary_url, String stream_name) {
-		super();
-		this.name = name;
-		this.provider = provider;
-		this.primary_url = primary_url;
-		this.stream_name = stream_name;
-	}
-
 	public StreamTargetModel(String name, String provider, String primary_url, String stream_name,
 			String backup_url) {
 		super();
