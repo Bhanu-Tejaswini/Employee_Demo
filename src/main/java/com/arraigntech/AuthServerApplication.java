@@ -3,6 +3,8 @@ package com.arraigntech;
 
 import java.util.concurrent.Executor;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -12,6 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.arraigntech.service.impl.IVSStreamServiceImpl;
 
@@ -30,13 +33,19 @@ public class AuthServerApplication{
     public Executor workExecutor() {
         ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
         threadPoolTaskExecutor.setThreadNamePrefix("Async-");
-        threadPoolTaskExecutor.setCorePoolSize(3);
-        threadPoolTaskExecutor.setMaxPoolSize(3);
+        threadPoolTaskExecutor.setCorePoolSize(Runtime.getRuntime().availableProcessors());
+        threadPoolTaskExecutor.setMaxPoolSize(10);
         threadPoolTaskExecutor.setQueueCapacity(600);
         threadPoolTaskExecutor.afterPropertiesSet();
+        threadPoolTaskExecutor.initialize();
         log.info("ThreadPoolTaskExecutor set");
         return threadPoolTaskExecutor;
     }
+	
+	@PostConstruct
+	void setGlobalSecurityContext() {
+	  SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+	}
 	
 	public static void main(String[] args) {
 		SpringApplication.run(AuthServerApplication.class, args);

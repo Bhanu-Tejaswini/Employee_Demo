@@ -3,6 +3,7 @@ package com.arraigntech.service;
 import java.util.List;
 
 import com.arraigntech.entity.Channels;
+import com.arraigntech.entity.StreamTarget;
 import com.arraigntech.streamsModel.FetchStreamUIResponse;
 import com.arraigntech.streamsModel.IVSLiveStreamResponse;
 import com.arraigntech.streamsModel.StreamTargetModel;

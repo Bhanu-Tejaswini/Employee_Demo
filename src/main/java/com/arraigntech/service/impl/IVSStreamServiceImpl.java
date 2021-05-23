@@ -3,6 +3,7 @@ package com.arraigntech.service.impl;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -79,6 +79,8 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	@Autowired
 	private RestTemplate restTemplate;
 
+	@Autowired
+	private Executor executorService;
 	@Autowired
 	private StreamRepository streamRepo;
 
@@ -236,8 +238,8 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			deleteStream(streamId);
 			throw new AppException(MessageConstants.NO_CHANNELS_TO_STREAM);
 		}
-		youtubeStream(youtubeChannels, streamId, outputId);
-		facebookStream(facebookChannels, streamId, outputId);
+		CompletableFuture.runAsync(() -> youtubeStream(youtubeChannels, streamId, outputId),executorService);
+		CompletableFuture.runAsync(() -> facebookStream(facebookChannels, streamId, outputId),executorService);
 		
 		log.debug("channelStream method end");
 		return true;
@@ -413,7 +415,6 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		stream.setSourceStreamName(
 				response.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(0).getName());
 		stream.setActive(true);
-		;
 		stream.setStreamUrl(response.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(0).getUrl());
 		stream.setUser(newUser);
 		streamRepo.save(stream);
@@ -452,7 +453,11 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		StreamTargetModel streamTarResponse = streamTargetResponse.getStreamTarget();
 		StreamTarget streamTarget = new StreamTarget(streamTarResponse.getId(), streamTarResponse.getPrimary_url(),
 				streamTarResponse.getStream_name(), streamTarResponse.getBackup_url(), stream);
-		streamTargetRepo.save(streamTarget);
+		try {
+		streamTargetRepo.save(streamTarget);}
+		catch(Exception e) {
+			System.out.println(e);
+		}
 		log.debug("createStreaTarget end");
 		return streamTarResponse.getId();
 	}
