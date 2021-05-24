@@ -2,6 +2,8 @@ package com.arraigntech.service.impl;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +23,6 @@ import com.arraigntech.entity.Channels;
 import com.arraigntech.entity.StreamTarget;
 import com.arraigntech.entity.Streams;
 import com.arraigntech.entity.User;
-import com.arraigntech.model.FacebookLongLivedTokenResponse;
 import com.arraigntech.mongorepos.MongoStreamResponseRepository;
 import com.arraigntech.mongorepos.MongoStreamTargetRepository;
 import com.arraigntech.mongorepos.OutputStreamTargetRepository;
@@ -32,6 +33,7 @@ import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.IVSStreamService;
 import com.arraigntech.streamsModel.FacebookStreamRequest;
 import com.arraigntech.streamsModel.FacebookStreamResponse;
+import com.arraigntech.streamsModel.FetchStreamUIResponse;
 import com.arraigntech.streamsModel.IVSLiveStream;
 import com.arraigntech.streamsModel.IVSLiveStreamResponse;
 import com.arraigntech.streamsModel.LiveStream;
@@ -77,6 +79,8 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	@Autowired
 	private RestTemplate restTemplate;
 
+	@Autowired
+	private Executor executorService;
 	@Autowired
 	private StreamRepository streamRepo;
 
@@ -161,13 +165,13 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 				.getOutput_id();
 		// adds youtube channels in the target
 		channelsStream(streamId, outputId);
-		String startStreamResponse = startStream(streamId);
+		CompletableFuture.runAsync(() -> startStream(streamId));
 		
 		StreamSourceConnectionInformation response = liveStreamResponse.getLiveStreamResponse()
 				.getSource_connection_information();
 		log.debug("create stream end");
 		return new StreamUIResponse(response.getSdp_url(), response.getApplication_name(), response.getStream_name(),
-				streamId,startStreamResponse);
+				streamId,"starting");
 	}
 
 	/**
@@ -234,8 +238,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			deleteStream(streamId);
 			throw new AppException(MessageConstants.NO_CHANNELS_TO_STREAM);
 		}
-		youtubeStream(youtubeChannels, streamId, outputId);
-		facebookStream(facebookChannels, streamId, outputId);
+		CompletableFuture.runAsync(() -> youtubeStream(youtubeChannels, streamId, outputId),executorService);
+		CompletableFuture.runAsync(() -> facebookStream(facebookChannels, streamId, outputId),executorService);
+		
 		log.debug("channelStream method end");
 		return true;
 	}
@@ -253,7 +258,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 					new StreamTargetModel("FACEBOOK_" + RandomIdGenerator.generate(5),RTMPS,
 							facebookStreamRequest.getPrimaryUrl(), facebookStreamRequest.getStreamName(), facebookStreamRequest.getPrimaryUrl()),
 					streamId);
-			addStreamTarget(streamId, outputId, streamTargetId);
+			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId));
 		});
 		log.debug("facebookStream end");
 	}
@@ -302,7 +307,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 					new StreamTargetModel("YOUTUBE_" + RandomIdGenerator.generate(5),RTMP, channel.getPrimaryUrl(),
 							channel.getStreamName(), channel.getBackupUrl()),
 					streamId);
-			addStreamTarget(streamId, outputId, streamTargetId);
+			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId));
 		});
 		log.debug("youtubestream end");
 	}
@@ -314,7 +319,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @return the string
 	 */
 	@Override
-	public String startStream(String id) {
+	public void startStream(String id) {
 		log.debug("startStream start");
 		String url = baseUrl + "/live_streams/" + id + "/start";
 		MultiValueMap<String, String> headers = getHeader();
@@ -333,7 +338,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		;
 		streamRepo.save(stream);
 		log.debug("startStream end");
-		return response.getLiveStreamState().getState();
+//		return response.getLiveStreamState().getState();
 	}
 
 	/**
@@ -360,7 +365,6 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		// updating the status of the stream
 		Streams stream = streamRepo.findByStreamId(id);
 		stream.setActive(false);
-		;
 		streamRepo.save(stream);
 		log.debug("stopStream end");
 		return response.getLiveStreamState().getState();
@@ -373,7 +377,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @return the live stream state
 	 */
 	@Override
-	public String fetchStreamState(String id) {
+	public FetchStreamUIResponse fetchStreamState(String id) {
 		log.debug("fetchStreamState start");
 		String url = baseUrl + "/live_streams/" + id + "/state";
 		MultiValueMap<String, String> headers = getHeader();
@@ -389,7 +393,8 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			throw new AppException(e.getMessage());
 		}
 		log.debug("fetchstreamState end");
-		return response.getLiveStreamState().getState();
+		FetchStreamUIResponse result= new FetchStreamUIResponse(response.getLiveStreamState().getState());
+		return result;
 	}
 
 	/**
@@ -410,7 +415,6 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		stream.setSourceStreamName(
 				response.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(0).getName());
 		stream.setActive(true);
-		;
 		stream.setStreamUrl(response.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(0).getUrl());
 		stream.setUser(newUser);
 		streamRepo.save(stream);
@@ -449,7 +453,11 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		StreamTargetModel streamTarResponse = streamTargetResponse.getStreamTarget();
 		StreamTarget streamTarget = new StreamTarget(streamTarResponse.getId(), streamTarResponse.getPrimary_url(),
 				streamTarResponse.getStream_name(), streamTarResponse.getBackup_url(), stream);
-		streamTargetRepo.save(streamTarget);
+		try {
+		streamTargetRepo.save(streamTarget);}
+		catch(Exception e) {
+			System.out.println(e);
+		}
 		log.debug("createStreaTarget end");
 		return streamTarResponse.getId();
 	}

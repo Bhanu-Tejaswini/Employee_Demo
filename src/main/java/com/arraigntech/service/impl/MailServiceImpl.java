@@ -45,7 +45,7 @@ public class MailServiceImpl implements MailService {
 			throws UnsupportedEncodingException, MessagingException {
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
-		helper.setFrom(FROM, "Vstream Support");
+		helper.setFrom(FROM, "Vstreem Support");
 		helper.setTo(email);
 		helper.setSubject(SUBJECT);
 
@@ -71,7 +71,7 @@ public class MailServiceImpl implements MailService {
 		helper.setTo(email.getTo());
 		helper.setText(html, true);
 		helper.setSubject(email.getSubject());
-		helper.setFrom(email.getFrom(),"Vstream Support");
+		helper.setFrom(email.getFrom(),"Vstreem Support");
 		mailSender.send(message);
 		log.debug("Sending email to {} ended", email.getTo());
 		return Boolean.TRUE;

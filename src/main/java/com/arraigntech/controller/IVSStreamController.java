@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.arraigntech.model.response.BaseResponse;
 import com.arraigntech.service.IVSStreamService;
+import com.arraigntech.streamsModel.FetchStreamUIResponse;
 import com.arraigntech.streamsModel.StreamUIRequest;
 import com.arraigntech.streamsModel.StreamUIResponse;
 import com.arraigntech.utility.MessageConstants;
@@ -68,11 +69,9 @@ public class IVSStreamController {
 	@ApiOperation(value = "Fetch Stream status")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/status/{streamId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<String> fetchStreamStatus(@PathVariable("streamId") String id) {
+	public BaseResponse<FetchStreamUIResponse> fetchStreamStatus(@PathVariable("streamId") String id) {
 		log.debug("Fetch Stream status");
-		String result = streamService.fetchStreamState(id);
-		BaseResponse<String> response=new BaseResponse<>();
-		return response.withSuccess(true).withResponseMessage(MessageConstants.KEY_SUCCESS, result).build();
+		return new BaseResponse<FetchStreamUIResponse>(streamService.fetchStreamState(id)).withSuccess(true).build();
 	}
 
 }
