@@ -89,6 +89,9 @@ public class User extends VSBaseModel {
 	@Column(name = "email_verified")
 	@Type(type = "numeric_boolean")
 	private boolean emailVerified;
+	
+	@Column(name = "login_count", nullable=true)
+	private int loginCount;
 
 	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -299,4 +302,14 @@ public class User extends VSBaseModel {
 	public void setCode(String code) {
 		this.code = code;
 	}
+
+	public int getLoginCount() {
+		return loginCount;
+	}
+
+	public void setLoginCount(int loginCount) {
+		this.loginCount = loginCount;
+	}
+	
+	
 }

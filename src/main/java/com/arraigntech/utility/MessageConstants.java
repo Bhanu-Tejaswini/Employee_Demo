@@ -63,4 +63,7 @@ public class MessageConstants {
 	public static final String NO_CHANNELS_TO_STREAM="Channels are not added to start the stream.";
 	public static final String SOCIALMEDIA_NO_PASSWORD_RESET="Password can be reset for the social media logins";
 	public static final String FACEBOOK_USERID_NOTFOUND="facebook user id is not available for the user";
+	public static final String WWELCOME_TEMPLATE_SUBJECT="Welcome to Vstreem";
+	public static final String RESET_PASSWORD_LINK="Reset Password link";
+
 }
