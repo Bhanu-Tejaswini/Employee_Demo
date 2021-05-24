@@ -1,5 +1,6 @@
 package com.arraigntech.service.impl;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,6 +55,8 @@ import com.arraigntech.utility.FormEmailData;
 import com.arraigntech.utility.IVSJwtUtil;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.utility.PasswordConstraintValidator;
+
+import freemarker.template.TemplateException;
 
 @Service
 public class UserServiceImpl implements IVSService<User, String> {
@@ -125,6 +128,13 @@ public class UserServiceImpl implements IVSService<User, String> {
 
 	@Autowired
 	private IVSJwtUtil iVSJwtUtil;
+	
+	public static final String vstreemImage= "https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/vestreem_logo.png";
+	public static final String welcomeImage= "https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/welcome.jpg";
+	public static final String galleryImage= "https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/gallery.png";
+	public static final String databondImage= "https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/databond.png";
+	public static final String combistreemImage= "https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/combistreem.png";
+	public static final String catalogueImage= "https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/combistreem.png";
 
 	public Boolean register(UserDTO userDTO) throws AppException {
 		log.debug("register start");
@@ -251,6 +261,11 @@ public class UserServiceImpl implements IVSService<User, String> {
 			throw new AppException(MessageConstants.INVALID_EMAIL);
 		}
 		User newUser = userRepo.findByEmailAll(login.getEmail());
+		if(newUser.getLoginCount() == 0) {
+			newUser.setLoginCount(1);
+		} else {
+			newUser.setLoginCount(2);
+		}
 		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
@@ -269,6 +284,13 @@ public class UserServiceImpl implements IVSService<User, String> {
 			throw new AppException(MessageConstants.WRONG_PASSWORD);
 		}
 		
+		if(newUser.isEmailVerified() && newUser.getLoginCount() ==1) {
+			try {
+				getWelcomeMailTemplateDetails(login.getEmail());
+			} catch (MessagingException | IOException | TemplateException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		OAuth2AccessToken accessToken = socialLoginService.getAccessToken(newUser);
 //		UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
@@ -336,11 +358,17 @@ public class UserServiceImpl implements IVSService<User, String> {
 		UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
 		String passwordResetLink = builder.scheme(scheme).host(baseUrl).path("/auth/setPassword")
 				.queryParam("token", token).buildAndExpand(token).toUriString();
+		Map model = new HashMap();
+		model.put("userMail", email);
+		model.put("regisrationLink", passwordResetLink);
+		model.put("vstreemImage", vstreemImage);
+		Email emailDetails = formEmailData.formEmail(formMail, email,
+				MessageConstants.RESET_PASSWORD_LINK, passwordResetLink, "ResetEmailTemplate.html", model);
 		// Sending the mail with password reset link
 		try {
-			mailService.sendEmail(email, passwordResetLink);
-		} catch (UnsupportedEncodingException | MessagingException e) {
-			throw new AppException(e.getMessage());
+			mailService.sendEmail(emailDetails);
+		} catch (MessagingException | IOException | TemplateException e) {
+			e.printStackTrace();
 		}
 		log.debug("forgotPassword end");
 		return true;
@@ -420,14 +448,12 @@ public class UserServiceImpl implements IVSService<User, String> {
 
 			String regisrationLink = builder.scheme("https").host(registrationBaseurl).path("/auth").queryParam("token", token)
 					.buildAndExpand(token).toUriString();
-//			regisrationLink = "<p>Please use the below link to confirm the VStreem registration mail.</p>"
-//					 + "<p><b><a href=\"" +regisrationLink
-//					 + "\">Click here to login</a></b></p>";
 			Map model = new HashMap();
 			model.put("userMail", userEmail);
 			model.put("regisrationLink", regisrationLink);
+			model.put("vstreemImage", vstreemImage);
 			Email email = formEmailData.formEmail(formMail, userEmail,
-					MessageConstants.REGISTRATION_CONFIRMATION_LINK, regisrationLink, "VerificationEmailTemplate.ftl", model);
+					MessageConstants.REGISTRATION_CONFIRMATION_LINK, regisrationLink, "VerificationEmailTemplate.html", model);
 			User newUser=userRepo.findByEmailAll(userEmail);
 
 			newUser.setUpdatedAt(new Date());
@@ -435,6 +461,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 			mailService.sendEmail(email);
 
 			log.debug("sendRegisterationLink method end");
+			getWelcomeMailTemplateDetails(userEmail);
 		} catch (Exception e) {
 			log.error("Error in sending registration link : " + userEmail, e);
 			throw new AppException("Something went wrong, Please try again later.");
@@ -469,4 +496,24 @@ public class UserServiceImpl implements IVSService<User, String> {
 		}
 		return user;
 	}
+	
+	public boolean getWelcomeMailTemplateDetails(String userEmail) throws MessagingException, IOException, TemplateException {
+	    log.debug("getWelcomeMailTemplateDetails method start");
+		Map model = new HashMap();
+		model.put("userMail", userEmail);
+		model.put("vstreemImage", vstreemImage);
+		model.put("welcomeImage", welcomeImage);
+		model.put("galleryImage", galleryImage);
+		model.put("combistreemImage", combistreemImage);
+		model.put("databondImage", databondImage);
+		model.put("catalogueImage", catalogueImage);
+		Email email = formEmailData.formEmail(formMail, userEmail,
+				MessageConstants.WWELCOME_TEMPLATE_SUBJECT, null, "WelcomeTemplate.html", model);
+		mailService.sendEmail(email);
+		log.debug("getWelcomeMailTemplateDetails method end");
+		
+		return true;
+		
+	}
+	
 }
