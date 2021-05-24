@@ -95,10 +95,10 @@ public class UserServiceImpl implements IVSService<User, String> {
 
 	@Value("${reset-password-scheme}")
 	private String scheme;
-	
+
 	@Value("${app.scheme}")
 	private String appScheme;
-	
+
 	@Value("${app.schemeHost}")
 	private String appSchemeHost;
 
@@ -107,7 +107,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 
 	@Autowired
 	private SocialLoginServiceImpl socialLoginService;
-	
+
 	@Autowired
 	private FormEmailData formEmailData;
 
@@ -166,7 +166,11 @@ public class UserServiceImpl implements IVSService<User, String> {
 		newUser.getRoles().add(role);
 		newUser.setEnabled(true);
 		userRepo.save(newUser);
-		sendRegisterationLink(userDTO.getEmail());
+		if (Objects.isNull(newUser.getProvider())) {
+			sendRegisterationLink(userDTO.getEmail());
+		} else {
+			welcomeMail(userDTO.getEmail(),userDTO.getPassword());
+		}
 		log.debug("register end");
 		return true;
 	}
@@ -268,8 +272,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (!passwordEncoder.matches(login.getPassword(), newUser.getPassword())) {
 			throw new AppException(MessageConstants.WRONG_PASSWORD);
 		}
-		
-		
+
 		OAuth2AccessToken accessToken = socialLoginService.getAccessToken(newUser);
 //		UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
 //		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
@@ -295,7 +298,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 //		}
 		log.debug("generateToken end");
 		return new LoginResponseDTO(accessToken.toString(), true);
-		
+
 	}
 
 	@Override
@@ -316,20 +319,17 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		if(!newUser.isActive()) {
-			throw new AppException(MessageConstants.ACCOUNT_DISABLED);	
-		}
-		if(StringUtils.hasText(newUser.getProvider().toString())) {
-			throw new AppException(MessageConstants.SOCIALMEDIA_NO_PASSWORD_RESET);
+		if (!newUser.isActive()) {
+			throw new AppException(MessageConstants.ACCOUNT_DISABLED);
 		}
 		// generating the token
 		String token = jwtUtil.generateResetToken(email, resetTokenExpirationTime);
 		// saving the resettoken in the database
-		ResetToken resetToken=resetTokenRepo.findByUser(newUser);
-		if(Objects.nonNull(resetToken)) {
+		ResetToken resetToken = resetTokenRepo.findByUser(newUser);
+		if (Objects.nonNull(resetToken)) {
 			resetToken.setToken(token);
-		}else {
-			resetToken=new ResetToken(token, newUser);
+		} else {
+			resetToken = new ResetToken(token, newUser);
 		}
 		resetTokenRepo.save(resetToken);
 		// Generating the password reset link
@@ -418,17 +418,17 @@ public class UserServiceImpl implements IVSService<User, String> {
 			String token = jwtUtil.generateResetToken(userEmail, verficationMailExpirationTime);
 			UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
 
-			String regisrationLink = builder.scheme("https").host(registrationBaseurl).path("/auth").queryParam("token", token)
-					.buildAndExpand(token).toUriString();
+			String regisrationLink = builder.scheme("https").host(registrationBaseurl).path("/auth")
+					.queryParam("token", token).buildAndExpand(token).toUriString();
 //			regisrationLink = "<p>Please use the below link to confirm the VStreem registration mail.</p>"
 //					 + "<p><b><a href=\"" +regisrationLink
 //					 + "\">Click here to login</a></b></p>";
 			Map model = new HashMap();
 			model.put("userMail", userEmail);
 			model.put("regisrationLink", regisrationLink);
-			Email email = formEmailData.formEmail(formMail, userEmail,
-					MessageConstants.REGISTRATION_CONFIRMATION_LINK, regisrationLink, "VerificationEmailTemplate.ftl", model);
-			User newUser=userRepo.findByEmailAll(userEmail);
+			Email email = formEmailData.formEmail(formMail, userEmail, MessageConstants.REGISTRATION_CONFIRMATION_LINK,
+					regisrationLink, "VerificationEmailTemplate.ftl", model);
+			User newUser = userRepo.findByEmailAll(userEmail);
 
 			newUser.setUpdatedAt(new Date());
 			userRepo.save(newUser);
@@ -460,6 +460,15 @@ public class UserServiceImpl implements IVSService<User, String> {
 			return true;
 		}
 		return false;
+	}
+
+	public Boolean welcomeMail(String email, String password) {
+		try {
+			mailService.sendWelcomeEmail(email, password);
+		} catch (Exception e) {
+			throw new AppException("Something went wrong while sending mail, Please try again later.");
+		}
+		return true;
 	}
 
 	private User getUser() {

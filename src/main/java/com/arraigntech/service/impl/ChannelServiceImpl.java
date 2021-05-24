@@ -124,6 +124,9 @@ public class ChannelServiceImpl {
 
 	private boolean addFaceBookChannel(ChannelDTO channelDTO) {
 		Channels channels = new Channels();
+		if(!StringUtils.hasText(channelDTO.getUserId())) {
+			throw new AppException(MessageConstants.FACEBOOK_USERID_NOTFOUND);
+		}
 		User newUser = getUser();
 		channels.setType(ChannelTypeProvider.FACEBOOK);
 		channels.setFacebookUserId(channelDTO.getUserId());

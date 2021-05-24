@@ -25,6 +25,7 @@ import com.arraigntech.repository.RoleRepository;
 import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.SocialLoginService;
 import com.arraigntech.utility.AuthenticationProvider;
+import com.arraigntech.utility.RandomPasswordGenerator;
 
 @Service
 public class SocialLoginServiceImpl implements SocialLoginService {
@@ -56,7 +57,12 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 		String role=ROLE;
 		User checkUser=userRepo.findByEmailAll(getEmail);
 		if(Objects.isNull(checkUser)) {
-			userService.register(new UserDTO(getUsername,getEmail,"Google123",Arrays.asList(role),AuthenticationProvider.GOOGLE));
+			userService.register(new UserDTO(getUsername,getEmail,RandomPasswordGenerator.generatePassword(),Arrays.asList(role),AuthenticationProvider.GOOGLE));
+			User user = userRepo.findByEmailAll(getEmail);
+			user.setActive(true);
+			user.setEmailVerified(true);
+			userRepo.save(user);
+			
 		}
 		User newUser = new User();
 		newUser.setUsername(getUsername);
@@ -75,7 +81,11 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 		String role=ROLE;
 		User checkUser=userRepo.findByEmailAll(getEmail);
 		if(Objects.isNull(checkUser)) {
-			userService.register(new UserDTO(getUsername,getEmail,"Facebook123",Arrays.asList(role),AuthenticationProvider.FACEBOOK));
+			userService.register(new UserDTO(getUsername,getEmail,RandomPasswordGenerator.generatePassword(),Arrays.asList(role),AuthenticationProvider.FACEBOOK));
+			User user = userRepo.findByEmailAll(getEmail);
+			user.setActive(true);
+			user.setEmailVerified(true);
+			userRepo.save(user);
 		}
 		User newUser = new User();
 		newUser.setUsername(getUsername);

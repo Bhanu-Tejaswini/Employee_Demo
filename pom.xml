@@ -87,12 +87,12 @@
 			<artifactId>mongodb-driver</artifactId>
 			<version>3.12.7</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.passay</groupId>
 			<artifactId>passay</artifactId>
-			<version>1.0</version>
+			<version>1.6.0</version>
 		</dependency>
+
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
@@ -117,9 +117,9 @@
 			<version>3.11</version>
 		</dependency>
 		<dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-        </dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
