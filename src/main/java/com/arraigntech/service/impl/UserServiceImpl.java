@@ -129,12 +129,12 @@ public class UserServiceImpl implements IVSService<User, String> {
 	@Autowired
 	private IVSJwtUtil iVSJwtUtil;
 	
-	public static final String vstreemImage= "https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/vestreem_logo.png";
-	public static final String welcomeImage= "https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/welcome.jpg";
-	public static final String galleryImage= "https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/gallery.png";
-	public static final String databondImage= "https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/databond.png";
-	public static final String combistreemImage= "https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/combistreem.png";
-	public static final String catalogueImage= "https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/combistreem.png";
+	public static final String vstreemImage= "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/vestreem_logo.png";
+	public static final String welcomeImage= "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/welcome.jpg";
+	public static final String galleryImage= "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/gallery.png";
+	public static final String databondImage= "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/databond.png";
+	public static final String combistreemImage= "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/combistreem.png";
+	public static final String catalogueImage= "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/catalogue.png";
 
 	public Boolean register(UserDTO userDTO) throws AppException {
 		log.debug("register start");
@@ -341,9 +341,9 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if(!newUser.isActive()) {
 			throw new AppException(MessageConstants.ACCOUNT_DISABLED);	
 		}
-		if(StringUtils.hasText(newUser.getProvider().toString())) {
-			throw new AppException(MessageConstants.SOCIALMEDIA_NO_PASSWORD_RESET);
-		}
+//		if(StringUtils.hasText(newUser.getProvider().toString())) {
+//			throw new AppException(MessageConstants.SOCIALMEDIA_NO_PASSWORD_RESET);
+//		}
 		// generating the token
 		String token = jwtUtil.generateResetToken(email, resetTokenExpirationTime);
 		// saving the resettoken in the database
@@ -363,7 +363,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		model.put("regisrationLink", passwordResetLink);
 		model.put("vstreemImage", vstreemImage);
 		Email emailDetails = formEmailData.formEmail(formMail, email,
-				MessageConstants.RESET_PASSWORD_LINK, passwordResetLink, "ResetEmailTemplate.html", model);
+				MessageConstants.RESET_PASSWORD_LINK, passwordResetLink, "ResetEmailTemplate.ftl", model);
 		// Sending the mail with password reset link
 		try {
 			mailService.sendEmail(emailDetails);
@@ -453,7 +453,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 			model.put("regisrationLink", regisrationLink);
 			model.put("vstreemImage", vstreemImage);
 			Email email = formEmailData.formEmail(formMail, userEmail,
-					MessageConstants.REGISTRATION_CONFIRMATION_LINK, regisrationLink, "VerificationEmailTemplate.html", model);
+					MessageConstants.REGISTRATION_CONFIRMATION_LINK, regisrationLink, "VerificationEmailTemplate.ftl", model);
 			User newUser=userRepo.findByEmailAll(userEmail);
 
 			newUser.setUpdatedAt(new Date());
@@ -461,7 +461,6 @@ public class UserServiceImpl implements IVSService<User, String> {
 			mailService.sendEmail(email);
 
 			log.debug("sendRegisterationLink method end");
-			getWelcomeMailTemplateDetails(userEmail);
 		} catch (Exception e) {
 			log.error("Error in sending registration link : " + userEmail, e);
 			throw new AppException("Something went wrong, Please try again later.");
@@ -508,7 +507,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		model.put("databondImage", databondImage);
 		model.put("catalogueImage", catalogueImage);
 		Email email = formEmailData.formEmail(formMail, userEmail,
-				MessageConstants.WWELCOME_TEMPLATE_SUBJECT, null, "WelcomeTemplate.html", model);
+				MessageConstants.WELCOME_TEMPLATE_SUBJECT, null, "WelcomeTemplate.ftl", model);
 		mailService.sendEmail(email);
 		log.debug("getWelcomeMailTemplateDetails method end");
 		

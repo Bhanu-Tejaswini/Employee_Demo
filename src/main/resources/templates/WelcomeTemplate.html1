@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Vstreem verification</title>
+    <title>welcome Vstreem</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
@@ -38,62 +38,43 @@
         color: #001028;
         font-family: Poppins;
       }
-      .verification-sec {
-        background-color: #fff;
-        padding-left: 3.5rem;
-        padding-right: 3.5rem;
-      }
-      .verification-logo {
-        padding: 3rem 0rem;
+      .welcome-sec {
+        background-color: #e5e5e5;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
       }
       p {
         font-size: 24px;
         font-weight: 400;
         color: rgba(0, 16, 40, 0.9);
       }
-      span {
-        font-weight: 600;
-      }
       h2 {
-        font-size: 24px;
+        font-size: 32px;
         font-weight: 600;
       }
-      .verification-body {
-        padding-bottom: 3rem;
-        background-color: rgba(255, 186, 0, 0.05);
-        padding-left: 8rem;
-        padding-right: 8rem;
-      }
-      .rest-title {
-        margin-bottom: 3rem;
-        margin-top: 0.5rem;
+      .welcome-body {
+        padding-bottom: 10rem;
+        background-color: #fff;
       }
       hr {
         border: 1px solid rgba(0, 16, 40, 0.2);
-        width: 80%;
-        margin-top: 3rem;
-        margin-bottom: 3rem;
+        width: 50%;
       }
-
+      .welcome-para {
+        padding-left: 11.5rem;
+        padding-right: 11.5rem;
+        margin-bottom: 3rem;
+        text-align: center;
+      }
       a {
         color: #1478ff;
-        font-weight: 400;
+        font-weight: 500;
         text-decoration: none !important;
-        font-size: 24px;
       }
-      a button {
-        background-color: #1478ff;
-        color: #ffffff;
-        font-size: 24px;
-        font-weight: 400;
-        text-align: center;
-        padding: 0.5rem 3rem;
-        border-radius: 32px;
-        outline: none !important;
-        border: none;
-        margin-bottom: 1rem;
+      .rightsidecontent {
+        padding-top: 10rem;
+        padding-right: 3rem;
       }
-
       .footer {
         text-align: center;
       }
@@ -127,6 +108,14 @@
       }
       /* // Medium devices (tablets, less than 992px) */
       @media (max-width: 991.98px) {
+        .welcome-para {
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+        }
+        .rightsidecontent {
+          padding-top: 2rem;
+          padding-right: 0rem;
+        }
         .footer p {
           padding-left: 3rem;
           padding-right: 3rem;
@@ -144,78 +133,155 @@
         p {
           font-size: 12px;
         }
-        a {
-          font-size: 16px;
+        .welcome-para {
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
         }
-        a button {
-          margin-bottom: 2rem;
-          padding: 0.5rem 1rem;
-        }
-        hr {
-          margin-top: 1rem;
-          margin-bottom: 1rem;
-        }
-
-        .verification-logo {
-          padding: 1rem 0rem;
-        }
-        .verification-sec {
-          padding: 0rem;
-        }
-        .verification-body {
-          padding-left: 2rem;
-          padding-right: 2rem;
-        }
-        .rest-title {
-          margin-bottom: 1rem;
-          margin-top: 0.5rem;
+        .rightsidecontent {
+          padding-top: 1rem;
+          padding-right: 0rem;
         }
         .footer p {
-          padding-left: 0rem;
-          padding-right: 0rem;
-          font-size: 14px;
+          padding-left: 1rem;
+          padding-right: 1rem;
         }
       }
     </style>
   </head>
   <body>
-    <section class="verification-sec">
-      <div class="verification-body">
-        <div class="verification-logo">
+    <section class="welcome-sec">
+      <div class="welcome-body">
+        <div class="py-5">
           <img
-            class=""
+            class="d-block mx-auto"
             src="https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/vestreem_logo.png"
             alt="vstreem"
             title="vstreem"
           />
         </div>
-        <h2 class="rest-title">Reset your password?</h2>
-        <p class="mb-5">
-          If you requested a password reset for
-          <span>${userMail}</span>, click the button below. If you
-          didn’t make this request, Ignore this email.
+        <div class="mb-4">
+          <img
+            class="d-block mx-auto w-100"
+            src="https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/welcome.jpg"
+            alt="welcome"
+          />
+        </div>
+        <div class="text-center mt-2 mb-5">Dear ${userMail}</div>
+        <h2 class="text-center mb-5">Thank you & Welcome to Vstreem</h2>
+
+        <p class="welcome-para">
+          vstrEEm is your best choice to Easily stream live videos and telecast
+          on multiple platforms to increase viewership and customer base. Go
+          live with COMBISTREAM on YouTube, Facebook, Instagram and others — at
+          the same time, from one account.
         </p>
-        <div>
-          <a href="#">
-            <button>Reset password</button>
-          </a>
+
+        <p class="welcome-para">
+          vstrEEm comes with a power packed DATA BONDING solution which enables
+          you for an Uninterrupted Streaming of events from any remote location.
+          vstrEEm uses an innovative technology that combines several devices
+          like DATA (3G/4G/LTE) + Wifi + Ethernet into a single, robust internet
+          connection for telecasting uninterrupted, good quality live video
+        </p>
+        <div class="text-center">
+          <a href="#" class="mb-4">Learn more</a>
+          <hr />
+        </div>
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-6 col-md-6">
+              <div>
+                <img
+                  class="d-block mx-auto w-100"
+                  src="https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/combistreem.png"
+                  alt=""
+                />
+              </div>
+            </div>
+            <div class="col-xl-6 col-md-6">
+              <div class="rightsidecontent">
+                <h2 class="mb-4">Combistreem</h2>
+                <p>
+                  For streaming online at any scale, Delivering unmatched viewer
+                  experiences. Present and monetise your live videos across
+                  multiple channels at the same time using vstrEEm’s scalable,
+                  24/7 industry-leading live streaming software.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <hr />
+            <div class="col-xl-6 col-md-6 order-sm-1 order-2">
+              <div class="rightsidecontent">
+                <h2 class="mb-4">DataBond</h2>
+                <p>
+                  MORE BANDWIDTH. STRONGER SIGNAL. Use data bonding to put
+                  your live streaming on auto-pilot. Backed by vstrEEm’s data
+                  bonding technology, you can stream flawless live videos to
+                  YouTube, Facebook Live, or other CDNs
+                </p>
+              </div>
+            </div>
+            <div class="col-xl-6 col-md-6 order-sm-2 order-1">
+              <div>
+                <img
+                  class="d-block mx-auto w-100"
+                  src="https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/databond.png"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <hr />
+            <div class="col-xl-6 col-md-6">
+              <div>
+                <img
+                  class="d-block mx-auto w-100"
+                  src="https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/gallery.png"
+                  alt=""
+                />
+              </div>
+            </div>
+            <div class="col-xl-6 col-md-6">
+              <div class="rightsidecontent">
+                <h2 class="mb-4">Gallery</h2>
+                <p>
+                  Telecast from your BROWSER - connecting people worldwide
+                  through uninterrupted, secure and real-time live streaming
+                  experiences.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-6 col-md-6 order-sm-1 order-2">
+              <div class="rightsidecontent">
+                <h2 class="mb-4">Catalogue</h2>
+                <p>
+                  RECORD/EDIT & SCHEDULE your Video BROADCAST at ease. Sit back
+                  & Relax while your videos are being connected with your
+                  audience worldwide on various platforms, uninterrupted.
+                </p>
+              </div>
+            </div>
+            <div class="col-xl-6 col-md-6 order-sm-2 order-1">
+              <div>
+                <img
+                  class="d-block mx-auto w-100"
+                  src="https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/catalogue.png"
+                  alt=""
+                />
+              </div>
+            </div>
+            <hr />
+          </div>
         </div>
         <hr />
-        <p>“<span>Choose a New Password”</span> button not working?</p>
-        <div class="mb-4">
-          <a
-            href="http://email.send.vstreem.ioLorem ipsum dolor sit amet, consectetur adipiscing elit. Amet, sed risus molestie varius ultrices adipiscing at aenean."
-            >http://email.send.vstreem.ioLorem ipsum dolor sit amet, consectetur
-            adipiscing elit. Amet, sed risus molestie varius ultrices adipiscing
-            at aenean.</a
-          >
-        </div>
-        <div>
-          <p>Thanks,</p>
-          <p>Vstreem Team</p>
-        </div>
         <div class="footer">
-          <hr />
           <h3 class="my-5">Follow Us</h3>
           <div class="social-links mb-5">
             <a
