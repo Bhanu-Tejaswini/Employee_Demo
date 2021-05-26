@@ -14,7 +14,7 @@ public interface MailService {
 	public void sendEmail(String email, String resetPasswordLink)
 			throws UnsupportedEncodingException, MessagingException;
 	Boolean sendEmail(Email email) throws MessagingException, IOException, TemplateException;
-	
+	public boolean sendWelcomeEmail(String email, String password)throws UnsupportedEncodingException, MessagingException;
 
 
 }

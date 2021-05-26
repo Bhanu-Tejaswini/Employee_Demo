@@ -45,6 +45,7 @@ import com.arraigntech.streamsModel.StreamTargetDTO;
 import com.arraigntech.streamsModel.StreamTargetModel;
 import com.arraigntech.streamsModel.StreamUIRequest;
 import com.arraigntech.streamsModel.StreamUIResponse;
+import com.arraigntech.streamsModel.Webrtc;
 import com.arraigntech.utility.ChannelTypeProvider;
 import com.arraigntech.utility.CommonUtils;
 import com.arraigntech.utility.MessageConstants;
@@ -166,7 +167,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		// adds youtube channels in the target
 		channelsStream(streamId, outputId);
 		CompletableFuture.runAsync(() -> startStream(streamId));
-		
+		CompletableFuture.runAsync(() -> deleteOutputTargetAll(liveStreamResponse.getLiveStreamResponse().getDirect_playback_urls().getWebrtc(),streamId));
 		StreamSourceConnectionInformation response = liveStreamResponse.getLiveStreamResponse()
 				.getSource_connection_information();
 		log.debug("create stream end");
@@ -509,6 +510,34 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			throw new AppException(e.getMessage());
 		}
 		log.debug("deleteStreamTarget end");
+		return true;
+	}
+	
+	public Boolean deleteOutputTargetAll(List<Webrtc> webrtcList, String streamId) {
+		log.debug("deleteOutputTargetAll start");
+		webrtcList
+				.stream()
+				.skip(4)
+				.forEach(output -> {		
+					deleteOutputTarget(streamId,output.getOutput_id());
+				});
+		log.debug("deleteOutputTargetAll end");
+		return true;
+	}
+	
+	public Boolean deleteOutputTarget(String streamId, String outputId) {
+		log.debug("deleteOutputTarget start");
+		String url = baseUrl + "/transcoders/" + streamId + "/outputs/" + outputId;
+		MultiValueMap<String, String> headers = getHeader();
+		
+		HttpEntity<String> request = new HttpEntity<>(headers);
+		try {
+			restTemplate.exchange(url, HttpMethod.DELETE, request, String.class);
+		} catch (Exception e) {
+			log.error("error occurred while deleting the deleteOutputTarget");
+			throw new AppException(e.getMessage());
+		}
+		log.debug("deleteOutputTarget end");
 		return true;
 	}
 

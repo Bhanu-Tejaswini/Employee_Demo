@@ -17,6 +17,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.arraigntech.service.impl.IVSStreamServiceImpl;
+import com.arraigntech.utility.RandomPasswordGenerator;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 

@@ -90,7 +90,7 @@ public class User extends VSBaseModel {
 	@Type(type = "numeric_boolean")
 	private boolean emailVerified;
 	
-	@Column(name = "login_count")
+	@Column(name = "login_count", nullable=true)
 	private int loginCount;
 
 	@JsonIgnore
