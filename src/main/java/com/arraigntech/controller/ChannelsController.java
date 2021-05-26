@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.arraigntech.entity.Channels;
 import com.arraigntech.model.ChannelDTO;
+import com.arraigntech.model.ChannelErrorUIResponse;
+import com.arraigntech.model.ChannelListUIResponse;
 import com.arraigntech.model.ChannelStatus;
+import com.arraigntech.model.CustomChannelDTO;
 import com.arraigntech.model.UpdateAllTitleDTO;
 import com.arraigntech.model.UpdateTitleDTO;
 import com.arraigntech.model.response.BaseResponse;
@@ -41,6 +44,22 @@ public class ChannelsController {
 	public BaseResponse<Boolean> addChannel(@RequestBody ChannelDTO channelDTO) {
 		log.debug("Adding channel");
 		Boolean result = channelService.createChannel(channelDTO);
+		BaseResponse<Boolean> response = new BaseResponse<>();
+		return result
+				? response.withSuccess(true)
+						.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.CHANNEL_SUCCESS).build()
+				: response.withSuccess(false)
+						.withResponseMessage(MessageConstants.KEY_FAIL, MessageConstants.CHANNEL_FAIL)
+						.build();
+
+	}
+	
+	@ApiOperation(value = "Adding custom channel")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/custom", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<Boolean> addCustomChannel(@RequestBody CustomChannelDTO customChannelDTO) {
+		log.debug("Adding custom channel");
+		Boolean result = channelService.addInstagramChannel(customChannelDTO);
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		return result
 				? response.withSuccess(true)
@@ -78,7 +97,20 @@ public class ChannelsController {
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<List<Channels>> getChannelList() {
 		log.debug("Get the list of channels of user");
-		return new BaseResponse<List<Channels>>(channelService.getUserChannels()).withSuccess(true);
+		BaseResponse<List<Channels>> response = new BaseResponse<>();
+		ChannelListUIResponse userChannels = channelService.getUserChannels();
+		if(userChannels.isFlag())
+			return new BaseResponse<List<Channels>>(userChannels.getChannelList()).withSuccess(true);
+		else
+			return new BaseResponse<List<Channels>>(userChannels.getChannelList()).withSuccess(false);
+	}
+	
+	@ApiOperation(value = "Get the list of error channels")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/error", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<List<ChannelErrorUIResponse>> getErrorChannelList() {
+		log.debug("get the list of error channels");
+		return new BaseResponse<List<ChannelErrorUIResponse>>(channelService.getErrorChannels()).withSuccess(true);
 	}
 	
 	

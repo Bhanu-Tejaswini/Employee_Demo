@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.arraigntech.entity.Role;
 import com.arraigntech.entity.User;
+import com.arraigntech.model.LoginResponseDTO;
 import com.arraigntech.model.SocialLoginDTO;
 import com.arraigntech.model.UserDTO;
 import com.arraigntech.repository.RoleRepository;
@@ -50,7 +51,7 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 	@Autowired
 	private UserDetailServiceImpl userDetailsService;
 	
-	public String getGoogleToken(SocialLoginDTO socialLogin) {
+	public LoginResponseDTO getGoogleToken(SocialLoginDTO socialLogin) {
 		//checks whether email is verified or not
 		String getEmail=socialLogin.getEmail();
 		String getUsername=socialLogin.getUsername();
@@ -71,10 +72,10 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 		Role newRole = roleRepo.findByName(role);
 		newUser.getRoles().add(newRole);
 		OAuth2AccessToken token=getAccessToken(newUser);
-		return token.toString();
+		return new LoginResponseDTO(token.toString(),true);
 	}
 	
-	public String getFacebookToken(SocialLoginDTO socialLogin) {
+	public LoginResponseDTO getFacebookToken(SocialLoginDTO socialLogin) {
 		//checks whether email is verified or not
 		String getEmail=socialLogin.getEmail();
 		String getUsername=socialLogin.getUsername();
@@ -94,7 +95,7 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 		Role newRole = roleRepo.findByName(role);
 		newUser.getRoles().add(newRole);
 		OAuth2AccessToken token=getAccessToken(newUser);
-		return token.toString();
+		return new LoginResponseDTO(token.toString(),true);
 	}
 
 	

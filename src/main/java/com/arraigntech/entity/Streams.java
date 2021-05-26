@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -35,11 +36,11 @@ public class Streams extends VSBaseModel {
 	@Column(name = "source_stream_name")
 	private String sourceStreamName;
 
-	@ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+	@ManyToOne(targetEntity = User.class)
 	private User user;
 	
-	@OneToMany(mappedBy="stream", cascade=CascadeType.ALL)
-	private List<StreamTarget> streamTarget=new ArrayList();
+	@OneToMany(mappedBy="stream")	
+	private List<StreamTarget> streamTarget = new ArrayList();
 
 	public Streams() {
 

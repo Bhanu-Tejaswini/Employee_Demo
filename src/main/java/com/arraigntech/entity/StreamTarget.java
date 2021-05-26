@@ -5,6 +5,7 @@ package com.arraigntech.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -28,7 +29,7 @@ public class StreamTarget extends VSBaseModel {
 	@Column(name = "backup_url")
 	private String backupUrl;
 
-	@ManyToOne()
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Streams stream;
 	
 	public StreamTarget() {

@@ -5,12 +5,13 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Document(collection="output_stream_target")
+@Document(collection = "output_stream_target")
 public class OutputStreamTargetDTO {
 
 	@Field
 	@JsonProperty("output_stream_target")
 	private OutputStreamTarget outputStreamTarget;
+	private String streamId;
 
 	public OutputStreamTarget getOutputStreamTarget() {
 		return outputStreamTarget;
@@ -28,4 +29,11 @@ public class OutputStreamTargetDTO {
 	public OutputStreamTargetDTO() {
 	}
 
+	public String getStreamId() {
+		return streamId;
+	}
+
+	public void setStreamId(String streamId) {
+		this.streamId = streamId;
+	}
 }

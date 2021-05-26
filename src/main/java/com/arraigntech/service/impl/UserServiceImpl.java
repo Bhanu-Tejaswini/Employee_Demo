@@ -152,10 +152,10 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (Objects.nonNull(newUser)) {
 			throw new AppException(MessageConstants.USER_EXISTS);
 		}
-		Optional<User> newUser1 = userRepo.findByUsernameAll(userDTO.getUsername());
-		if (newUser1.isPresent()) {
-			throw new AppException(MessageConstants.USER_EXISTS_USERNAME);
-		}
+//		Optional<User> newUser1 = userRepo.findByUsernameAll(userDTO.getUsername());
+//		if (newUser1.isPresent()) {
+//			throw new AppException(MessageConstants.USER_EXISTS_USERNAME);
+//		}
 		if (!passwordValidator.isValid(userDTO.getPassword())) {
 			throw new AppException(MessageConstants.INVALID_PASSWORD);
 		}
@@ -270,6 +270,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		} else {
 			newUser.setLoginCount(2);
 		}
+		userRepo.save(newUser);
 		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
@@ -288,7 +289,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 			throw new AppException(MessageConstants.WRONG_PASSWORD);
 		}
 
-		if(newUser.isEmailVerified() && newUser.getLoginCount() ==1) {
+		if(newUser.isEmailVerified() && newUser.getLoginCount() == 1) {
 			getWelcomeMailTemplateDetails(login.getEmail(),null);
 		}
 		OAuth2AccessToken accessToken = socialLoginService.getAccessToken(newUser);
@@ -449,12 +450,11 @@ public class UserServiceImpl implements IVSService<User, String> {
 			model.put("regisrationLink", regisrationLink);
 			model.put("vstreemImage", vstreemImage);
 			Email email = formEmailData.formEmail(formMail, userEmail,
-					MessageConstants.REGISTRATION_CONFIRMATION_LINK, regisrationLink, "VerificationEmailTemplate.html", model);
+					MessageConstants.REGISTRATION_CONFIRMATION_LINK, regisrationLink, "VerificationEmailTemplate.ftl", model);
 			User newUser=userRepo.findByEmailAll(userEmail);
 			newUser.setUpdatedAt(new Date());
 			userRepo.save(newUser);
-			mailService.sendEmail(email);
-
+			mailService.sendEmail(email);			
 			log.debug("sendRegisterationLink method end");
 		} catch (Exception e) {
 			log.error("Error in sending registration link : " + userEmail, e);
@@ -512,7 +512,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		model.put("catalogueImage", catalogueImage);
 		model.put("password", password);
 		Email email = formEmailData.formEmail(formMail, userEmail,
-				MessageConstants.WWELCOME_TEMPLATE_SUBJECT, null, "WelcomeTemplate.html", model);
+				MessageConstants.WWELCOME_TEMPLATE_SUBJECT, null, "WelcomeTemplate.ftl", model);
 		try {
 			mailService.sendEmail(email);
 		} catch (Exception e) {

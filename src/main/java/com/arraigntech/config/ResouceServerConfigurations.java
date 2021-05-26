@@ -21,6 +21,21 @@ import org.springframework.web.filter.CorsFilter;
 public class ResouceServerConfigurations extends ResourceServerConfigurerAdapter {
 	
 	public final static String CSRF_HEADER_NAME =  "Access-Control-Allow-Origin";
+	
+	private static final String[] AUTH_WHITELIST = {
+            // -- Swagger UI v2
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            // -- Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+            // other public endpoints of your API may be appended to this array
+    };
 
 	@Autowired
 	private ResourceServerTokenServices tokenServices;
@@ -65,6 +80,7 @@ public class ResouceServerConfigurations extends ResourceServerConfigurerAdapter
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
 	}
+	
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
@@ -73,7 +89,7 @@ public class ResouceServerConfigurations extends ResourceServerConfigurerAdapter
         .requestMatchers()
         .and()
         .authorizeRequests()
-        .antMatchers("/actuator/**", "v2/api-docs/**", "/oauth/**","/oauth2/**", "/auth/**","/timezonelist","/images/**").permitAll()
+        .antMatchers("/actuator/**", "v2/api-docs/**","/swagger-ui.html", "/oauth/**","/oauth2/**", "/auth/**","/timezonelist","/images/**").permitAll()
         .anyRequest().authenticated()
 //        .and()
 //        .oauth2Login()

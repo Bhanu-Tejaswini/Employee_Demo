@@ -41,6 +41,10 @@ public class BaseResponse<T> implements Serializable {
 	public Map<String, String> getResponseMessages() {
 		return responseMessages;
 	}
+	
+	public T results(T results) {
+		return this.results=results;
+	}
 
 	public boolean getIsCustomErrorHandling() {
 		return isCustomErrorHandling;

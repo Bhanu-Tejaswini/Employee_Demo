@@ -107,9 +107,13 @@ public class AuthController {
 	public BaseResponse<String> getGoogleToken(@RequestBody SocialLoginDTO socialLogin) {
 		log.debug("Google signin");
 		BaseResponse<String> response = new BaseResponse<>();
-		String token=socialLoginService.getGoogleToken(socialLogin);
-		return response.withSuccess(true)
-				.withResponseMessage(MessageConstants.KEY_SUCCESS, token).build();
+		LoginResponseDTO responseMessage = socialLoginService.getGoogleToken(socialLogin);
+		return responseMessage.isFlag()
+				? response.withSuccess(true)
+						.withResponseMessage("Token", responseMessage.getResult()).build()
+				: response.withSuccess(false)
+						.withResponseMessage("Message", responseMessage.getResult())
+						.build();
 	}
 	
 	@ApiOperation(value = "Facebook signin")
@@ -118,9 +122,13 @@ public class AuthController {
 	public BaseResponse<String> getFacebookToken(@RequestBody SocialLoginDTO socialLogin) {
 		log.debug("Facebook signin");
 		BaseResponse<String> response = new BaseResponse<>();
-		String token=socialLoginService.getFacebookToken(socialLogin);
-		return response.withSuccess(true)
-				.withResponseMessage(MessageConstants.KEY_SUCCESS, token).build();
+		LoginResponseDTO responseMessage = socialLoginService.getFacebookToken(socialLogin);
+		return responseMessage.isFlag()
+				? response.withSuccess(true)
+						.withResponseMessage("Token", responseMessage.getResult()).build()
+				: response.withSuccess(false)
+						.withResponseMessage("Message", responseMessage.getResult())
+						.build();
 	}
 
 	

@@ -10,14 +10,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
 import com.arraigntech.service.impl.IVSStreamServiceImpl;
-import com.arraigntech.utility.RandomPasswordGenerator;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -47,6 +48,14 @@ public class AuthServerApplication{
 	void setGlobalSecurityContext() {
 	  SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
+	
+	@Primary
+	 @Bean
+	    public FreeMarkerConfigurationFactoryBean getFreeMarkerConfiguration() {
+	        FreeMarkerConfigurationFactoryBean bean = new FreeMarkerConfigurationFactoryBean();
+	        bean.setTemplateLoaderPath("classpath:/templates");
+	        return bean;
+	    }
 	
 	public static void main(String[] args) {
 		SpringApplication.run(AuthServerApplication.class, args);

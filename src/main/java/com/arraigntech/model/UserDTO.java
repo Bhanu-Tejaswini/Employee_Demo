@@ -59,5 +59,9 @@ public class UserDTO {
 		this.role = role;
 		this.provider = provider;
 	}
+	
+	public UserDTO() {
+		
+	}
 
 }

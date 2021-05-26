@@ -29,4 +29,5 @@ public class ChannelIngestionInfo {
 	public void setBackupIngestionAddress(String backupIngestionAddress) {
 		this.backupIngestionAddress = backupIngestionAddress;
 	}
+
 }
