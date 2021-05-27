@@ -17,5 +17,7 @@ public interface ChannelsRepository extends JpaRepository<Channels, String> {
 	List<Channels> findByUserAndType(User newUser,ChannelTypeProvider type);
 	
 	Channels findByFacebookUserId(String userId);
+	
+	List<Channels> findByUserAndTypeAndActive(User newUser, ChannelTypeProvider type,boolean active);
 
 }

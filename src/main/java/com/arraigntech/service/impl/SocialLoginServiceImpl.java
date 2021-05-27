@@ -54,11 +54,12 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 	public LoginResponseDTO getGoogleToken(SocialLoginDTO socialLogin) {
 		//checks whether email is verified or not
 		String getEmail=socialLogin.getEmail();
-		String getUsername=socialLogin.getUsername();
+		String username=getUsername(socialLogin.getUsername());
 		String role=ROLE;
+	
 		User checkUser=userRepo.findByEmailAll(getEmail);
 		if(Objects.isNull(checkUser)) {
-			userService.register(new UserDTO(getUsername,getEmail,RandomPasswordGenerator.generatePassword(),Arrays.asList(role),AuthenticationProvider.GOOGLE));
+			userService.register(new UserDTO(username.toLowerCase(),getEmail,RandomPasswordGenerator.generatePassword(),Arrays.asList(role),AuthenticationProvider.GOOGLE));
 			User user = userRepo.findByEmailAll(getEmail);
 			user.setActive(true);
 			user.setEmailVerified(true);
@@ -66,7 +67,7 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 			
 		}
 		User newUser = new User();
-		newUser.setUsername(getUsername);
+		newUser.setUsername(username);
 		newUser.setEmail(getEmail);
 		newUser.setPassword("");
 		Role newRole = roleRepo.findByName(role);
@@ -78,18 +79,18 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 	public LoginResponseDTO getFacebookToken(SocialLoginDTO socialLogin) {
 		//checks whether email is verified or not
 		String getEmail=socialLogin.getEmail();
-		String getUsername=socialLogin.getUsername();
+		String username=getUsername(socialLogin.getUsername());
 		String role=ROLE;
 		User checkUser=userRepo.findByEmailAll(getEmail);
 		if(Objects.isNull(checkUser)) {
-			userService.register(new UserDTO(getUsername,getEmail,RandomPasswordGenerator.generatePassword(),Arrays.asList(role),AuthenticationProvider.FACEBOOK));
+			userService.register(new UserDTO(username.toLowerCase(),getEmail,RandomPasswordGenerator.generatePassword(),Arrays.asList(role),AuthenticationProvider.FACEBOOK));
 			User user = userRepo.findByEmailAll(getEmail);
 			user.setActive(true);
 			user.setEmailVerified(true);
 			userRepo.save(user);
 		}
 		User newUser = new User();
-		newUser.setUsername(getUsername);
+		newUser.setUsername(username);
 		newUser.setEmail(getEmail);
 		newUser.setPassword("");
 		Role newRole = roleRepo.findByName(role);
@@ -98,6 +99,21 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 		return new LoginResponseDTO(token.toString(),true);
 	}
 
+	public String getUsername(String value) {
+		String[] newUsername=value.split(" ");
+		String username="";
+		if(newUsername.length >1) {
+			for(int i=0;i<newUsername.length;i++) {
+				username= username + newUsername[i];
+				if(i==newUsername.length-1)	
+					break;
+				username=username + "_";
+			}
+		}else {
+			username=newUsername[0];
+		}
+		return username;
+	}
 	
 	public OAuth2AccessToken getAccessToken(User user) {
 		HashMap<String, String> authorizationParameters = new HashMap<String, String>();

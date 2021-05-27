@@ -1,5 +1,6 @@
 package com.arraigntech.service.impl;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -167,29 +168,29 @@ public class ChannelServiceImpl {
 		if (Objects.isNull(customChannelDTO)) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
+		if(!(customChannelDTO.getRtmpUrl().startsWith("rtmps://") && customChannelDTO.getRtmpUrl().endsWith("/rtmp/"))){
+			throw new AppException(MessageConstants.WRONG_INSTAGRAM_RTMPSURL);
+		}
 		User newUser = getUser();
 		List<Channels> channelsList = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.INSTAGRAM);
-		if(channelsList.size()>0) {
-			throw new AppException(MessageConstants.INSTAGRAM_CHANNEL_EXISTS);
+		Channels channel;
+		if (channelsList.isEmpty()) {
+			channel = new Channels();
+			channel.setChannelId(RandomIdGenerator.generate(10));
+			channel.setPrimaryUrl(customChannelDTO.getRtmpUrl());
+			channel.setBackupUrl(customChannelDTO.getRtmpUrl());
+			channel.setType(ChannelTypeProvider.INSTAGRAM);
+			channel.setStreamName(customChannelDTO.getStreamKey());
+			channel.setUser(newUser);
+			channel.setActive(true);
+		} else {
+			channel = channelsList.get(0);
+			channel.setPrimaryUrl(customChannelDTO.getRtmpUrl());
+			channel.setBackupUrl(customChannelDTO.getRtmpUrl());
+			channel.setType(ChannelTypeProvider.INSTAGRAM);
+			channel.setStreamName(customChannelDTO.getStreamKey());
+			channel.setActive(true);
 		}
-
-//		if(channelsList.isEmpty()) {
-		Channels channel = new Channels();
-		channel.setChannelId(RandomIdGenerator.generate(10));
-		channel.setPrimaryUrl(customChannelDTO.getRtmpUrl());
-		channel.setBackupUrl(customChannelDTO.getRtmpUrl());
-		channel.setType(ChannelTypeProvider.INSTAGRAM);
-		channel.setStreamName(customChannelDTO.getStreamKey());
-		channel.setUser(newUser);
-		channel.setActive(true);
-//		}else {
-//			channel = channelsList.get(0);
-//			channel.setPrimaryUrl(customChannelDTO.getRtmpUrl());
-//			channel.setBackupUrl(customChannelDTO.getRtmpUrl());
-//			channel.setType(ChannelTypeProvider.INSTAGRAM);
-//			channel.setStreamName(customChannelDTO.getStreamKey());
-//			channel.setActive(true);
-//		}
 		channelRepo.save(channel);
 		log.debug("addInstagramChannel method end");
 		return true;

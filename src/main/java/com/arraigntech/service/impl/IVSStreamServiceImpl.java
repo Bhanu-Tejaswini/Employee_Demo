@@ -243,9 +243,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	public Boolean channelsStream(String streamId, String outputId) {
 		log.debug("channelStream method start");
 		User newUser = getUser();
-		List<Channels> youtubeChannels = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.YOUTUBE);
-		List<Channels> facebookChannels = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.FACEBOOK);
-		List<Channels> instagramChannels = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.INSTAGRAM);
+		List<Channels> youtubeChannels = channelRepo.findByUserAndTypeAndActive(newUser, ChannelTypeProvider.YOUTUBE,true);
+		List<Channels> facebookChannels = channelRepo.findByUserAndTypeAndActive(newUser, ChannelTypeProvider.FACEBOOK,true);
+		List<Channels> instagramChannels = channelRepo.findByUserAndTypeAndActive(newUser, ChannelTypeProvider.INSTAGRAM,true);
 		// if there are no channels added means
 		if (youtubeChannels.isEmpty() && facebookChannels.isEmpty()) {
 			deleteStream(streamId);
