@@ -43,16 +43,10 @@
         padding-left: 3.5rem;
         padding-right: 3.5rem;
       }
-      .verification-logo {
-        padding: 3rem 0rem;
-      }
       p {
         font-size: 24px;
         font-weight: 400;
         color: rgba(0, 16, 40, 0.9);
-      }
-      span {
-        font-weight: 600;
       }
       h2 {
         font-size: 24px;
@@ -61,18 +55,12 @@
       .verification-body {
         padding-bottom: 3rem;
         background-color: rgba(255, 186, 0, 0.05);
-        padding-left: 8rem;
-        padding-right: 8rem;
-      }
-      .rest-title {
-        margin-bottom: 3rem;
-        margin-top: 0.5rem;
+        padding-left: 5rem;
+        padding-right: 5rem;
       }
       hr {
         border: 1px solid rgba(0, 16, 40, 0.2);
-        width: 80%;
-        margin-top: 3rem;
-        margin-bottom: 3rem;
+        width: 50%;
       }
 
       a {
@@ -91,7 +79,7 @@
         border-radius: 32px;
         outline: none !important;
         border: none;
-        margin-bottom: 1rem;
+        margin-bottom: 4rem;
       }
 
       .footer {
@@ -151,14 +139,6 @@
           margin-bottom: 2rem;
           padding: 0.5rem 1rem;
         }
-        hr {
-          margin-top: 1rem;
-          margin-bottom: 1rem;
-        }
-
-        .verification-logo {
-          padding: 1rem 0rem;
-        }
         .verification-sec {
           padding: 0rem;
         }
@@ -166,14 +146,9 @@
           padding-left: 2rem;
           padding-right: 2rem;
         }
-        .rest-title {
-          margin-bottom: 1rem;
-          margin-top: 0.5rem;
-        }
         .footer p {
-          padding-left: 0rem;
-          padding-right: 0rem;
-          font-size: 14px;
+          padding-left: 1rem;
+          padding-right: 1rem;
         }
       }
     </style>
@@ -181,7 +156,7 @@
   <body>
     <section class="verification-sec">
       <div class="verification-body">
-        <div class="verification-logo">
+        <div class="py-5">
           <img
             class=""
             src="https://s3.us-east-2.amazonaws.com/vstreem.com/assets/img/template-images/vestreem_logo.png"
@@ -189,25 +164,20 @@
             title="vstreem"
           />
         </div>
-        <h2 class="rest-title">Reset your password?</h2>
+        <h2 class="mt-2 mb-5">Dear ${userMail}</h2>
         <p class="mb-5">
-          If you requested a password reset for
-          <span>${userMail}</span>, click the button below. If you
-          didn’t make this request, Ignore this email.
+          Please confirm your email address by clicking the button below. This
+          confirms that your email address is correct so that we can use it to
+          help you recover your password in the future.
         </p>
         <div>
-          <a href="#">
-            <button>Reset password</button>
+          <a href="${regisrationLink}">
+            <button>Confirm Email Address</button>
           </a>
         </div>
-        <hr />
-        <p>“<span>Choose a New Password”</span> button not working?</p>
         <div class="mb-4">
           <a
-            href="http://email.send.vstreem.ioLorem ipsum dolor sit amet, consectetur adipiscing elit. Amet, sed risus molestie varius ultrices adipiscing at aenean."
-            >http://email.send.vstreem.ioLorem ipsum dolor sit amet, consectetur
-            adipiscing elit. Amet, sed risus molestie varius ultrices adipiscing
-            at aenean.</a
+            href="${regisrationLink}"></a
           >
         </div>
         <div>
@@ -249,25 +219,6 @@
               class="youtube"
               ><i class="bx bxl-youtube"></i
             ></a>
-          </div>
-          <div class="mb-5">
-            <a href="#"
-              >To know more & understand our plans & features? Compare plan
-              options →</a
-            >
-          </div>
-          <p>
-            This email is shared because you just registered with vstreem
-            services. This is our confirmation email, but not a promotional
-            message. You will only receive marketing emails from us if you
-            confirm your email address in the email we sent to you immediately
-            after registering. 
-          </p>
-          <p>™️vstrEEm. All rights reserved.</p>
-          <div class="d-flex justify-content-center">
-            <div class="mx-3">Terms</div>
-            <div class="mx-3">Privdivcy</div>
-            <div class="mx-3">Unsubscribe</div>
           </div>
         </div>
       </div>
