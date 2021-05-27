@@ -24,6 +24,7 @@ import com.arraigntech.entity.Channels;
 import com.arraigntech.entity.StreamTarget;
 import com.arraigntech.entity.Streams;
 import com.arraigntech.entity.User;
+import com.arraigntech.model.MongoUser;
 import com.arraigntech.mongorepos.MongoStreamResponseRepository;
 import com.arraigntech.mongorepos.MongoStreamTargetRepository;
 import com.arraigntech.mongorepos.OutputStreamTargetRepository;
@@ -157,7 +158,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		}
 
 		// saving the response data to mongodb
-		liveStreamResponse.setUser(newUser);
+		liveStreamResponse.setUser(new MongoUser(newUser.getId(),newUser.getEmail(),newUser.getUsername()));
 		streamResponseRepo.save(liveStreamResponse);
 		// saving necessary details to postgresql
 		saveStream(liveStreamResponse);

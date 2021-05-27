@@ -265,15 +265,15 @@ public class UserServiceImpl implements IVSService<User, String> {
 			throw new AppException(MessageConstants.INVALID_EMAIL);
 		}
 		User newUser = userRepo.findByEmailAll(login.getEmail());
-		if(newUser.getLoginCount() == 0) {
-			newUser.setLoginCount(1);
-		} else {
-			newUser.setLoginCount(2);
-		}
-		userRepo.save(newUser);
 		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
+//		if(newUser.getLoginCount() == 0) {
+//			newUser.setLoginCount(1);
+//		} else {
+//			newUser.setLoginCount(2);
+//		}
+		userRepo.save(newUser);
 		if (!newUser.isEmailVerified()) {
 			if (System.currentTimeMillis() < newUser.getUpdatedAt().getTime() + 900000) {
 				return new LoginResponseDTO(MessageConstants.VERIFICATION_MAIL_ALREADYSENT, false);
@@ -289,9 +289,9 @@ public class UserServiceImpl implements IVSService<User, String> {
 			throw new AppException(MessageConstants.WRONG_PASSWORD);
 		}
 
-		if(newUser.isEmailVerified() && newUser.getLoginCount() == 1) {
-			getWelcomeMailTemplateDetails(login.getEmail(),null);
-		}
+//		if(newUser.isEmailVerified() && newUser.getLoginCount() == 1) {
+//			getWelcomeMailTemplateDetails(login.getEmail(),null);
+//		}
 		OAuth2AccessToken accessToken = socialLoginService.getAccessToken(newUser);
 //		UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
 //		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
@@ -341,10 +341,6 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if(!newUser.isActive()) {
 			throw new AppException(MessageConstants.ACCOUNT_DISABLED);	
 		}
-		if(StringUtils.hasText(newUser.getProvider().toString())) {
-			throw new AppException(MessageConstants.SOCIALMEDIA_NO_PASSWORD_RESET);
-		}
-
 		// generating the token
 		String token = jwtUtil.generateResetToken(email, resetTokenExpirationTime);
 		// saving the resettoken in the database
@@ -482,6 +478,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 			user.setActive(true);
 			user.setEmailVerified(true);
 			userRepo.save(user);
+			getWelcomeMailTemplateDetails(email,null);
 			return true;
 		}
 		return false;

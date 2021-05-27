@@ -48,7 +48,7 @@ public class ChannelServiceImpl {
 	private static final String FB_EXCHANGE_TOKEN = "fb_exchange_token";
 	private static final String CLIENT_SECRET = "client_secret";
 	private static final String GRANT_TYPE = "grant_type";
-	private static final String FACEBOOK="facebook";
+	private static final String FACEBOOK = "facebook";
 
 	@Value("${facebook.appId}")
 	private String appId;
@@ -78,7 +78,7 @@ public class ChannelServiceImpl {
 
 	public boolean createChannel(ChannelDTO channelDTO) {
 		log.debug("createChannel method start");
-		if(Objects.isNull(channelDTO)) {
+		if (Objects.isNull(channelDTO)) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
 		if (channelDTO.getGraphDomain() != null && channelDTO.getGraphDomain().startsWith(FACEBOOK)) {
@@ -137,15 +137,19 @@ public class ChannelServiceImpl {
 
 	public boolean addFaceBookChannel(ChannelDTO channelDTO) {
 		log.debug("addFaceBookChannel method start");
+		User newUser = getUser();
+		List<Channels> facebookChannel = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.FACEBOOK);
+		if (facebookChannel.size() > 0) {
+			throw new AppException(MessageConstants.FACEBOOK_CHANNEL_EXISTS);
+		}
 		Channels channels = new Channels();
 		if (!StringUtils.hasText(channelDTO.getUserId())) {
 			throw new AppException(MessageConstants.FACEBOOK_USERID_NOTFOUND);
 		}
 		Channels channel = channelRepo.findByFacebookUserId(channelDTO.getUserId());
-		if(Objects.nonNull(channel)) {
+		if (Objects.nonNull(channel)) {
 			throw new AppException(MessageConstants.CHANNEL_EXISTS);
 		}
-		User newUser = getUser();
 		channels.setType(ChannelTypeProvider.FACEBOOK);
 		channels.setFacebookUserId(channelDTO.getUserId());
 		channels.setAccessToken(execute(channelDTO.getAccessToken()));
@@ -157,32 +161,35 @@ public class ChannelServiceImpl {
 		return true;
 
 	}
-	
+
 	public boolean addInstagramChannel(CustomChannelDTO customChannelDTO) {
 		log.debug("addInstagramChannel method start");
-		if(Objects.isNull(customChannelDTO)) {
+		if (Objects.isNull(customChannelDTO)) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
-		User newUser= getUser();
+		User newUser = getUser();
 		List<Channels> channelsList = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.INSTAGRAM);
-		Channels channel;
-		if(channelsList.isEmpty()) {
-			channel = new Channels();
-			channel.setChannelId(RandomIdGenerator.generate(10));
-			channel.setPrimaryUrl(customChannelDTO.getRtmpUrl());
-			channel.setBackupUrl(customChannelDTO.getRtmpUrl());
-			channel.setType(ChannelTypeProvider.INSTAGRAM);
-			channel.setStreamName(customChannelDTO.getStreamKey());
-			channel.setUser(newUser);
-			channel.setActive(true);
-		}else {
-			channel = channelsList.get(0);
-			channel.setPrimaryUrl(customChannelDTO.getRtmpUrl());
-			channel.setBackupUrl(customChannelDTO.getRtmpUrl());
-			channel.setType(ChannelTypeProvider.INSTAGRAM);
-			channel.setStreamName(customChannelDTO.getStreamKey());
-			channel.setActive(true);
+		if(channelsList.size()>0) {
+			throw new AppException(MessageConstants.INSTAGRAM_CHANNEL_EXISTS);
 		}
+
+//		if(channelsList.isEmpty()) {
+		Channels channel = new Channels();
+		channel.setChannelId(RandomIdGenerator.generate(10));
+		channel.setPrimaryUrl(customChannelDTO.getRtmpUrl());
+		channel.setBackupUrl(customChannelDTO.getRtmpUrl());
+		channel.setType(ChannelTypeProvider.INSTAGRAM);
+		channel.setStreamName(customChannelDTO.getStreamKey());
+		channel.setUser(newUser);
+		channel.setActive(true);
+//		}else {
+//			channel = channelsList.get(0);
+//			channel.setPrimaryUrl(customChannelDTO.getRtmpUrl());
+//			channel.setBackupUrl(customChannelDTO.getRtmpUrl());
+//			channel.setType(ChannelTypeProvider.INSTAGRAM);
+//			channel.setStreamName(customChannelDTO.getStreamKey());
+//			channel.setActive(true);
+//		}
 		channelRepo.save(channel);
 		log.debug("addInstagramChannel method end");
 		return true;
@@ -256,17 +263,17 @@ public class ChannelServiceImpl {
 		User newUser = getUser();
 		List<Channels> userChannels = channelRepo.findByUser(newUser);
 		List<Channels> userFaceBookChannels = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.FACEBOOK);
-		boolean flag=true;
+		boolean flag = true;
 		for (Channels channel : userFaceBookChannels) {
 			if (!validChannel(channel)) {
-				flag= flag&false;
+				flag = flag & false;
 			}
 		}
 		if (Objects.isNull(userChannels)) {
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
 		log.debug("getUserChannels method end");
-		if(flag)
+		if (flag)
 			return new ChannelListUIResponse(userChannels, true);
 		else
 			return new ChannelListUIResponse(userChannels, false);
@@ -283,8 +290,7 @@ public class ChannelServiceImpl {
 		System.out.println(url);
 
 		try {
-			 restTemplate.exchange(url, HttpMethod.POST, HttpEntity.EMPTY,
-					String.class);
+			restTemplate.exchange(url, HttpMethod.POST, HttpEntity.EMPTY, String.class);
 		} catch (Exception e) {
 			return false;
 		}

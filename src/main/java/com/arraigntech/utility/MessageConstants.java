@@ -66,4 +66,6 @@ public class MessageConstants {
 	public static final String WELCOME_TEMPLATE_SUBJECT="Welcome to Vstreem";
 	public static final String RESET_PASSWORD_LINK="Reset Password link";
 	public static final String STREAM_NOT_EXISTS="Stream doesn't exist";
+	public static final String FACEBOOK_CHANNEL_EXISTS="The user has already added the facebook channel";
+	public static final String INSTAGRAM_CHANNEL_EXISTS="Only one channel with RTMP/Instagram can be added for an account";
 }
