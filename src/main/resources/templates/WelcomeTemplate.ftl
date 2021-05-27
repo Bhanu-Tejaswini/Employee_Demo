@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
 <head>
 <title>welcome Vstreem</title>
 <!-- Required meta tags -->
@@ -311,7 +310,6 @@ a {
 		crossorigin="anonymous"></script>
 </body>
 </html>
-=======
   <head>
     <title>welcome Vstreem</title>
     <!-- Required meta tags -->
@@ -695,4 +693,4 @@ a {
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   </body>
 </html>
->>>>>>> f7f15f1d11ade4315f681b478fbf792023e88a0a
+

@@ -179,7 +179,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (Objects.isNull(newUser.getProvider())) {
 			sendRegisterationLink(userDTO.getEmail());
 		} else {
-			getWelcomeMailTemplateDetails(userDTO.getEmail(),userDTO.getPassword());
+			welcomeMail(userDTO.getEmail(),userDTO.getPassword());
 		}
 		log.debug("register end");
 		return true;
