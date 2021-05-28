@@ -163,7 +163,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 //			provider=AuthenticationProvider.LOCAL;
 //		}
 		newUser = new User();
-		newUser.setProvider(AuthenticationProvider.FACEBOOK);
+		newUser.setProvider(userDTO.getProvider());
 		newUser.setUsername(userDTO.getUsername());
 		newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		newUser.setEmail(userDTO.getEmail());
