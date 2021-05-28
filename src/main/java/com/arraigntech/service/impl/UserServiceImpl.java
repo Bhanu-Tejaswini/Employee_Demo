@@ -163,7 +163,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 //			provider=AuthenticationProvider.LOCAL;
 //		}
 		newUser = new User();
-		newUser.setProvider(userDTO.getProvider());
+		newUser.setProvider(AuthenticationProvider.FACEBOOK);
 		newUser.setUsername(userDTO.getUsername());
 		newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		newUser.setEmail(userDTO.getEmail());
@@ -360,7 +360,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		model.put("regisrationLink", passwordResetLink);
 		model.put("vstreemImage", vstreemImage);
 		Email emailDetails = formEmailData.formEmail(formMail, email,
-				MessageConstants.RESET_PASSWORD_LINK, passwordResetLink, "ResetEmailTemplate.ftl", model);
+				MessageConstants.RESET_PASSWORD_LINK, passwordResetLink, "ResetPasswordTemplate.html", model);
 		// Sending the mail with password reset link
 		try {
 			mailService.sendEmail(emailDetails);
@@ -450,7 +450,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 			model.put("regisrationLink", regisrationLink);
 			model.put("vstreemImage", vstreemImage);
 			Email email = formEmailData.formEmail(formMail, userEmail,
-					MessageConstants.REGISTRATION_CONFIRMATION_LINK, regisrationLink, "VerificationEmailTemplate.ftl", model);
+					MessageConstants.REGISTRATION_CONFIRMATION_LINK, regisrationLink, "MailVerificationTemplate.html", model);
 			User newUser=userRepo.findByEmailAll(userEmail);
 			newUser.setUpdatedAt(new Date());
 			userRepo.save(newUser);
@@ -460,6 +460,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 			log.error("Error in sending registration link : " + userEmail, e);
 			throw new AppException("Something went wrong, Please try again later.");
 		}
+		 
 
 		return true;
 	}
@@ -469,39 +470,22 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (!StringUtils.hasText(token)) {
 			throw new AppException(MessageConstants.INVALID_REGISTER_TOKEN);
 		}
-		if (!iVSJwtUtil.validateRegisterToken(token)) {
-			return false;
-		}
+		/*
+		 * if (!iVSJwtUtil.validateRegisterToken(token)) { return false; }
+		 */
 		String email = iVSJwtUtil.getUsernameFromToken(token);
 		User user = userRepo.findByEmailAll(email);
 		if (Objects.nonNull(user)) {
 			user.setActive(true);
 			user.setEmailVerified(true);
 			userRepo.save(user);
-			getWelcomeMailTemplateDetails(email,null);
+			getWelcomeMailTemplateDetails(email);
 			return true;
 		}
 		return false;
 	}
 
-	public Boolean welcomeMail(String email, String password) {
-		try {
-			mailService.sendWelcomeEmail(email, password);
-		} catch (Exception e) {
-			throw new AppException("Something went wrong while sending mail, Please try again later.");
-		}
-		return true;
-	}
-
-	private User getUser() {
-		User user = userRepo.findByEmail(CommonUtils.getUser());
-		if (Objects.isNull(user)) {
-			throw new AppException(MessageConstants.USER_NOT_FOUND);
-		}
-		return user;
-	}
-	
-	public boolean getWelcomeMailTemplateDetails(String userEmail, String password){
+	public Boolean welcomeMail(String userEmail, String password) {
 	    log.debug("getWelcomeMailTemplateDetails method start");
 		Map model = new HashMap();
 		model.put("userMail", userEmail);
@@ -513,7 +497,37 @@ public class UserServiceImpl implements IVSService<User, String> {
 		model.put("catalogueImage", catalogueImage);
 		model.put("password", password);
 		Email email = formEmailData.formEmail(formMail, userEmail,
-		MessageConstants.WELCOME_TEMPLATE_SUBJECT, null, "WelcomeTemplate.ftl", model);
+		MessageConstants.WELCOME_TEMPLATE_SUBJECT, null, "SocialWelcomeTemplate.html", model);
+		try {
+			mailService.sendEmail(email);
+		} catch (Exception e) {
+			throw new AppException("Something went wrong while sending mail, Please try again later.");
+		}  
+		log.debug("getWelcomeMailTemplateDetails method end");
+		
+		return true;
+	}
+
+	private User getUser() {
+		User user = userRepo.findByEmail(CommonUtils.getUser());
+		if (Objects.isNull(user)) {
+			throw new AppException(MessageConstants.USER_NOT_FOUND);
+		}
+		return user;
+	}
+	
+	public boolean getWelcomeMailTemplateDetails(String userEmail){
+	    log.debug("getWelcomeMailTemplateDetails method start");
+		Map model = new HashMap();
+		model.put("userMail", userEmail);
+		model.put("vstreemImage", vstreemImage);
+		model.put("welcomeImage", welcomeImage);
+		model.put("galleryImage", galleryImage);
+		model.put("combistreemImage", combistreemImage);
+		model.put("databondImage", databondImage);
+		model.put("catalogueImage", catalogueImage);
+		Email email = formEmailData.formEmail(formMail, userEmail,
+		MessageConstants.WELCOME_TEMPLATE_SUBJECT, null, "WelcomeTemplate.html", model);
 		try {
 			mailService.sendEmail(email);
 		} catch (Exception e) {
