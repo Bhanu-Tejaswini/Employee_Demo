@@ -4,10 +4,6 @@ public class IVSTokenEmail {
 
 	private String email;
 
-	public IVSTokenEmail() {
-
-	}
-
 	public String getEmail() {
 		return email;
 	}

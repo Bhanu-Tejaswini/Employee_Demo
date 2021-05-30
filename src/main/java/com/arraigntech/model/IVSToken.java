@@ -14,10 +14,6 @@ public class IVSToken {
 	private String email;
 	private String client_id;
 
-	public IVSToken() {
-
-	}
-
 	public List<String> getAud() {
 		return aud;
 	}

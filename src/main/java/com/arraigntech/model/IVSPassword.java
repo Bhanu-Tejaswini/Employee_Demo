@@ -6,10 +6,6 @@ public class IVSPassword {
 
 	private String newpassword;
 
-	public IVSPassword() {
-
-	}
-
 	public String getPassword() {
 		return password;
 	}

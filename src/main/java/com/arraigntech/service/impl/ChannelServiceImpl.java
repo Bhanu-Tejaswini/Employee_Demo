@@ -165,7 +165,7 @@ public class ChannelServiceImpl {
 
 	public boolean addInstagramChannel(CustomChannelDTO customChannelDTO) {
 		log.debug("addInstagramChannel method start");
-		if (Objects.isNull(customChannelDTO)) {
+		if (Objects.isNull(customChannelDTO) || !StringUtils.hasText(customChannelDTO.getRtmpUrl()) || !StringUtils.hasText(customChannelDTO.getStreamKey())) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
 		if(!(customChannelDTO.getRtmpUrl().startsWith("rtmps://") && customChannelDTO.getRtmpUrl().endsWith("/rtmp/"))){
@@ -364,6 +364,9 @@ public class ChannelServiceImpl {
 
 	public boolean updateAllTitles(UpdateAllTitleDTO updateAllTitleDTO) {
 		log.debug("updateAllTitles method start");
+		if(Objects.isNull(updateAllTitleDTO) || !StringUtils.hasText(updateAllTitleDTO.getDescription()) || !StringUtils.hasText(updateAllTitleDTO.getTitle())) {
+			throw new AppException(MessageConstants.DETAILS_MISSING);
+		}
 		User newUser = getUser();
 		List<Channels> channelList = channelRepo.findByUser(newUser);
 		if (channelList.isEmpty()) {

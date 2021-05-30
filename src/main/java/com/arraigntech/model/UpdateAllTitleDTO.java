@@ -26,5 +26,10 @@ public class UpdateAllTitleDTO {
 		this.title = title;
 		this.description = description;
 	}
+	
+	public UpdateAllTitleDTO() {
+		
+	}
+	
 
 }

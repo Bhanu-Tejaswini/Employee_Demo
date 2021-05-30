@@ -27,4 +27,7 @@ public class LoginResponseDTO {
 		this.flag = flag;
 	}
 
+	public LoginResponseDTO() {
+		
+	}
 }

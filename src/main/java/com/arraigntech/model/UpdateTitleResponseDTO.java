@@ -27,4 +27,7 @@ public class UpdateTitleResponseDTO {
 		this.flag = flag;
 	}
 
+	public UpdateTitleResponseDTO() {
+		
+	}
 }
