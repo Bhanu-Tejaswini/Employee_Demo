@@ -67,7 +67,7 @@ public class ResouceServerConfigurations extends ResourceServerConfigurerAdapter
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		final CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
-		config.addAllowedOriginPattern("*");
+		config.addAllowedOrigin("*");
 		config.addAllowedHeader("*");
 		config.addExposedHeader(CSRF_HEADER_NAME);
 		config.addAllowedMethod("OPTIONS");

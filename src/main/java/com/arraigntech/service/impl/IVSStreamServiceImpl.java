@@ -3,12 +3,10 @@ package com.arraigntech.service.impl;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -82,9 +80,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	@Autowired
 	private RestTemplate restTemplate;
 
-	@Qualifier("workExecutor")
-	@Autowired
-	private Executor executorService;
+
 	@Autowired
 	private StreamRepository streamRepo;
 
@@ -251,12 +247,12 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			deleteStream(streamId);
 			throw new AppException(MessageConstants.NO_CHANNELS_TO_STREAM);
 		}
-		CompletableFuture.runAsync(() -> youtubeStream(youtubeChannels, streamId, outputId), executorService);
-		CompletableFuture.runAsync(() -> facebookStream(facebookChannels, streamId, outputId), executorService)
-				.handle((res, e) -> {
-					throw new AppException(e.getMessage());
-				});
-		CompletableFuture.runAsync(() -> instagramStream(instagramChannels, streamId, outputId), executorService);
+		CompletableFuture.runAsync(() -> youtubeStream(youtubeChannels, streamId, outputId));
+		CompletableFuture.runAsync(() -> facebookStream(facebookChannels, streamId, outputId))
+		.handle((res, e) -> {
+			throw new AppException(e.getMessage());
+		});
+		CompletableFuture.runAsync(() -> instagramStream(instagramChannels, streamId, outputId));
 		log.debug("channelStream method end");
 		return true;
 	}
@@ -370,7 +366,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		;
 		streamRepo.save(stream);
 		log.debug("startStream end");
-//		return response.getLiveStreamState().getState();
+		//		return response.getLiveStreamState().getState();
 	}
 
 	/**
