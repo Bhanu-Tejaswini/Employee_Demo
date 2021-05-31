@@ -18,7 +18,6 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 @EnableResourceServer
 public class ResouceServerConfigurations extends ResourceServerConfigurerAdapter {
-
 	public final static String CSRF_HEADER_NAME = "Access-Control-Allow-Origin";
 
 	@Value("${security.jwt.resource-ids}")
@@ -34,9 +33,9 @@ public class ResouceServerConfigurations extends ResourceServerConfigurerAdapter
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		final CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
-		config.setAllowedOrigins(Arrays.asList("*"));
+		config.setAllowedOriginPatterns(Arrays.asList("*"));
 		config.setAllowedHeaders(Arrays.asList("*"));
-		config.addExposedHeader(CSRF_HEADER_NAME);
+		config.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin"));
 		config.setAllowedMethods(Arrays.asList("OPTIONS", "HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
