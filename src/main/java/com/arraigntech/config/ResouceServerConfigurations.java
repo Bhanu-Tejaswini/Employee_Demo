@@ -1,6 +1,8 @@
 
 package com.arraigntech.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,16 +34,10 @@ public class ResouceServerConfigurations extends ResourceServerConfigurerAdapter
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		final CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
-		config.addAllowedOrigin("*");
-		config.addAllowedHeader("*");
+		config.setAllowedOrigins(Arrays.asList("*"));
+		config.setAllowedHeaders(Arrays.asList("*"));
 		config.addExposedHeader(CSRF_HEADER_NAME);
-		config.addAllowedMethod("OPTIONS");
-		config.addAllowedMethod("HEAD");
-		config.addAllowedMethod("GET");
-		config.addAllowedMethod("PUT");
-		config.addAllowedMethod("POST");
-		config.addAllowedMethod("DELETE");
-		config.addAllowedMethod("PATCH");
+		config.setAllowedMethods(Arrays.asList("OPTIONS", "HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
 	}
