@@ -1,6 +1,5 @@
 package com.arraigntech.service.impl;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,10 +16,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.Channels;
 import com.arraigntech.entity.UpdateTitle;
 import com.arraigntech.entity.User;
+import com.arraigntech.exceptions.AppException;
 import com.arraigntech.model.ChannelDTO;
 import com.arraigntech.model.ChannelErrorUIResponse;
 import com.arraigntech.model.ChannelIngestionInfo;
@@ -64,18 +63,10 @@ public class ChannelServiceImpl {
 	private UpdateTitleRepository updateTitleRepo;
 
 	@Autowired
-	private UserRespository userRepo;
+	private UserServiceImpl userService;
 
 	@Autowired
 	private RestTemplate restTemplate;
-
-	private User getUser() {
-		User user = userRepo.findByEmail(CommonUtils.getUser());
-		if (Objects.isNull(user)) {
-			throw new AppException(MessageConstants.USER_NOT_FOUND);
-		}
-		return user;
-	}
 
 	public boolean createChannel(ChannelDTO channelDTO) {
 		log.debug("createChannel method start");
@@ -123,7 +114,7 @@ public class ChannelServiceImpl {
 		}
 
 		Channels channels = new Channels();
-		User newUser = getUser();
+		User newUser = userService.getUser();
 		channels.setType(ChannelTypeProvider.YOUTUBE);
 		channels.setChannelId(channelid);
 		channels.setStreamName(ingestionInfo.getStreamName());
@@ -138,7 +129,7 @@ public class ChannelServiceImpl {
 
 	public boolean addFaceBookChannel(ChannelDTO channelDTO) {
 		log.debug("addFaceBookChannel method start");
-		User newUser = getUser();
+		User newUser = userService.getUser();
 		List<Channels> facebookChannel = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.FACEBOOK);
 		if (facebookChannel.size() > 0) {
 			throw new AppException(MessageConstants.FACEBOOK_CHANNEL_EXISTS);
@@ -165,13 +156,15 @@ public class ChannelServiceImpl {
 
 	public boolean addInstagramChannel(CustomChannelDTO customChannelDTO) {
 		log.debug("addInstagramChannel method start");
-		if (Objects.isNull(customChannelDTO) || !StringUtils.hasText(customChannelDTO.getRtmpUrl()) || !StringUtils.hasText(customChannelDTO.getStreamKey())) {
+		if (Objects.isNull(customChannelDTO) || !StringUtils.hasText(customChannelDTO.getRtmpUrl())
+				|| !StringUtils.hasText(customChannelDTO.getStreamKey())) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
-		if(!(customChannelDTO.getRtmpUrl().startsWith("rtmps://") && customChannelDTO.getRtmpUrl().endsWith("/rtmp/"))){
+		if (!(customChannelDTO.getRtmpUrl().startsWith("rtmps://")
+				&& customChannelDTO.getRtmpUrl().endsWith("/rtmp/"))) {
 			throw new AppException(MessageConstants.WRONG_INSTAGRAM_RTMPSURL);
 		}
-		User newUser = getUser();
+		User newUser = userService.getUser();
 		List<Channels> channelsList = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.INSTAGRAM);
 		Channels channel;
 		if (channelsList.isEmpty()) {
@@ -259,9 +252,12 @@ public class ChannelServiceImpl {
 		return MessageConstants.CHANNEL_DISABLED;
 	}
 
+	public List<Channels>findByUserAndTypeAndActive(User newUser, ChannelTypeProvider type,boolean active){
+		return channelRepo.findByUserAndTypeAndActive(newUser, type, active);
+	}
 	public ChannelListUIResponse getUserChannels() {
 		log.debug("getUserChannels method start");
-		User newUser = getUser();
+		User newUser = userService.getUser();
 		List<Channels> userChannels = channelRepo.findByUser(newUser);
 		List<Channels> userFaceBookChannels = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.FACEBOOK);
 		boolean flag = true;
@@ -301,7 +297,7 @@ public class ChannelServiceImpl {
 
 	public List<ChannelErrorUIResponse> getErrorChannels() {
 		log.debug("getErrorChannels method start");
-		User newUser = getUser();
+		User newUser = userService.getUser();
 		List<Channels> facebookChannels = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.FACEBOOK);
 		List<ChannelErrorUIResponse> channelList = new ArrayList<>();
 		facebookChannels.stream().forEach(channel -> {
@@ -364,10 +360,11 @@ public class ChannelServiceImpl {
 
 	public boolean updateAllTitles(UpdateAllTitleDTO updateAllTitleDTO) {
 		log.debug("updateAllTitles method start");
-		if(Objects.isNull(updateAllTitleDTO) || !StringUtils.hasText(updateAllTitleDTO.getDescription()) || !StringUtils.hasText(updateAllTitleDTO.getTitle())) {
+		if (Objects.isNull(updateAllTitleDTO) || !StringUtils.hasText(updateAllTitleDTO.getDescription())
+				|| !StringUtils.hasText(updateAllTitleDTO.getTitle())) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
-		User newUser = getUser();
+		User newUser = userService.getUser();
 		List<Channels> channelList = channelRepo.findByUser(newUser);
 		if (channelList.isEmpty()) {
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);

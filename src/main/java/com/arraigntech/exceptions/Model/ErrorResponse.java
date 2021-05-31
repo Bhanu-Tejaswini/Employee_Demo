@@ -1,4 +1,4 @@
-package com.arraigntech.Exception.Model;
+package com.arraigntech.exceptions.Model;
 
 /**
  * 

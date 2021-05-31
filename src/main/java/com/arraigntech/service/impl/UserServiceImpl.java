@@ -1,7 +1,6 @@
 package com.arraigntech.service.impl;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,37 +16,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.EmailSettings;
 import com.arraigntech.entity.ResetToken;
 import com.arraigntech.entity.Role;
 import com.arraigntech.entity.User;
+import com.arraigntech.exceptions.AppException;
 import com.arraigntech.model.Email;
 import com.arraigntech.model.EmailSettingsModel;
 import com.arraigntech.model.LoginDetails;
 import com.arraigntech.model.LoginResponseDTO;
-import com.arraigntech.model.TokenResponse;
 import com.arraigntech.model.UserDTO;
-import com.arraigntech.model.UserToken;
 import com.arraigntech.repository.EmailSettingsRepository;
 import com.arraigntech.repository.ResetTokenRepository;
 import com.arraigntech.repository.RoleRepository;
 import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.IVSService;
 import com.arraigntech.service.MailService;
+import com.arraigntech.service.UserService;
 import com.arraigntech.utility.AuthenticationProvider;
 import com.arraigntech.utility.CommonUtils;
 import com.arraigntech.utility.EmailValidator;
@@ -59,7 +50,7 @@ import com.arraigntech.utility.PasswordConstraintValidator;
 import freemarker.template.TemplateException;
 
 @Service
-public class UserServiceImpl implements IVSService<User, String> {
+public class UserServiceImpl implements UserService   {
 
 	public static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -71,9 +62,6 @@ public class UserServiceImpl implements IVSService<User, String> {
 
 	@Autowired
 	private RoleRepository roleRepo;
-
-	@Autowired
-	private RestTemplate restTemplate;
 
 	@Value("${basic.auth}")
 	private String basicAuth;
@@ -128,7 +116,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 
 	@Autowired
 	private IVSJwtUtil iVSJwtUtil;
-	
+	public static final String ROLE_USER="ROLE_USER";
 	public static final String vstreemImage= "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/vestreem_logo.png";
 	public static final String welcomeImage= "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/welcome.jpg";
 	public static final String galleryImage= "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/gallery.png";
@@ -136,6 +124,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 	public static final String combistreemImage= "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/combistreem.png";
 	public static final String catalogueImage= "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/catalogue.png";
 
+	@Override
 	public Boolean register(UserDTO userDTO){
 		log.debug("register start");
 		if (Objects.isNull(userDTO) || !StringUtils.hasText(userDTO.getUsername())
@@ -159,9 +148,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (!passwordValidator.isValid(userDTO.getPassword())) {
 			throw new AppException(MessageConstants.INVALID_PASSWORD);
 		}
-//		if(provider.equals(null)) {
-//			provider=AuthenticationProvider.LOCAL;
-//		}
+
 		newUser = new User();
 		newUser.setProvider(userDTO.getProvider());
 		newUser.setUsername(userDTO.getUsername());
@@ -172,7 +159,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		newUser.setCredentialsNonExpired(true);
 		newUser.setActive(false);
 		newUser.setEmailVerified(false);
-		Role role = roleRepo.findByName("ROLE_USER");
+		Role role = roleRepo.findByName(ROLE_USER);
 		newUser.getRoles().add(role);
 		newUser.setEnabled(true);
 		userRepo.save(newUser);
@@ -184,32 +171,28 @@ public class UserServiceImpl implements IVSService<User, String> {
 		log.debug("register end");
 		return true;
 	}
-
-	@Override
-	public Page<User> getPaginated(Integer page, Integer limit) {
-		return userRepo.findAll(PageRequest.of(page, limit));
+	
+	public User findByEmailAll(String email) {
+		return userRepo.findByEmailAll(email);
+	}
+	
+	public void saveUser(User newUser) {
+		 userRepo.save(newUser);
+	}
+	
+	public User findByEmail(String email) {
+		return userRepo.findByEmail(email);
+	}
+	
+	public User findByUsernameAndIdNot(String username, String id) {
+		return userRepo.findByUsernameAndIdNot(username, id);
+	}
+	
+	public User findByEmailAndIdNot(String email,String id) {
+		return userRepo.findByEmailAndIdNot(email, id);
 	}
 
-	@Override
-	public List<User> getAll() throws AppException {
-		List<User> users = userRepo.findAll();
-		if (users.isEmpty()) {
-			throw new AppException(MessageConstants.USER_LIST_EMPTY);
-		}
-		return users;
-	}
-
-	@Override
-	public User update(User entity) throws AppException {
-		User newUser = new User();
-		newUser = userRepo.findByEmail(entity.getEmail());
-		if (Objects.isNull(newUser)) {
-			throw new AppException("The user already exists");
-		}
-		return userRepo.save(entity);
-	}
-
-	public boolean delete(String password) throws AppException {
+	public boolean delete(String password){
 		User newUser = getUser();
 		if (passwordEncoder.matches(password, newUser.getPassword())) {
 			newUser.setActive(false);
@@ -220,13 +203,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		return true;
 	}
 
-	@Override
-	public User create(User entity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String updatePassword(String token, String newPassword) throws AppException {
+	public String updatePassword(String token, String newPassword){
 		log.debug("reset password start");
 		if (!StringUtils.hasText(token) || !StringUtils.hasText(newPassword)) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
@@ -268,11 +245,6 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-//		if(newUser.getLoginCount() == 0) {
-//			newUser.setLoginCount(1);
-//		} else {
-//			newUser.setLoginCount(2);
-//		}
 		userRepo.save(newUser);
 		if (!newUser.isEmailVerified()) {
 			if (System.currentTimeMillis() < newUser.getUpdatedAt().getTime() + 900000) {
@@ -288,45 +260,10 @@ public class UserServiceImpl implements IVSService<User, String> {
 		if (!passwordEncoder.matches(login.getPassword(), newUser.getPassword())) {
 			throw new AppException(MessageConstants.WRONG_PASSWORD);
 		}
-
-//		if(newUser.isEmailVerified() && newUser.getLoginCount() == 1) {
-//			getWelcomeMailTemplateDetails(login.getEmail(),null);
-//		}
 		OAuth2AccessToken accessToken = socialLoginService.getAccessToken(newUser);
-//		UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
-//		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-//		headers.add("Authorization", basicAuth);
-//
-//		String localUrl = builder
-//				.scheme(appScheme)
-//				.host(appSchemeHost)
-//				.path("/oauth/token").build().toUriString();
-//		System.out.println(localUrl);
-//		String uri = localUrl + "?grant_type=password&username=" + login.getEmail() + "&password="
-//				+ login.getPassword();
-//		System.out.println(uri);
-//		HttpEntity<UserToken> request = new HttpEntity<>(headers);
-//		TokenResponse response = null;
-//		try {
-//			ResponseEntity<TokenResponse> reponseEntity = restTemplate.exchange(uri, HttpMethod.POST, request,
-//					TokenResponse.class);
-//			response = reponseEntity.getBody();
-//		} catch (Exception e) {
-//			log.error("Failed to get access token for the given credentials");
-//			throw new AppException(e.getMessage());
-//		}
 		log.debug("generateToken end");
 		return new LoginResponseDTO(accessToken.toString(), true);
 
-	}
-
-	@Override
-	public User getById(String id) throws AppException {
-		Optional<User> newUser = userRepo.findById(id);
-		if (!newUser.isPresent()) {
-			throw new AppException(MessageConstants.USER_NOT_FOUND);
-		}
-		return newUser.get();
 	}
 
 	public Boolean forgotPassword(String email) {
@@ -385,7 +322,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		} else {
 			throw new AppException(MessageConstants.WRONG_PASSWORD);
 		}
-		userRepo.save(newUser);
+		saveUser(newUser);
 		log.debug("updateAccountPassword end");
 		return MessageConstants.PASSWORDMESSAGE;
 	}
@@ -451,7 +388,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 			model.put("vstreemImage", vstreemImage);
 			Email email = formEmailData.formEmail(formMail, userEmail,
 					MessageConstants.REGISTRATION_CONFIRMATION_LINK, regisrationLink, "MailVerificationTemplate.html", model);
-			User newUser=userRepo.findByEmailAll(userEmail);
+			User newUser=findByEmailAll(userEmail);
 			newUser.setUpdatedAt(new Date());
 			userRepo.save(newUser);
 			mailService.sendEmail(email);			
@@ -474,7 +411,7 @@ public class UserServiceImpl implements IVSService<User, String> {
 		 * if (!iVSJwtUtil.validateRegisterToken(token)) { return false; }
 		 */
 		String email = iVSJwtUtil.getUsernameFromToken(token);
-		User user = userRepo.findByEmailAll(email);
+		User user = findByEmailAll(email);
 		if (Objects.nonNull(user)) {
 			user.setActive(true);
 			user.setEmailVerified(true);
@@ -508,8 +445,8 @@ public class UserServiceImpl implements IVSService<User, String> {
 		return true;
 	}
 
-	private User getUser() {
-		User user = userRepo.findByEmail(CommonUtils.getUser());
+	public User getUser() {
+		User user = findByEmail(CommonUtils.getUser());
 		if (Objects.isNull(user)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}

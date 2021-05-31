@@ -19,37 +19,34 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.Channels;
 import com.arraigntech.entity.StreamTarget;
 import com.arraigntech.entity.Streams;
 import com.arraigntech.entity.User;
+import com.arraigntech.exceptions.AppException;
 import com.arraigntech.model.MongoUser;
 import com.arraigntech.mongorepos.MongoStreamResponseRepository;
 import com.arraigntech.mongorepos.MongoStreamTargetRepository;
 import com.arraigntech.mongorepos.OutputStreamTargetRepository;
-import com.arraigntech.repository.ChannelsRepository;
 import com.arraigntech.repository.StreamRepository;
 import com.arraigntech.repository.StreamTargetRepository;
-import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.IVSStreamService;
-import com.arraigntech.streamsModel.FacebookStreamRequest;
-import com.arraigntech.streamsModel.FacebookStreamResponse;
-import com.arraigntech.streamsModel.FetchStreamUIResponse;
-import com.arraigntech.streamsModel.IVSLiveStream;
-import com.arraigntech.streamsModel.IVSLiveStreamResponse;
-import com.arraigntech.streamsModel.LiveStream;
-import com.arraigntech.streamsModel.LiveStreamState;
-import com.arraigntech.streamsModel.OutputStreamTarget;
-import com.arraigntech.streamsModel.OutputStreamTargetDTO;
-import com.arraigntech.streamsModel.StreamSourceConnectionInformation;
-import com.arraigntech.streamsModel.StreamTargetDTO;
-import com.arraigntech.streamsModel.StreamTargetModel;
-import com.arraigntech.streamsModel.StreamUIRequest;
-import com.arraigntech.streamsModel.StreamUIResponse;
-import com.arraigntech.streamsModel.Webrtc;
+import com.arraigntech.streams.model.FacebookStreamRequest;
+import com.arraigntech.streams.model.FacebookStreamResponse;
+import com.arraigntech.streams.model.FetchStreamUIResponse;
+import com.arraigntech.streams.model.IVSLiveStream;
+import com.arraigntech.streams.model.IVSLiveStreamResponse;
+import com.arraigntech.streams.model.LiveStream;
+import com.arraigntech.streams.model.LiveStreamState;
+import com.arraigntech.streams.model.OutputStreamTarget;
+import com.arraigntech.streams.model.OutputStreamTargetDTO;
+import com.arraigntech.streams.model.StreamSourceConnectionInformation;
+import com.arraigntech.streams.model.StreamTargetDTO;
+import com.arraigntech.streams.model.StreamTargetModel;
+import com.arraigntech.streams.model.StreamUIRequest;
+import com.arraigntech.streams.model.StreamUIResponse;
+import com.arraigntech.streams.model.Webrtc;
 import com.arraigntech.utility.ChannelTypeProvider;
-import com.arraigntech.utility.CommonUtils;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.utility.RandomIdGenerator;
 
@@ -71,7 +68,6 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	private static final String DELIVERY_TYPE = "single-bitrate";
 	private static final boolean PLAYER_RESPONSIVE = true;
 	private static final boolean RECORDING = false;
-	private static final String STARTING = "starting";
 	private static final String STATUS = "status";
 	private static final String LIVE_NOW = "LIVE_NOW";
 	private static final String ACCESS_TOKEN = "access_token";
@@ -88,12 +84,6 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	@Autowired
 	private StreamRepository streamRepo;
 
-	@Autowired
-	private UserRespository userRepo;
-
-	@Autowired
-	private ChannelsRepository channelRepo;
-
 	@Value("${wowza.url}")
 	private String baseUrl;
 
@@ -105,6 +95,12 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 
 	@Value("${facebook.streamurl}")
 	private String graphUrl;
+
+	@Autowired
+	private UserServiceImpl userService;
+
+	@Autowired
+	private ChannelServiceImpl channelService;
 
 	@Autowired
 	private MongoStreamResponseRepository streamResponseRepo;
@@ -142,7 +138,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	@Override
 	public StreamUIResponse createStream(StreamUIRequest streamRequest) {
 		log.debug("create stream start");
-		User newUser=getUser();
+		User newUser = userService.getUser();
 		IVSLiveStream liveStream = populateStreamData(streamRequest);
 		String url = baseUrl + "/live_streams";
 		MultiValueMap<String, String> headers = getHeader();
@@ -158,7 +154,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		}
 
 		// saving the response data to mongodb
-		liveStreamResponse.setUser(new MongoUser(newUser.getId(),newUser.getEmail(),newUser.getUsername()));
+		liveStreamResponse.setUser(new MongoUser(newUser.getId(), newUser.getEmail(), newUser.getUsername()));
 		streamResponseRepo.save(liveStreamResponse);
 		// saving necessary details to postgresql
 		saveStream(liveStreamResponse);
@@ -166,7 +162,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		// checking whether stream has been started completly, if started return the
 		// response
 		String streamId = liveStreamResponse.getLiveStreamResponse().getId();
-		String outputId = liveStreamResponse.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(3)
+		String outputId = liveStreamResponse.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(2)
 				.getOutput_id();
 		// adds youtube channels in the target
 		channelsStream(streamId, outputId);
@@ -242,10 +238,13 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 
 	public Boolean channelsStream(String streamId, String outputId) {
 		log.debug("channelStream method start");
-		User newUser = getUser();
-		List<Channels> youtubeChannels = channelRepo.findByUserAndTypeAndActive(newUser, ChannelTypeProvider.YOUTUBE,true);
-		List<Channels> facebookChannels = channelRepo.findByUserAndTypeAndActive(newUser, ChannelTypeProvider.FACEBOOK,true);
-		List<Channels> instagramChannels = channelRepo.findByUserAndTypeAndActive(newUser, ChannelTypeProvider.INSTAGRAM,true);
+		User newUser = userService.getUser();
+		List<Channels> youtubeChannels = channelService.findByUserAndTypeAndActive(newUser, ChannelTypeProvider.YOUTUBE,
+				true);
+		List<Channels> facebookChannels = channelService.findByUserAndTypeAndActive(newUser,
+				ChannelTypeProvider.FACEBOOK, true);
+		List<Channels> instagramChannels = channelService.findByUserAndTypeAndActive(newUser,
+				ChannelTypeProvider.INSTAGRAM, true);
 		// if there are no channels added means
 		if (youtubeChannels.isEmpty() && facebookChannels.isEmpty()) {
 			deleteStream(streamId);
@@ -270,8 +269,10 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	public void instagramStream(List<Channels> instagramChannels, String streamId, String outputId) {
 		log.debug("instagramStream method start");
 		instagramChannels.stream().forEach(channel -> {
-			String streamTargetId = createStreamTarget(new StreamTargetModel("INSTGRAM_" + RandomIdGenerator.generate(5),
-					RTMPS, channel.getPrimaryUrl(), channel.getStreamName(), channel.getBackupUrl()), streamId);
+			String streamTargetId = createStreamTarget(
+					new StreamTargetModel("INSTGRAM_" + RandomIdGenerator.generate(5), RTMPS, channel.getPrimaryUrl(),
+							channel.getStreamName(), channel.getBackupUrl()),
+					streamId);
 			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId));
 		});
 		log.debug("instagramStream method end");
@@ -440,7 +441,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		log.debug("saveStream start");
 		Streams stream = new Streams();
 
-		User newUser = getUser();
+		User newUser = userService.getUser();
 		stream.setStreamId(response.getLiveStreamResponse().getId());
 		stream.setApplicationName(
 				response.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(0).getApplication_name());
@@ -570,18 +571,5 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		}
 		log.debug("deleteOutputTarget end");
 		return true;
-	}
-
-	/**
-	 * Gets the user.
-	 *
-	 * @return the user
-	 */
-	private User getUser() {
-		User user = userRepo.findByEmail(CommonUtils.getUser());
-		if (Objects.isNull(user)) {
-			throw new AppException(MessageConstants.USER_NOT_FOUND);
-		}
-		return user;
 	}
 }

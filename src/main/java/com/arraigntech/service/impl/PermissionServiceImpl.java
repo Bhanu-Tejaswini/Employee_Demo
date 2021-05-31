@@ -9,8 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.Permission;
+import com.arraigntech.exceptions.AppException;
 import com.arraigntech.repository.PermissionRepository;
 import com.arraigntech.service.IVSService;
 import com.arraigntech.utility.MessageConstants;

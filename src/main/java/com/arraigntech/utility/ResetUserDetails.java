@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.User;
+import com.arraigntech.exceptions.AppException;
 import com.arraigntech.repository.UserRespository;
 
 /**

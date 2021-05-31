@@ -5,7 +5,7 @@ package com.arraigntech.mongorepos;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.arraigntech.streamsModel.StreamTargetDTO;
+import com.arraigntech.streams.model.StreamTargetDTO;
 
 /**
  * @author Bhaskara S

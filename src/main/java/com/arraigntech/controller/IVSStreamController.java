@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.arraigntech.model.response.BaseResponse;
 import com.arraigntech.service.IVSStreamService;
-import com.arraigntech.streamsModel.FetchStreamUIResponse;
-import com.arraigntech.streamsModel.StreamUIRequest;
-import com.arraigntech.streamsModel.StreamUIResponse;
+import com.arraigntech.streams.model.FetchStreamUIResponse;
+import com.arraigntech.streams.model.StreamUIRequest;
+import com.arraigntech.streams.model.StreamUIResponse;
 import com.arraigntech.utility.MessageConstants;
 
 import io.swagger.annotations.ApiOperation;
@@ -34,7 +34,7 @@ public class IVSStreamController {
 
 	@ApiOperation(value = "Creating the live stream")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-	@RequestMapping(value = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<StreamUIResponse> createStream(@RequestBody StreamUIRequest streamRequest) {
 		log.debug("Creating the live stream");
 		return new BaseResponse<StreamUIResponse>(streamService.createStream(streamRequest)).withSuccess(true);

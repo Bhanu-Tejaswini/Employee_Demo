@@ -40,7 +40,7 @@ public class ChannelsController {
 	
 	@ApiOperation(value = "Adding channel")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-	@RequestMapping(value = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> addChannel(@RequestBody ChannelDTO channelDTO) {
 		log.debug("Adding channel");
 		Boolean result = channelService.createChannel(channelDTO);
@@ -94,10 +94,9 @@ public class ChannelsController {
 	
 	@ApiOperation(value = "Get the list of channels of user")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-	@RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/fetch", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<List<Channels>> getChannelList() {
 		log.debug("Get the list of channels of user");
-		BaseResponse<List<Channels>> response = new BaseResponse<>();
 		ChannelListUIResponse userChannels = channelService.getUserChannels();
 		if(userChannels.isFlag())
 			return new BaseResponse<List<Channels>>(userChannels.getChannelList()).withSuccess(true);

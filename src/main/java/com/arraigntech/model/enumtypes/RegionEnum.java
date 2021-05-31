@@ -1,4 +1,4 @@
-package com.arraigntech.model.enumTypes;
+package com.arraigntech.model.enumtypes;
 
 import java.util.Arrays;
 import java.util.List;

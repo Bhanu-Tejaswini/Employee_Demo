@@ -1,6 +1,6 @@
-package com.arraigntech.Exception;
+package com.arraigntech.exceptions;
 
-import com.arraigntech.Exception.Model.IErrorResponse;
+import com.arraigntech.exceptions.Model.IErrorResponse;
 
 /**
  * 

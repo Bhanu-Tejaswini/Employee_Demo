@@ -31,16 +31,10 @@ import com.arraigntech.utility.RandomPasswordGenerator;
 @Service
 public class SocialLoginServiceImpl implements SocialLoginService {
 	
-	public static final String ROLE="ROLE_USER";
+	public static final String ROLE_USER="ROLE_USER";
 
 	@Autowired
 	private DefaultTokenServices tokenService;
-	
-	@Autowired
-	private RoleRepository roleRepo;
-	
-	@Autowired
-	private UserRespository userRepo;
 	
 	@Autowired
 	private UserServiceImpl userService;
@@ -52,50 +46,35 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 	private UserDetailServiceImpl userDetailsService;
 	
 	public LoginResponseDTO getGoogleToken(SocialLoginDTO socialLogin) {
-		//checks whether email is verified or not
-		String getEmail=socialLogin.getEmail();
 		String username=getUsername(socialLogin.getUsername());
-		String role=ROLE;
-	
-		User checkUser=userRepo.findByEmailAll(getEmail);
+		User checkUser=userService.findByEmailAll(socialLogin.getEmail());
 		if(Objects.isNull(checkUser)) {
-			userService.register(new UserDTO(username.toLowerCase(),getEmail,RandomPasswordGenerator.generatePassword(),Arrays.asList(role),AuthenticationProvider.GOOGLE));
-			User user = userRepo.findByEmailAll(getEmail);
+			userService.register(new UserDTO(username.toLowerCase(),socialLogin.getEmail(),RandomPasswordGenerator.generatePassword(),Arrays.asList(ROLE_USER),AuthenticationProvider.GOOGLE));
+			User user = userService.findByEmailAll(socialLogin.getEmail());
 			user.setActive(true);
 			user.setEmailVerified(true);
-			userRepo.save(user);
+			userService.saveUser(user);
+			OAuth2AccessToken token=getAccessToken(checkUser);
+			return new LoginResponseDTO(token.toString(),true);
 			
 		}
-		User newUser = new User();
-		newUser.setUsername(username);
-		newUser.setEmail(getEmail);
-		newUser.setPassword("");
-		Role newRole = roleRepo.findByName(role);
-		newUser.getRoles().add(newRole);
-		OAuth2AccessToken token=getAccessToken(newUser);
+		OAuth2AccessToken token=getAccessToken(checkUser);
 		return new LoginResponseDTO(token.toString(),true);
 	}
 	
 	public LoginResponseDTO getFacebookToken(SocialLoginDTO socialLogin) {
-		//checks whether email is verified or not
-		String getEmail=socialLogin.getEmail();
 		String username=getUsername(socialLogin.getUsername());
-		String role=ROLE;
-		User checkUser=userRepo.findByEmailAll(getEmail);
+		User checkUser=userService.findByEmailAll(socialLogin.getEmail());
 		if(Objects.isNull(checkUser)) {
-			userService.register(new UserDTO(username.toLowerCase(),getEmail,RandomPasswordGenerator.generatePassword(),Arrays.asList(role),AuthenticationProvider.FACEBOOK));
-			User user = userRepo.findByEmailAll(getEmail);
+			userService.register(new UserDTO(username.toLowerCase(),socialLogin.getEmail(),RandomPasswordGenerator.generatePassword(),Arrays.asList(ROLE_USER),AuthenticationProvider.FACEBOOK));
+			User user = userService.findByEmailAll(socialLogin.getEmail());
 			user.setActive(true);
 			user.setEmailVerified(true);
-			userRepo.save(user);
+			userService.saveUser(user);
+			OAuth2AccessToken token=getAccessToken(checkUser);
+			return new LoginResponseDTO(token.toString(),true);
 		}
-		User newUser = new User();
-		newUser.setUsername(username);
-		newUser.setEmail(getEmail);
-		newUser.setPassword("");
-		Role newRole = roleRepo.findByName(role);
-		newUser.getRoles().add(newRole);
-		OAuth2AccessToken token=getAccessToken(newUser);
+		OAuth2AccessToken token=getAccessToken(checkUser);
 		return new LoginResponseDTO(token.toString(),true);
 	}
 

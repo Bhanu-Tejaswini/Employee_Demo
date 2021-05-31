@@ -1,4 +1,4 @@
-package com.arraigntech.streamsModel;
+package com.arraigntech.streams.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;

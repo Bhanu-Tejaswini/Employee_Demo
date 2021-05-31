@@ -8,7 +8,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.User;
+import com.arraigntech.exceptions.AppException;
 import com.arraigntech.model.AccountSettingVO;
 import com.arraigntech.model.UserSettingsDTO;
 import com.arraigntech.repository.UserRespository;
@@ -61,7 +60,7 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 	private String twilioPhoneNumber;
 
 	@Autowired
-	private UserRespository userRepo;
+	private UserServiceImpl userService;
 
 	@Autowired
 	protected VerifyCode verifyCode;
@@ -97,13 +96,13 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		if (!StringUtils.hasText(name)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		User user = getUser();
-		User checkUser = userRepo.findByUsernameAndIdNot(name, user.getId());
+		User user = userService.getUser();
+		User checkUser = userService.findByUsernameAndIdNot(name, user.getId());
 		if (Objects.nonNull(checkUser)) {
 			throw new AppException(MessageConstants.USER_EXISTS_USERNAME);
 		}
 		user.setUsername(name);
-		userRepo.save(user);
+		userService.saveUser(user);
 		return true;
 	}
 
@@ -112,9 +111,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		if (!StringUtils.hasText(language)) {
 			throw new AppException(MessageConstants.DATA_MISSING);
 		}
-		User user = getUser();
+		User user = userService.getUser();
 		user.setLanguage(language);
-		userRepo.save(user);
+		userService.saveUser(user);
 		return true;
 	}
 
@@ -123,9 +122,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		if (!StringUtils.hasText(pinCode)) {
 			throw new AppException(MessageConstants.DATA_MISSING);
 		}
-		User user = getUser();
+		User user = userService.getUser();
 		user.setPincode(pinCode);
-		userRepo.save(user);
+		userService.saveUser(user);
 		return true;
 	}
 
@@ -134,13 +133,13 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		if (!StringUtils.hasText(email)) {
 			throw new AppException(MessageConstants.DATA_MISSING);
 		}
-		User user = getUser();
-		User checkUser = userRepo.findByEmailAndIdNot(email, user.getId());
+		User user = userService.getUser();
+		User checkUser = userService.findByEmailAndIdNot(email, user.getId());
 		if (Objects.nonNull(checkUser)) {
 			throw new AppException(MessageConstants.EMAIL_EXISTS);
 		}
 		user.setEmail(email);
-		userRepo.save(user);
+		userService.saveUser(user);
 		return true;
 	}
 
@@ -149,9 +148,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		if (!StringUtils.hasText(timeZone)) {
 			throw new AppException(MessageConstants.DATA_MISSING);
 		}
-		User user = getUser();
+		User user = userService.getUser();
 		user.setTimeZone(timeZone);
-		userRepo.save(user);
+		userService.saveUser(user);
 		return true;
 	}
 
@@ -167,7 +166,7 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 //	}
 
 	public UserSettingsDTO fetchUserSettings() {
-		User newUser = getUser();
+		User newUser = userService.getUser();
 		Map<String, String> mobileNumbersMap = new HashMap<>();
 		mobileNumbersMap.put(MessageConstants.DIAL_CODE, newUser.getDialCode());
 		mobileNumbersMap.put(MessageConstants.COUNTRY_CODE, newUser.getCountryCode());
@@ -184,7 +183,7 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		if (!StringUtils.hasText(userSettings.getInternationalNumber())) {
 			throw new AppException(MessageConstants.INVALID_PHONE_NUMBER);
 		}
-		User user = getUser();
+		User user = userService.getUser();
 		// generate OTP
 		user.setDialCode(userSettings.getDialCode());
 		user.setCountryCode(userSettings.getCountryCode());
@@ -199,7 +198,7 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 																								// are sending text to
 				new com.twilio.type.PhoneNumber(twilioPhoneNumber), // The Twilio phone number
 				"Please enter the OTP:" + otp).create();
-		userRepo.save(user);
+		userService.saveUser(user);
 		return true;
 	}
 
@@ -209,7 +208,7 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		if (!StringUtils.hasText(userRequest.getCode())) {
 			throw new AppException(MessageConstants.AUTHENTICATION_FAILED);
 		}
-		User user = getUser();
+		User user = userService.getUser();
 		Boolean isValid = verifyCode.execute(userRequest);
 		if (userRequest.getCode().equalsIgnoreCase(user.getOtp())) {
 			isValid = true;
@@ -225,19 +224,10 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 
 	@Override
 	public Boolean verifyMobileNumber() {
-		User newUser = getUser();
+		User newUser = userService.getUser();
 		if(StringUtils.hasText(newUser.getInternationalNumber()))
 			return true;
 		else
 			return false;
-	}
-
-	// returns currently logged in user details
-	private User getUser() {
-		User user = userRepo.findByEmail(CommonUtils.getUser());
-		if (Objects.isNull(user)) {
-			throw new AppException(MessageConstants.USER_NOT_FOUND);
-		}
-		return user;
 	}
 }

@@ -34,7 +34,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableJpaRepositories(basePackages = "com.arraigntech.repository")
 public class AuthServerApplication {
 
-	public static final Logger log = LoggerFactory.getLogger(IVSStreamServiceImpl.class);
+	public static final Logger log = LoggerFactory.getLogger(AuthServerApplication.class);
 
 	@Bean
 	public Executor workExecutor() {

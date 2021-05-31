@@ -1,6 +1,6 @@
 package com.arraigntech.utility;
 
-import com.arraigntech.Exception.AppException;
+import com.arraigntech.exceptions.AppException;
 
 public interface Action<I, O> {
 

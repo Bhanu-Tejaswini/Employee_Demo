@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.Permission;
 import com.arraigntech.entity.Role;
 import com.arraigntech.entity.User;
+import com.arraigntech.exceptions.AppException;
 import com.arraigntech.model.RoleDTO;
 import com.arraigntech.service.impl.PermissionServiceImpl;
 import com.arraigntech.service.impl.RoleServiceImpl;
@@ -126,14 +125,4 @@ public class AdminController {
 		return permissionService.getPaginated(page, limit);
 	}
 
-	@GetMapping("/users")
-	public ResponseEntity<?> getAllUsers() {
-		List<User> users = new ArrayList<>();
-		try {
-			users = userService.getAll();
-			return ResponseEntity.ok(users);
-		} catch (AppException e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-		}
-	}
 }

@@ -1,8 +1,8 @@
 package com.arraigntech.service;
 
-import com.arraigntech.Exception.AppException;
-import com.arraigntech.model.AccountSettingVO;
 
+import com.arraigntech.exceptions.AppException;
+import com.arraigntech.model.AccountSettingVO;
 import com.arraigntech.model.UserSettingsDTO;
 
 /**

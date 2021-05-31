@@ -1,4 +1,4 @@
-package com.arraigntech.streamsModel;
+package com.arraigntech.streams.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -68,6 +68,15 @@ public class StreamTargetModel {
 		this.primary_url = primary_url;
 		this.stream_name = stream_name;
 		this.backup_url = backup_url;
+	}
+	
+	public StreamTargetModel(String name, String provider, String primary_url, String stream_name) {
+		super();
+
+		this.name = name;
+		this.provider = provider;
+		this.primary_url = primary_url;
+		this.stream_name = stream_name;
 	}
 
 	public StreamTargetModel() {

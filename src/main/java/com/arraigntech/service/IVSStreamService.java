@@ -4,11 +4,11 @@ import java.util.List;
 
 import com.arraigntech.entity.Channels;
 import com.arraigntech.entity.StreamTarget;
-import com.arraigntech.streamsModel.FetchStreamUIResponse;
-import com.arraigntech.streamsModel.IVSLiveStreamResponse;
-import com.arraigntech.streamsModel.StreamTargetModel;
-import com.arraigntech.streamsModel.StreamUIRequest;
-import com.arraigntech.streamsModel.StreamUIResponse;
+import com.arraigntech.streams.model.FetchStreamUIResponse;
+import com.arraigntech.streams.model.IVSLiveStreamResponse;
+import com.arraigntech.streams.model.StreamTargetModel;
+import com.arraigntech.streams.model.StreamUIRequest;
+import com.arraigntech.streams.model.StreamUIResponse;
 
 public interface IVSStreamService {
 

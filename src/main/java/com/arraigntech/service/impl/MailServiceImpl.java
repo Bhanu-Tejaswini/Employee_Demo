@@ -56,23 +56,6 @@ public class MailServiceImpl implements MailService {
 		mailSender.send(message);
 
 	}
-	
-	
-	@Override
-	public boolean sendWelcomeEmail(String email, String password)
-			throws UnsupportedEncodingException, MessagingException {
-		MimeMessage message = mailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message);
-		helper.setFrom(FROM, "Vstreem Support");
-		helper.setTo(email);
-		helper.setSubject("Welcome email");
-
-		String content = "<p> Hello,</p>" + "<p>Welcome to Vstreem platform.</p>"
-				+ "<p>Please find your temporary password for loggin in</p>" + "<p><b>"+password+"</b></p>";
-		helper.setText(content, true);
-		mailSender.send(message);
-		return true;
-	}
 
 	@Override
 	public Boolean sendEmail(Email email) throws MessagingException, IOException, TemplateException {
