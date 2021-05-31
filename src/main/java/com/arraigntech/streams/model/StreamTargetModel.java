@@ -1,6 +1,5 @@
 package com.arraigntech.streams.model;
 
-import org.springframework.data.mongodb.core.mapping.Document;
 
 public class StreamTargetModel {
 

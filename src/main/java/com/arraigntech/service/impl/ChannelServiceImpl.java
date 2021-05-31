@@ -31,14 +31,14 @@ import com.arraigntech.model.UpdateAllTitleDTO;
 import com.arraigntech.model.UpdateTitleDTO;
 import com.arraigntech.repository.ChannelsRepository;
 import com.arraigntech.repository.UpdateTitleRepository;
-import com.arraigntech.repository.UserRespository;
+import com.arraigntech.service.ChannelService;
+import com.arraigntech.service.UserService;
 import com.arraigntech.utility.ChannelTypeProvider;
-import com.arraigntech.utility.CommonUtils;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.utility.RandomIdGenerator;
 
 @Service
-public class ChannelServiceImpl {
+public class ChannelServiceImpl implements ChannelService {
 
 	public static final Logger log = LoggerFactory.getLogger(ChannelServiceImpl.class);
 	private static final String CLIENT_ID = "client_id";
@@ -63,11 +63,12 @@ public class ChannelServiceImpl {
 	private UpdateTitleRepository updateTitleRepo;
 
 	@Autowired
-	private UserServiceImpl userService;
+	private UserService userService;
 
 	@Autowired
 	private RestTemplate restTemplate;
 
+	@Override
 	public boolean createChannel(ChannelDTO channelDTO) {
 		log.debug("createChannel method start");
 		if (Objects.isNull(channelDTO)) {
@@ -95,13 +96,6 @@ public class ChannelServiceImpl {
 			throw new AppException(MessageConstants.CHANNEL_EXISTS);
 		}
 
-//		ChannelTypeProvider channelAccount = null;
-//		if(channelDTO.getItems().get(1).getKind().startsWith("youtube")) {
-//			channelAccount=ChannelTypeProvider.YOUTUBE;
-//		}else if(channelDTO.getItems().get(0).getKind().startsWith("facebook")) {
-//			channelAccount=ChannelTypeProvider.FACEBOOK;
-//		}
-
 		ChannelIngestionInfo ingestionInfo;
 		try {
 			if (channelDTO.getItems().size() > 1) {
@@ -127,6 +121,7 @@ public class ChannelServiceImpl {
 		return true;
 	}
 
+	@Override
 	public boolean addFaceBookChannel(ChannelDTO channelDTO) {
 		log.debug("addFaceBookChannel method start");
 		User newUser = userService.getUser();
@@ -154,6 +149,7 @@ public class ChannelServiceImpl {
 
 	}
 
+	@Override
 	public boolean addInstagramChannel(CustomChannelDTO customChannelDTO) {
 		log.debug("addInstagramChannel method start");
 		if (Objects.isNull(customChannelDTO) || !StringUtils.hasText(customChannelDTO.getRtmpUrl())
@@ -189,6 +185,7 @@ public class ChannelServiceImpl {
 		return true;
 	}
 
+	@Override
 	public String execute(String accessToken) {
 		log.debug("execute method start");
 		UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
@@ -208,6 +205,7 @@ public class ChannelServiceImpl {
 		return response.getAccess_token();
 	}
 
+	@Override
 	public boolean removechannel(String channelId) {
 		log.debug("removeChannel method start");
 		if (!StringUtils.hasText(channelId)) {
@@ -222,6 +220,7 @@ public class ChannelServiceImpl {
 		return true;
 	}
 
+	@Override
 	public String enableChannel(ChannelStatus channelStatus) {
 		log.debug("enableChannel method start");
 		if (!StringUtils.hasText(channelStatus.getChannelId())) {
@@ -237,6 +236,7 @@ public class ChannelServiceImpl {
 		return MessageConstants.CHANNEL_ENABLED;
 	}
 
+	@Override
 	public String disableChannel(ChannelStatus channelStatus) {
 		log.debug("disableChannel method start");
 		if (!StringUtils.hasText(channelStatus.getChannelId())) {
@@ -252,9 +252,12 @@ public class ChannelServiceImpl {
 		return MessageConstants.CHANNEL_DISABLED;
 	}
 
-	public List<Channels>findByUserAndTypeAndActive(User newUser, ChannelTypeProvider type,boolean active){
+	@Override
+	public List<Channels> findByUserAndTypeAndActive(User newUser, ChannelTypeProvider type, boolean active) {
 		return channelRepo.findByUserAndTypeAndActive(newUser, type, active);
 	}
+
+	@Override
 	public ChannelListUIResponse getUserChannels() {
 		log.debug("getUserChannels method start");
 		User newUser = userService.getUser();
@@ -280,6 +283,7 @@ public class ChannelServiceImpl {
 	 * @param channel
 	 * @return
 	 */
+	@Override
 	public boolean validChannel(Channels channel) {
 		log.debug("validChannel method start");
 		String url = "https://graph.facebook.com/" + channel.getFacebookUserId() + "?access_token="
@@ -295,6 +299,7 @@ public class ChannelServiceImpl {
 		return true;
 	}
 
+	@Override
 	public List<ChannelErrorUIResponse> getErrorChannels() {
 		log.debug("getErrorChannels method start");
 		User newUser = userService.getUser();
@@ -312,6 +317,7 @@ public class ChannelServiceImpl {
 		return channelList;
 	}
 
+	@Override
 	public boolean addUpdateTitle(UpdateTitleDTO updateTitleDTO) {
 		log.debug("addUpdateTitle method start");
 		if (!StringUtils.hasText(updateTitleDTO.getTitle()) || !StringUtils.hasText(updateTitleDTO.getChannelId())) {
@@ -337,6 +343,7 @@ public class ChannelServiceImpl {
 		return true;
 	}
 
+	@Override
 	public UpdateTitleDTO getUpdateTitle(String channelId) {
 		log.debug("getUpdateTitle method start");
 		if (!StringUtils.hasText(channelId)) {
@@ -358,6 +365,7 @@ public class ChannelServiceImpl {
 		return updateTitleDTO;
 	}
 
+	@Override
 	public boolean updateAllTitles(UpdateAllTitleDTO updateAllTitleDTO) {
 		log.debug("updateAllTitles method start");
 		if (Objects.isNull(updateAllTitleDTO) || !StringUtils.hasText(updateAllTitleDTO.getDescription())

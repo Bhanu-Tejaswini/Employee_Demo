@@ -3,10 +3,8 @@ package com.arraigntech.service.impl;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.mail.MessagingException;
 
@@ -14,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Service;
@@ -36,10 +32,8 @@ import com.arraigntech.repository.EmailSettingsRepository;
 import com.arraigntech.repository.ResetTokenRepository;
 import com.arraigntech.repository.RoleRepository;
 import com.arraigntech.repository.UserRespository;
-import com.arraigntech.service.IVSService;
 import com.arraigntech.service.MailService;
 import com.arraigntech.service.UserService;
-import com.arraigntech.utility.AuthenticationProvider;
 import com.arraigntech.utility.CommonUtils;
 import com.arraigntech.utility.EmailValidator;
 import com.arraigntech.utility.FormEmailData;
@@ -50,7 +44,7 @@ import com.arraigntech.utility.PasswordConstraintValidator;
 import freemarker.template.TemplateException;
 
 @Service
-public class UserServiceImpl implements UserService   {
+public class UserServiceImpl implements UserService {
 
 	public static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -116,23 +110,22 @@ public class UserServiceImpl implements UserService   {
 
 	@Autowired
 	private IVSJwtUtil iVSJwtUtil;
-	public static final String ROLE_USER="ROLE_USER";
-	public static final String vstreemImage= "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/vestreem_logo.png";
-	public static final String welcomeImage= "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/welcome.jpg";
-	public static final String galleryImage= "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/gallery.png";
-	public static final String databondImage= "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/databond.png";
-	public static final String combistreemImage= "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/combistreem.png";
-	public static final String catalogueImage= "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/catalogue.png";
+
+	public static final String ROLE_USER = "ROLE_USER";
+	public static final String vstreemImage = "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/vestreem_logo.png";
+	public static final String welcomeImage = "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/welcome.jpg";
+	public static final String galleryImage = "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/gallery.png";
+	public static final String databondImage = "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/databond.png";
+	public static final String combistreemImage = "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/combistreem.png";
+	public static final String catalogueImage = "https://vstreem-images.s3.us-east-2.amazonaws.com/email-template-images/catalogue.png";
 
 	@Override
-	public Boolean register(UserDTO userDTO){
+	public Boolean register(UserDTO userDTO) {
 		log.debug("register start");
 		if (Objects.isNull(userDTO) || !StringUtils.hasText(userDTO.getUsername())
 				|| !StringUtils.hasText(userDTO.getPassword())) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
-		AuthenticationProvider provider = userDTO.getProvider();
-		Boolean flag = false;
 		if (userDTO.getEmail() == null || !emailValidator.isValidEmail(userDTO.getEmail())) {
 			throw new AppException(MessageConstants.INVALID_EMAIL);
 		}
@@ -141,10 +134,6 @@ public class UserServiceImpl implements UserService   {
 		if (Objects.nonNull(newUser)) {
 			throw new AppException(MessageConstants.USER_EXISTS);
 		}
-//		Optional<User> newUser1 = userRepo.findByUsernameAll(userDTO.getUsername());
-//		if (newUser1.isPresent()) {
-//			throw new AppException(MessageConstants.USER_EXISTS_USERNAME);
-//		}
 		if (!passwordValidator.isValid(userDTO.getPassword())) {
 			throw new AppException(MessageConstants.INVALID_PASSWORD);
 		}
@@ -166,33 +155,39 @@ public class UserServiceImpl implements UserService   {
 		if (Objects.isNull(newUser.getProvider())) {
 			sendRegisterationLink(userDTO.getEmail());
 		} else {
-			welcomeMail(userDTO.getEmail(),userDTO.getPassword());
+			welcomeMail(userDTO.getEmail(), userDTO.getPassword());
 		}
 		log.debug("register end");
 		return true;
 	}
-	
+
+	@Override
 	public User findByEmailAll(String email) {
 		return userRepo.findByEmailAll(email);
 	}
-	
+
+	@Override
 	public void saveUser(User newUser) {
-		 userRepo.save(newUser);
+		userRepo.save(newUser);
 	}
-	
+
+	@Override
 	public User findByEmail(String email) {
 		return userRepo.findByEmail(email);
 	}
-	
+
+	@Override
 	public User findByUsernameAndIdNot(String username, String id) {
 		return userRepo.findByUsernameAndIdNot(username, id);
 	}
-	
-	public User findByEmailAndIdNot(String email,String id) {
+
+	@Override
+	public User findByEmailAndIdNot(String email, String id) {
 		return userRepo.findByEmailAndIdNot(email, id);
 	}
 
-	public boolean delete(String password){
+	@Override
+	public boolean delete(String password) {
 		User newUser = getUser();
 		if (passwordEncoder.matches(password, newUser.getPassword())) {
 			newUser.setActive(false);
@@ -203,7 +198,8 @@ public class UserServiceImpl implements UserService   {
 		return true;
 	}
 
-	public String updatePassword(String token, String newPassword){
+	@Override
+	public String updatePassword(String token, String newPassword) {
 		log.debug("reset password start");
 		if (!StringUtils.hasText(token) || !StringUtils.hasText(newPassword)) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
@@ -233,7 +229,8 @@ public class UserServiceImpl implements UserService   {
 		return MessageConstants.PASSWORDMESSAGE;
 	}
 
-	public LoginResponseDTO generateToken(LoginDetails login){
+	@Override
+	public LoginResponseDTO generateToken(LoginDetails login) {
 		log.debug("generateToken start");
 		if (!StringUtils.hasText(login.getEmail()) || !StringUtils.hasText(login.getPassword())) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
@@ -266,6 +263,7 @@ public class UserServiceImpl implements UserService   {
 
 	}
 
+	@Override
 	public Boolean forgotPassword(String email) {
 		log.debug("forgotPassword start");
 		if (!StringUtils.hasText(email) || !emailValidator.isValidEmail(email)) {
@@ -275,8 +273,8 @@ public class UserServiceImpl implements UserService   {
 		if (Objects.isNull(newUser)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		if(!newUser.isActive()) {
-			throw new AppException(MessageConstants.ACCOUNT_DISABLED);	
+		if (!newUser.isActive()) {
+			throw new AppException(MessageConstants.ACCOUNT_DISABLED);
 		}
 		// generating the token
 		String token = jwtUtil.generateResetToken(email, resetTokenExpirationTime);
@@ -296,8 +294,8 @@ public class UserServiceImpl implements UserService   {
 		model.put("userMail", email);
 		model.put("regisrationLink", passwordResetLink);
 		model.put("vstreemImage", vstreemImage);
-		Email emailDetails = formEmailData.formEmail(formMail, email,
-				MessageConstants.RESET_PASSWORD_LINK, passwordResetLink, "ResetPasswordTemplate.html", model);
+		Email emailDetails = formEmailData.formEmail(formMail, email, MessageConstants.RESET_PASSWORD_LINK,
+				passwordResetLink, "ResetPasswordTemplate.html", model);
 		// Sending the mail with password reset link
 		try {
 			mailService.sendEmail(emailDetails);
@@ -308,6 +306,7 @@ public class UserServiceImpl implements UserService   {
 		return true;
 	}
 
+	@Override
 	public String updateAccountPassword(String oldPassword, String newPassword) {
 		log.debug("updateAccountPassword start");
 		if (!StringUtils.hasText(oldPassword) || !StringUtils.hasText(newPassword)) {
@@ -327,6 +326,7 @@ public class UserServiceImpl implements UserService   {
 		return MessageConstants.PASSWORDMESSAGE;
 	}
 
+	@Override
 	public EmailSettingsModel getEmailSetting() {
 		log.debug("getEmailSetting start");
 		User newUser = getUser();
@@ -340,6 +340,7 @@ public class UserServiceImpl implements UserService   {
 				emailSettings.isProductUpdates(), emailSettings.isBlogDigest());
 	}
 
+	@Override
 	public String saveEmailSettings(EmailSettingsModel emailSettings) {
 		log.debug("saveEmailSettings start");
 		if (Objects.isNull(emailSettings)) {
@@ -357,6 +358,7 @@ public class UserServiceImpl implements UserService   {
 		return MessageConstants.EMAILSETTINGSMESSAGE;
 	}
 
+	@Override
 	public boolean persistEmailSettings(EmailSettings settings, EmailSettingsModel emailSettings, User user) {
 		log.debug("persistEmailSettings start");
 		settings.setUser(user);
@@ -371,6 +373,7 @@ public class UserServiceImpl implements UserService   {
 		return true;
 	}
 
+	@Override
 	public Boolean sendRegisterationLink(String userEmail) {
 		log.debug("sendRegisterationLink method start");
 		try {
@@ -380,36 +383,37 @@ public class UserServiceImpl implements UserService   {
 			String token = jwtUtil.generateResetToken(userEmail, verficationMailExpirationTime);
 			UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
 
-			String regisrationLink = builder.scheme("https").host(registrationBaseurl).path("/auth").queryParam("token", token)
-					.buildAndExpand(token).toUriString();
+			String regisrationLink = builder.scheme("https").host(registrationBaseurl).path("/auth")
+					.queryParam("token", token).buildAndExpand(token).toUriString();
 			Map model = new HashMap();
 			model.put("userMail", userEmail);
 			model.put("regisrationLink", regisrationLink);
 			model.put("vstreemImage", vstreemImage);
-			Email email = formEmailData.formEmail(formMail, userEmail,
-					MessageConstants.REGISTRATION_CONFIRMATION_LINK, regisrationLink, "MailVerificationTemplate.html", model);
-			User newUser=findByEmailAll(userEmail);
+			Email email = formEmailData.formEmail(formMail, userEmail, MessageConstants.REGISTRATION_CONFIRMATION_LINK,
+					regisrationLink, "MailVerificationTemplate.html", model);
+			User newUser = findByEmailAll(userEmail);
 			newUser.setUpdatedAt(new Date());
 			userRepo.save(newUser);
-			mailService.sendEmail(email);			
+			mailService.sendEmail(email);
 			log.debug("sendRegisterationLink method end");
 		} catch (Exception e) {
 			log.error("Error in sending registration link : " + userEmail, e);
 			throw new AppException("Something went wrong, Please try again later.");
 		}
-		 
-
 		return true;
 	}
 
+	@Override
 	public Boolean verifyRegisterationToken(String token) {
 		log.debug("verifyRegisterationToken method start");
 		if (!StringUtils.hasText(token)) {
 			throw new AppException(MessageConstants.INVALID_REGISTER_TOKEN);
 		}
-		/*
-		 * if (!iVSJwtUtil.validateRegisterToken(token)) { return false; }
-		 */
+
+		if (!iVSJwtUtil.validateRegisterToken(token)) {
+			return false;
+		}
+
 		String email = iVSJwtUtil.getUsernameFromToken(token);
 		User user = findByEmailAll(email);
 		if (Objects.nonNull(user)) {
@@ -422,8 +426,9 @@ public class UserServiceImpl implements UserService   {
 		return false;
 	}
 
+	@Override
 	public Boolean welcomeMail(String userEmail, String password) {
-	    log.debug("getWelcomeMailTemplateDetails method start");
+		log.debug("getWelcomeMailTemplateDetails method start");
 		Map model = new HashMap();
 		model.put("userMail", userEmail);
 		model.put("vstreemImage", vstreemImage);
@@ -433,28 +438,35 @@ public class UserServiceImpl implements UserService   {
 		model.put("databondImage", databondImage);
 		model.put("catalogueImage", catalogueImage);
 		model.put("password", password);
-		Email email = formEmailData.formEmail(formMail, userEmail,
-		MessageConstants.WELCOME_TEMPLATE_SUBJECT, null, "SocialWelcomeTemplate.html", model);
+		Email email = formEmailData.formEmail(formMail, userEmail, MessageConstants.WELCOME_TEMPLATE_SUBJECT, null,
+				"SocialWelcomeTemplate.html", model);
 		try {
 			mailService.sendEmail(email);
 		} catch (Exception e) {
 			throw new AppException("Something went wrong while sending mail, Please try again later.");
-		}  
+		}
 		log.debug("getWelcomeMailTemplateDetails method end");
-		
+
 		return true;
 	}
 
 	public User getUser() {
+		if(log.isDebugEnabled()) {
+			 log.debug("getting the user from token");
+		}
 		User user = findByEmail(CommonUtils.getUser());
+		if(log.isDebugEnabled()) {
+			 log.debug("getting the user from token {}.",user);
+		}
 		if (Objects.isNull(user)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
 		return user;
 	}
-	
-	public boolean getWelcomeMailTemplateDetails(String userEmail){
-	    log.debug("getWelcomeMailTemplateDetails method start");
+
+	@Override
+	public boolean getWelcomeMailTemplateDetails(String userEmail) {
+		log.debug("getWelcomeMailTemplateDetails method start");
 		Map model = new HashMap();
 		model.put("userMail", userEmail);
 		model.put("vstreemImage", vstreemImage);
@@ -463,16 +475,16 @@ public class UserServiceImpl implements UserService   {
 		model.put("combistreemImage", combistreemImage);
 		model.put("databondImage", databondImage);
 		model.put("catalogueImage", catalogueImage);
-		Email email = formEmailData.formEmail(formMail, userEmail,
-		MessageConstants.WELCOME_TEMPLATE_SUBJECT, null, "WelcomeTemplate.html", model);
+		Email email = formEmailData.formEmail(formMail, userEmail, MessageConstants.WELCOME_TEMPLATE_SUBJECT, null,
+				"WelcomeTemplate.html", model);
 		try {
 			mailService.sendEmail(email);
 		} catch (Exception e) {
 			throw new AppException("Something went wrong while sending mail, Please try again later.");
-		}  
+		}
 		log.debug("getWelcomeMailTemplateDetails method end");
-		
+
 		return true;
 	}
-	
+
 }

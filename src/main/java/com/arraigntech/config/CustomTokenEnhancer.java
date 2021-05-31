@@ -17,7 +17,6 @@ public class CustomTokenEnhancer implements TokenEnhancer {
 		Map<String, Object> additionalInfo = new LinkedHashMap<>(accessToken.getAdditionalInformation());
 		additionalInfo.put("email", user.getEmail());
 		additionalInfo.put("resourceids",authentication.getOAuth2Request().getResourceIds());
-//		additionalInfo.put("roles", user.getRoles());
 		((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
 		return accessToken;
 	}

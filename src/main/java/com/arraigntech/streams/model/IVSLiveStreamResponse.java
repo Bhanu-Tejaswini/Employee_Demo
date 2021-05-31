@@ -3,7 +3,6 @@ package com.arraigntech.streams.model;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.arraigntech.entity.User;
 import com.arraigntech.entity.VSBaseModel;
 import com.arraigntech.model.MongoUser;
 import com.fasterxml.jackson.annotation.JsonProperty;

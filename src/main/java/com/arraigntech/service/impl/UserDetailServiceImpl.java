@@ -21,13 +21,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
 	public static final Logger log = LoggerFactory.getLogger(UserDetailServiceImpl.class);
 
 	@Autowired
-	private UserServiceImpl userService;
+	private UserRespository userRepo;
 
 	@Override
 	public UserDetails loadUserByUsername(String email) {
 		log.debug("loadUserByUsername method start");
 
-		User newUser = userService.findByEmailAll(email);
+		User newUser = userRepo.findByEmailAll(email);
 
 		if (Objects.isNull(newUser)) {
 			throw new AppException("Username or password is Invalid");

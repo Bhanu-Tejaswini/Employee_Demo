@@ -20,9 +20,8 @@ import com.arraigntech.entity.User;
 import com.arraigntech.exceptions.AppException;
 import com.arraigntech.model.AccountSettingVO;
 import com.arraigntech.model.UserSettingsDTO;
-import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.AccountSettingService;
-import com.arraigntech.utility.CommonUtils;
+import com.arraigntech.service.UserService;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.utility.OtpGenerator;
 import com.arraigntech.utility.ResetUserDetails;
@@ -60,7 +59,7 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 	private String twilioPhoneNumber;
 
 	@Autowired
-	private UserServiceImpl userService;
+	private UserService userService;
 
 	@Autowired
 	protected VerifyCode verifyCode;

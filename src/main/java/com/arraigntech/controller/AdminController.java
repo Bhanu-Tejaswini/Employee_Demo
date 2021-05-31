@@ -21,12 +21,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.arraigntech.entity.Permission;
 import com.arraigntech.entity.Role;
-import com.arraigntech.entity.User;
 import com.arraigntech.exceptions.AppException;
 import com.arraigntech.model.RoleDTO;
 import com.arraigntech.service.impl.PermissionServiceImpl;
 import com.arraigntech.service.impl.RoleServiceImpl;
-import com.arraigntech.service.impl.UserServiceImpl;
 
 @RestController
 public class AdminController {
@@ -39,8 +37,6 @@ public class AdminController {
 	@Autowired
 	private PermissionServiceImpl permissionService;
 
-	@Autowired
-	private UserServiceImpl userService;
 
 	@PostMapping("/role")
 	public ResponseEntity<Void> registerRole(@RequestBody RoleDTO role) {

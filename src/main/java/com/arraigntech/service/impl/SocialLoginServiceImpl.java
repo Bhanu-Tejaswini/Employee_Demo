@@ -1,4 +1,4 @@
-	package com.arraigntech.service.impl;
+package com.arraigntech.service.impl;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,14 +17,12 @@ import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.stereotype.Service;
 
-import com.arraigntech.entity.Role;
 import com.arraigntech.entity.User;
 import com.arraigntech.model.LoginResponseDTO;
 import com.arraigntech.model.SocialLoginDTO;
 import com.arraigntech.model.UserDTO;
-import com.arraigntech.repository.RoleRepository;
-import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.SocialLoginService;
+import com.arraigntech.service.UserService;
 import com.arraigntech.utility.AuthenticationProvider;
 import com.arraigntech.utility.RandomPasswordGenerator;
 
@@ -37,7 +35,7 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 	private DefaultTokenServices tokenService;
 	
 	@Autowired
-	private UserServiceImpl userService;
+	private UserService userService;
 
 	@Value("${client-id}")
 	private String clientId;
@@ -54,7 +52,7 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 			user.setActive(true);
 			user.setEmailVerified(true);
 			userService.saveUser(user);
-			OAuth2AccessToken token=getAccessToken(checkUser);
+			OAuth2AccessToken token=getAccessToken(user);
 			return new LoginResponseDTO(token.toString(),true);
 			
 		}
@@ -71,7 +69,7 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 			user.setActive(true);
 			user.setEmailVerified(true);
 			userService.saveUser(user);
-			OAuth2AccessToken token=getAccessToken(checkUser);
+			OAuth2AccessToken token=getAccessToken(user);
 			return new LoginResponseDTO(token.toString(),true);
 		}
 		OAuth2AccessToken token=getAccessToken(checkUser);

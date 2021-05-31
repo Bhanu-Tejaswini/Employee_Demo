@@ -2,11 +2,7 @@ package com.arraigntech.model.response;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import com.arraigntech.entity.Channels;
-import com.arraigntech.model.UpdateTitleDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,9 +37,9 @@ public class BaseResponse<T> implements Serializable {
 	public Map<String, String> getResponseMessages() {
 		return responseMessages;
 	}
-	
+
 	public T results(T results) {
-		return this.results=results;
+		return this.results = results;
 	}
 
 	public boolean getIsCustomErrorHandling() {
@@ -64,7 +60,7 @@ public class BaseResponse<T> implements Serializable {
 		this.responseMessages.put(key, message);
 		return this;
 	}
-	
+
 //	public BaseResponse<T> withResponseMessage(String key, T message) {
 //		this.responseMessages.put(key, message);
 //		return this;

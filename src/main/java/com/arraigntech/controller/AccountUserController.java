@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,6 +41,9 @@ public class AccountUserController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/update-password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<String> resetPassword(@RequestBody IVSPassword pass) {
+		if(log.isDebugEnabled()) {
+			log.debug("Update password {}.",pass);
+		}
 		return new BaseResponse<String>(userService.updateAccountPassword(pass.getPassword(),pass.getNewpassword())).withSuccess(true);
 	}
 
@@ -49,6 +51,9 @@ public class AccountUserController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/email-settings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<EmailSettingsModel> getEmailSettings() {
+		if(log.isDebugEnabled()) {
+			log.debug("Fetch email Settings");
+		}
 		return new BaseResponse<EmailSettingsModel>(userService.getEmailSetting()).withSuccess(true);
 	}
 	
@@ -56,6 +61,9 @@ public class AccountUserController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/email-settings", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<String> postEmailSettings(@RequestBody EmailSettingsModel emailSettingsModel) {
+		if(log.isDebugEnabled()) {
+			log.debug("save email Settings {}.",emailSettingsModel);
+		}
 		return new BaseResponse<String>(userService.saveEmailSettings(emailSettingsModel)).withSuccess(true);
 	}
 	
@@ -63,24 +71,20 @@ public class AccountUserController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/user-settings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<UserSettingsDTO> getUserSettings() {
+		if(log.isDebugEnabled()) {
+			log.debug("Fetch user Settings");
+		}
 		return new BaseResponse<UserSettingsDTO>(accountSettingService.fetchUserSettings()).withSuccess(true);
 	}
-	
-//	@ApiOperation(value = "save user Settings")
-//	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-//	@RequestMapping(value = "/user-settings", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-//	@CrossOrigin(origins = "*")
-//	public BaseResponse<String> postUserSettings(@RequestBody UserSettingsDTO userSettings) {
-//		return new BaseResponse<String>(userService.saveUserSettings(userSettings)).withSuccess(true);
-//	}
-	
 	
 	@ApiOperation(value = "send a OTP for mobile number verification")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/sendOTP", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> sendOTPForUser(@RequestBody UserSettingsDTO userSettings) {
-		log.debug("send a OTP for user");
+		if(log.isDebugEnabled()) {
+			log.debug("send a OTP for user {}.",userSettings);
+		}
 		return new BaseResponse<Boolean>(accountSettingService.sendOTPForUser(userSettings))
 				.withSuccess(true);
 	}
@@ -89,6 +93,9 @@ public class AccountUserController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "username/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> userNameUpdate(@RequestBody UserSettingsDTO userSettings) {
+		if(log.isDebugEnabled()) {
+			log.debug("save userName Settings {}.",userSettings);
+		}
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.saveUserName(userSettings.getUsername());
 		return response.withSuccess(true)
@@ -99,26 +106,22 @@ public class AccountUserController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "email/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> emailUpdate(@RequestBody UserSettingsDTO userSettings) {
+		if(log.isDebugEnabled()) {
+			log.debug("save email Settings {}.",userSettings);
+		}
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.updateEmail(userSettings.getEmail());
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.EMAILSETTINGSMESSAGE).build();
 	}
 	
-//	@ApiOperation(value = "save mobilenumber Settings")
-//	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-//	@RequestMapping(value = "mobilenumber/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-//	public BaseResponse<Boolean> mobileNumberUpdate(@RequestBody UserSettingsDTO userSettings) {
-//		BaseResponse<Boolean> response = new BaseResponse<>();
-//		accountSettingService.updateMobileNumber(userSettings.getMobilenumber());
-//		return response.withSuccess(true)
-//				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.MOBILENUMBER_UPDATE).build();
-//	}
-	
 	@ApiOperation(value = "save pincode Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "pincode/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> pincodeUpdate(@RequestBody UserSettingsDTO userSettings) {
+		if(log.isDebugEnabled()) {
+			log.debug("save pincode Settings {}.",userSettings);
+		}
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.updatePincode(userSettings.getPincode());
 		return response.withSuccess(true)
@@ -129,6 +132,9 @@ public class AccountUserController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "language/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> languageUpdate(@RequestBody UserSettingsDTO userSettings) {
+		if(log.isDebugEnabled()) {
+			log.debug("save language Settings {}.",userSettings);
+		}
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.updateLanguage(userSettings.getLanguage());
 		return response.withSuccess(true)
@@ -139,6 +145,9 @@ public class AccountUserController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "timeZone/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> timeZoneUpdate(@RequestBody UserSettingsDTO userSettings) {
+		if(log.isDebugEnabled()) {
+			log.debug("save timeZone Settings {}.",userSettings);
+		}
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.updateTimeZone(userSettings.getTimezone());
 		return response.withSuccess(true)
@@ -149,6 +158,9 @@ public class AccountUserController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "verify/otp", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> otpVeriifcation(@RequestBody UserSettingsDTO userSettings) {
+		if(log.isDebugEnabled()) {
+			log.debug("verify OTP {}.",userSettings);
+		}
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.verifyCode(userSettings);
 		return response.withSuccess(true)
@@ -159,8 +171,10 @@ public class AccountUserController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/user", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> deleteUser(@RequestBody IVSResetPassword password) {
+		if(log.isDebugEnabled()) {
+			log.debug("Delete user account {}.", password);
+		}
 		BaseResponse<Boolean> response = new BaseResponse<>();
-		log.debug("Delete user account");
 		userService.delete(password.getPassword());
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.USER_DELETED).build();
@@ -170,6 +184,9 @@ public class AccountUserController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "verify/mobilenumber", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> mobilenumberVerification() {
+		if(log.isDebugEnabled()) {
+			log.debug("verify mobile number");
+		}
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		Boolean result = accountSettingService.verifyMobileNumber();
 		return result?

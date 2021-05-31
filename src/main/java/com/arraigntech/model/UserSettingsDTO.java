@@ -1,6 +1,5 @@
 package com.arraigntech.model;
 
-import java.util.List;
 import java.util.Map;
 
 public class UserSettingsDTO {
@@ -18,8 +17,7 @@ public class UserSettingsDTO {
 	private String nationalNumber;
 	private String number;
 	private String code;
-	private Map<String, String> mobileNumbersMap; 
-	
+	private Map<String, String> mobileNumbersMap;
 
 	public UserSettingsDTO() {
 
@@ -72,7 +70,7 @@ public class UserSettingsDTO {
 	public void setTimezone(String timezone) {
 		this.timezone = timezone;
 	}
-	
+
 	public String getCode() {
 		return code;
 	}
@@ -80,7 +78,7 @@ public class UserSettingsDTO {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	
+
 	public String getDialCode() {
 		return dialCode;
 	}
@@ -128,7 +126,7 @@ public class UserSettingsDTO {
 	public void setNumber(String number) {
 		this.number = number;
 	}
-	
+
 	public Map<String, String> getMobileNumbersMap() {
 		return mobileNumbersMap;
 	}
@@ -137,8 +135,8 @@ public class UserSettingsDTO {
 		this.mobileNumbersMap = mobileNumbersMap;
 	}
 
-	public UserSettingsDTO(String email, String pincode, String username, String language,
-			String timezone, Map<String, String> mobileNumbersMap) {
+	public UserSettingsDTO(String email, String pincode, String username, String language, String timezone,
+			Map<String, String> mobileNumbersMap) {
 		super();
 		this.email = email;
 		this.pincode = pincode;
@@ -153,7 +151,5 @@ public class UserSettingsDTO {
 //		this.number = number;
 		this.mobileNumbersMap = mobileNumbersMap;
 	}
-
-	
 
 }

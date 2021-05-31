@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.arraigntech.entity.StreamTarget;
@@ -19,7 +18,6 @@ import com.arraigntech.repository.StreamTargetRepository;
  *
  */
 @Configuration
-@EnableScheduling
 public class Schedulers {
 	
 
