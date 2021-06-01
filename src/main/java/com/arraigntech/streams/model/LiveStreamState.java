@@ -15,4 +15,8 @@ public class LiveStreamState {
 		this.liveStreamState = liveStreamState;
 	}
 
+	@Override
+	public String toString() {
+		return "LiveStreamState [liveStreamState=" + liveStreamState + "]";
+	}
 }

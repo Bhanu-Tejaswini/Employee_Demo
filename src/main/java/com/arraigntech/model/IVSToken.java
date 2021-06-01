@@ -3,7 +3,7 @@ package com.arraigntech.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IVSToken {
+public class IVSToken extends IVSTokenEmail {
 
 	private List<String> aud = new ArrayList<>();
 	private String user_name;
@@ -11,7 +11,6 @@ public class IVSToken {
 	private int exp;
 	private List<String> authorities = new ArrayList<>();
 	private String jti;
-	private String email;
 	private String client_id;
 
 	public List<String> getAud() {
@@ -62,14 +61,6 @@ public class IVSToken {
 		this.jti = jti;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getClient_id() {
 		return client_id;
 	}
@@ -78,4 +69,10 @@ public class IVSToken {
 		this.client_id = client_id;
 	}
 
+	@Override
+	public String toString() {
+		return "IVSToken [aud=" + aud + ", user_name=" + user_name + ", scope=" + scope + ", exp=" + exp
+				+ ", authorities=" + authorities + ", jti=" + jti + ", email=" + getEmail() + ", client_id=" + client_id
+				+ "]";
+	}
 }

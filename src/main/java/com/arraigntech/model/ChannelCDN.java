@@ -2,7 +2,7 @@ package com.arraigntech.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ChannelCdn {
+public class ChannelCDN {
 
 	@JsonProperty("ingestionInfo")
 	public ChannelIngestionInfo ingestionInfo;

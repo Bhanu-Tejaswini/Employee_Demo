@@ -37,6 +37,11 @@ public class OutputStreamTarget {
 		this.use_stream_target_backup_url = use_stream_target_backup_url;
 	}
 
-	public OutputStreamTarget() {
+	public OutputStreamTarget() {}
+
+	@Override
+	public String toString() {
+		return "OutputStreamTarget [id=" + id + ", stream_target_id=" + stream_target_id
+				+ ", use_stream_target_backup_url=" + use_stream_target_backup_url + "]";
 	}
 }

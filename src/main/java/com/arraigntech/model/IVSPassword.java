@@ -1,18 +1,8 @@
 package com.arraigntech.model;
 
-public class IVSPassword {
-
-	private String password;
+public class IVSPassword extends IVSResetPassword {
 
 	private String newpassword;
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 
 	public String getNewpassword() {
 		return newpassword;
@@ -22,4 +12,8 @@ public class IVSPassword {
 		this.newpassword = newpassword;
 	}
 
+	@Override
+	public String toString() {
+		return "IVSPassword [password=" + getPassword() + ", newpassword=" + newpassword + "]";
+	}
 }

@@ -30,4 +30,9 @@ public class UpdateTitleResponseDTO {
 	public UpdateTitleResponseDTO() {
 		
 	}
+
+	@Override
+	public String toString() {
+		return "UpdateTitleResponseDTO [updateTitleDTO=" + updateTitleDTO + ", flag=" + flag + "]";
+	}
 }

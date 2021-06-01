@@ -1,6 +1,7 @@
 package com.arraigntech.model;
 
 public class ChannelStatus {
+	
 	private String channelId;
 
 	public String getChannelId() {
@@ -11,4 +12,8 @@ public class ChannelStatus {
 		this.channelId = channelId;
 	}
 
+	@Override
+	public String toString() {
+		return "ChannelStatus [channelId=" + channelId + "]";
+	}
 }

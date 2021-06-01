@@ -48,4 +48,9 @@ public class Webrtc {
 		this.output_id = output_id;
 	}
 
+	@Override
+	public String toString() {
+		return "Webrtc [name=" + name + ", url=" + url + ", application_name=" + application_name + ", stream_name="
+				+ stream_name + ", output_id=" + output_id + "]";
+	}
 }

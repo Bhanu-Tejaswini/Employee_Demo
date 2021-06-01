@@ -1,5 +1,7 @@
 package com.arraigntech.model;
 
+import java.util.Arrays;
+
 public class ImageModel {
 	
 	private String aPath;
@@ -25,5 +27,8 @@ public class ImageModel {
 		this.imageBytes = imageBytes;
 	}
 	
-
+	@Override
+	public String toString() {
+		return "ImageModel [aPath=" + aPath + ", aName=" + aName + ", imageBytes=" + Arrays.toString(imageBytes) + "]";
+	}
 }

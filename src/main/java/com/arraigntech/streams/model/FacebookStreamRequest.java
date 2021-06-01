@@ -28,4 +28,8 @@ public class FacebookStreamRequest {
 		this.primaryUrl = primaryUrl;
 	}
 
+	@Override
+	public String toString() {
+		return "FacebookStreamRequest [streamName=" + streamName + ", primaryUrl=" + primaryUrl + "]";
+	}
 }

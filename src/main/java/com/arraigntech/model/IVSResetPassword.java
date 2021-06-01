@@ -1,6 +1,7 @@
 package com.arraigntech.model;
 
 public class IVSResetPassword {
+	
 	private String password;
 
 	public String getPassword() {
@@ -11,4 +12,8 @@ public class IVSResetPassword {
 		this.password = password;
 	}
 
+	@Override
+	public String toString() {
+		return "IVSResetPassword [password=" + password + "]";
+	}
 }

@@ -29,4 +29,9 @@ public class StreamTargetDTO {
 	public void setStreamId(String streamId) {
 		this.streamId = streamId;
 	}
+
+	@Override
+	public String toString() {
+		return "StreamTargetDTO [streamTarget=" + streamTarget + ", streamId=" + streamId + "]";
+	}
 }

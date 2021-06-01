@@ -143,13 +143,15 @@ public class UserSettingsDTO {
 		this.username = username;
 		this.language = language;
 		this.timezone = timezone;
-//		this.dialCode = dialCode;
-//		this.countryCode = countryCode;
-//		this.e164Number = e164Number;
-//		this.internationalNumber = internationalNumber;
-//		this.nationalNumber = nationalNumber;
-//		this.number = number;
 		this.mobileNumbersMap = mobileNumbersMap;
 	}
 
+	@Override
+	public String toString() {
+		return "UserSettingsDTO [email=" + email + ", mobilenumber=" + mobilenumber + ", pincode=" + pincode
+				+ ", username=" + username + ", language=" + language + ", timezone=" + timezone + ", dialCode="
+				+ dialCode + ", countryCode=" + countryCode + ", e164Number=" + e164Number + ", internationalNumber="
+				+ internationalNumber + ", nationalNumber=" + nationalNumber + ", number=" + number + ", code=" + code
+				+ ", mobileNumbersMap=" + mobileNumbersMap + "]";
+	}
 }

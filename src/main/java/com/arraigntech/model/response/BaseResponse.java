@@ -61,12 +61,13 @@ public class BaseResponse<T> implements Serializable {
 		return this;
 	}
 
-//	public BaseResponse<T> withResponseMessage(String key, T message) {
-//		this.responseMessages.put(key, message);
-//		return this;
-//	}
-
 	public BaseResponse<T> build() {
 		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "BaseResponse [responseMessages=" + responseMessages + ", success=" + success + ", results=" + results
+				+ ", isCustomErrorHandling=" + isCustomErrorHandling + "]";
 	}
 }

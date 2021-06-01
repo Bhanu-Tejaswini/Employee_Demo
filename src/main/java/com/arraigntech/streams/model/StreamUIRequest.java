@@ -26,4 +26,10 @@ public class StreamUIRequest {
 	public void setAspectRatioWidth(int aspectRatioWidth) {
 		this.aspectRatioWidth = aspectRatioWidth;
 	}
+
+	@Override
+	public String toString() {
+		return "StreamUIRequest [aspectRatioHeight=" + aspectRatioHeight + ", aspectRatioWidth=" + aspectRatioWidth
+				+ "]";
+	}
 }

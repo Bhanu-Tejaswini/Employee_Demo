@@ -31,4 +31,8 @@ public class IVSLiveStreamResponse extends VSBaseModel {
 		this.user = user;
 	}
 
+	@Override
+	public String toString() {
+		return "IVSLiveStreamResponse [liveStreamResponse=" + liveStreamResponse + ", user=" + user + "]";
+	}
 }

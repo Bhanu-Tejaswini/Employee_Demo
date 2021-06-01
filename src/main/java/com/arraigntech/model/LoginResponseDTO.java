@@ -30,4 +30,9 @@ public class LoginResponseDTO {
 	public LoginResponseDTO() {
 		
 	}
+
+	@Override
+	public String toString() {
+		return "LoginResponseDTO [result=" + result + ", flag=" + flag + "]";
+	}
 }

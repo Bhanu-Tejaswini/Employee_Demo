@@ -31,7 +31,6 @@ public class Schedulers {
 	public void deleteStreams() {
 		Date now = new Date();
 		Date deleteDate = getDeleteDate(now, 30);
-		System.out.println(deleteDate);
 		List<Streams> streamList = streamRepo.findByCreatedAtBefore(deleteDate);
 		streamRepo.deleteInBatch(streamList);
 	}
@@ -40,7 +39,6 @@ public class Schedulers {
 	public void deleteStreamTargets() {
 		Date now = new Date();
 		Date deleteDate = getDeleteDate(now, 30);
-		System.out.println(deleteDate);
 		List<StreamTarget> streamTargetList = streamTargetRepo.findByCreatedAtBefore(deleteDate);
 		streamTargetRepo.deleteInBatch(streamTargetList);
 	}

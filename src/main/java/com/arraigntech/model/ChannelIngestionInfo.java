@@ -30,4 +30,9 @@ public class ChannelIngestionInfo {
 		this.backupIngestionAddress = backupIngestionAddress;
 	}
 
+	@Override
+	public String toString() {
+		return "ChannelIngestionInfo [streamName=" + streamName + ", ingestionAddress=" + ingestionAddress
+				+ ", backupIngestionAddress=" + backupIngestionAddress + "]";
+	}
 }

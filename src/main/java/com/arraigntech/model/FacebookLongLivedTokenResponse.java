@@ -19,4 +19,8 @@ public class FacebookLongLivedTokenResponse {
 		this.access_token = access_token;
 	}
 
+	@Override
+	public String toString() {
+		return "FacebookLongLivedTokenResponse [access_token=" + access_token + "]";
+	}
 }

@@ -399,4 +399,28 @@ public class LiveStreamResponse {
 		this.source_connection_information = source_connection_information;
 	}
 
+	@Override
+	public String toString() {
+		return "LiveStreamResponse [aspect_ratio_height=" + aspect_ratio_height + ", aspect_ratio_width="
+				+ aspect_ratio_width + ", billing_mode=" + billing_mode + ", broadcast_location=" + broadcast_location
+				+ ", closed_caption_type=" + closed_caption_type + ", connection_code=" + connection_code
+				+ ", connection_code_expires_at=" + connection_code_expires_at + ", created_at=" + created_at
+				+ ", delivery_method=" + delivery_method + ", delivery_protocols=" + delivery_protocols
+				+ ", delivery_type=" + delivery_type + ", source_connection_information="
+				+ source_connection_information + ", direct_playback_urls=" + direct_playback_urls + ", encoder="
+				+ encoder + ", hosted_page=" + hosted_page + ", hosted_page_description=" + hosted_page_description
+				+ ", hosted_page_logo_image_url=" + hosted_page_logo_image_url + ", hosted_page_sharing_icons="
+				+ hosted_page_sharing_icons + ", hosted_page_title=" + hosted_page_title + ", hosted_page_url="
+				+ hosted_page_url + ", id=" + id + ", low_latency=" + low_latency + ", name=" + name
+				+ ", playback_stream_name=" + playback_stream_name + ", player_countdown=" + player_countdown
+				+ ", player_countdown_at=" + player_countdown_at + ", player_embed_code=" + player_embed_code
+				+ ", player_hls_playback_url=" + player_hls_playback_url + ", player_id=" + player_id
+				+ ", player_logo_image_url=" + player_logo_image_url + ", player_logo_position=" + player_logo_position
+				+ ", player_responsive=" + player_responsive + ", player_type=" + player_type
+				+ ", player_video_poster_image_url=" + player_video_poster_image_url + ", player_width=" + player_width
+				+ ", recording=" + recording + ", stream_source_id=" + stream_source_id + ", stream_targets="
+				+ stream_targets + ", target_delivery_protocol=" + target_delivery_protocol + ", transcoder_type="
+				+ transcoder_type + ", updated_at=" + updated_at + ", use_stream_source=" + use_stream_source
+				+ ", vod_stream=" + vod_stream + "]";
+	}
 }

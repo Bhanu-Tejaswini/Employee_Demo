@@ -20,4 +20,9 @@ public class SocialLoginDTO {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+	@Override
+	public String toString() {
+		return "SocialLoginDTO [email=" + email + ", username=" + username + "]";
+	}
 }

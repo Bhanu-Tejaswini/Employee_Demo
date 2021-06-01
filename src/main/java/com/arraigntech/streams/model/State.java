@@ -12,4 +12,8 @@ public class State {
 		this.state = state;
 	}
 
+	@Override
+	public String toString() {
+		return "State [state=" + state + "]";
+	}
 }

@@ -14,4 +14,9 @@ public class IVSLiveStream {
 	public void setLiveStream(LiveStream live_stream) {
 		this.live_stream = live_stream;
 	}
+
+	@Override
+	public String toString() {
+		return "IVSLiveStream [live_stream=" + live_stream + "]";
+	}
 }

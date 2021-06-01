@@ -28,4 +28,8 @@ public class FetchStreamUIResponse {
 
 	}
 
+	@Override
+	public String toString() {
+		return "FetchStreamUIResponse [status=" + status + "]";
+	}
 }

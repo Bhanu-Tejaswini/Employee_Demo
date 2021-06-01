@@ -27,4 +27,8 @@ public class RoleDTO {
 		this.permission = permission;
 	}
 
+	@Override
+	public String toString() {
+		return "RoleDTO [name=" + name + ", permission=" + permission + "]";
+	}
 }
