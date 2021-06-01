@@ -98,6 +98,11 @@ public class User extends VSBaseModel {
 	@JoinTable(name = "role_user", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "role_id") })
 	private List<Role> roles = new ArrayList<>();
+	
+	@Column(name = "overlay_url", nullable=true)
+	private String overLayUrl;
+	@Column(name = "overlay_type", nullable=true)
+	private String overLayType;
 
 	public User() {
 
@@ -310,6 +315,24 @@ public class User extends VSBaseModel {
 	public void setLoginCount(int loginCount) {
 		this.loginCount = loginCount;
 	}
+
+	public String getOverLayUrl() {
+		return overLayUrl;
+	}
+
+	public void setOverLayUrl(String overLayUrl) {
+		this.overLayUrl = overLayUrl;
+	}
+
+	public String getOverLayType() {
+		return overLayType;
+	}
+
+	public void setOverLayType(String overLayType) {
+		this.overLayType = overLayType;
+	}
+	
+	
 	
 	
 }

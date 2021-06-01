@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 import com.arraigntech.Exception.AppException;
 import com.arraigntech.entity.User;
 import com.arraigntech.model.AccountSettingVO;
+import com.arraigntech.model.OverLayImageVO;
 import com.arraigntech.model.UserSettingsDTO;
 import com.arraigntech.repository.UserRespository;
 import com.arraigntech.service.AccountSettingService;
@@ -239,5 +240,17 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
 		return user;
+	}
+
+	@Override
+	public Boolean updateOverLayURL(OverLayImageVO imageVO) {
+		if(Objects.isNull(imageVO)) {
+			throw new AppException(MessageConstants.INVALID_REQUEST);
+		}
+		User user = getUser();
+		user.setOverLayUrl(imageVO.getOverLayURL());
+		user.setOverLayType(imageVO.getOverLayType());
+		userRepo.save(user);
+		return true;
 	}
 }

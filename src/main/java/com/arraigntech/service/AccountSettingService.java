@@ -2,7 +2,7 @@ package com.arraigntech.service;
 
 import com.arraigntech.Exception.AppException;
 import com.arraigntech.model.AccountSettingVO;
-
+import com.arraigntech.model.OverLayImageVO;
 import com.arraigntech.model.UserSettingsDTO;
 
 /**
@@ -32,5 +32,7 @@ public interface AccountSettingService {
 	UserSettingsDTO fetchUserSettings();
 	
 	Boolean verifyCode(UserSettingsDTO userRequest) throws AppException;
+	
+	Boolean updateOverLayURL(OverLayImageVO imageVO);
 
 }

@@ -69,4 +69,5 @@ public class MessageConstants {
 	public static final String FACEBOOK_CHANNEL_EXISTS="The user has already added the facebook channel";
 	public static final String INSTAGRAM_CHANNEL_EXISTS="Only one channel with RTMP/Instagram can be added for an account";
 	public static final String WRONG_INSTAGRAM_RTMPSURL="Please enter the valid rtmps url";
+	public static final String INVALID_REQUEST="Invalid request";
 }
