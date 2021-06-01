@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.arraigntech.entity.Channels;
 import com.arraigntech.model.ChannelDTO;
 import com.arraigntech.model.ChannelErrorUIResponse;
 import com.arraigntech.model.ChannelListUIResponse;
 import com.arraigntech.model.ChannelStatus;
+import com.arraigntech.model.ChannelUIResponse;
 import com.arraigntech.model.CustomChannelDTO;
 import com.arraigntech.model.UpdateAllTitleDTO;
 import com.arraigntech.model.UpdateTitleDTO;
@@ -103,15 +103,15 @@ public class ChannelsController {
 	@ApiOperation(value = "Get the list of channels of user")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/fetch", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<List<Channels>> getChannelList() {
+	public BaseResponse<List<ChannelUIResponse>> getChannelList() {
 		if(log.isDebugEnabled()) {
 			log.debug("Get the list of channels of user");
 		}
 		ChannelListUIResponse userChannels = channelService.getUserChannels();
 		if(userChannels.isFlag())
-			return new BaseResponse<List<Channels>>(userChannels.getChannelList()).withSuccess(true);
+			return new BaseResponse<List<ChannelUIResponse>>(userChannels.getChannelList()).withSuccess(true);
 		else
-			return new BaseResponse<List<Channels>>(userChannels.getChannelList()).withSuccess(false);
+			return new BaseResponse<List<ChannelUIResponse>>(userChannels.getChannelList()).withSuccess(false);
 	}
 	
 	@ApiOperation(value = "Get the list of error channels")

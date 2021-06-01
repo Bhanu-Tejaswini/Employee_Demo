@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 import com.arraigntech.entity.User;
 import com.arraigntech.exceptions.AppException;
 import com.arraigntech.model.AccountSettingVO;
+import com.arraigntech.model.OverLayImageVO;
 import com.arraigntech.model.UserSettingsDTO;
 import com.arraigntech.service.AccountSettingService;
 import com.arraigntech.service.UserService;
@@ -106,11 +107,17 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 			log.debug("saveUserName method start {}",name);
 		}
 		if (!StringUtils.hasText(name)) {
+			if(log.isDebugEnabled()) {
+				log.error(MessageConstants.USER_NOT_FOUND);
+			}
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
 		User user = userService.getUser();
 		User checkUser = userService.findByUsernameAndIdNot(name, user.getId());
 		if (Objects.nonNull(checkUser)) {
+			if(log.isDebugEnabled()) {
+				log.error(MessageConstants.USER_EXISTS_USERNAME);
+			}
 			throw new AppException(MessageConstants.USER_EXISTS_USERNAME);
 		}
 		user.setUsername(name);
@@ -127,6 +134,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 			log.debug("updateLanguage method start {}",language);
 		}
 		if (!StringUtils.hasText(language)) {
+			if(log.isDebugEnabled()) {
+				log.error(MessageConstants.DATA_MISSING);
+			}
 			throw new AppException(MessageConstants.DATA_MISSING);
 		}
 		User user = userService.getUser();
@@ -145,6 +155,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		}
 
 		if (!StringUtils.hasText(pinCode)) {
+			if(log.isDebugEnabled()) {
+				log.error(MessageConstants.DATA_MISSING);
+			}
 			throw new AppException(MessageConstants.DATA_MISSING);
 		}
 		User user = userService.getUser();
@@ -162,11 +175,17 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 			log.debug("updateEmail method start {}",email);
 		}
 		if (!StringUtils.hasText(email)) {
+			if(log.isDebugEnabled()) {
+				log.error(MessageConstants.DATA_MISSING);
+			}
 			throw new AppException(MessageConstants.DATA_MISSING);
 		}
 		User user = userService.getUser();
 		User checkUser = userService.findByEmailAndIdNot(email, user.getId());
 		if (Objects.nonNull(checkUser)) {
+			if(log.isDebugEnabled()) {
+				log.error(MessageConstants.EMAIL_EXISTS);
+			}
 			throw new AppException(MessageConstants.EMAIL_EXISTS);
 		}
 		user.setEmail(email);
@@ -183,6 +202,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 			log.debug("updateTimeZone method start {}",timeZone);
 		}
 		if (!StringUtils.hasText(timeZone)) {
+			if(log.isDebugEnabled()) {
+				log.error(MessageConstants.DATA_MISSING);
+			}
 			throw new AppException(MessageConstants.DATA_MISSING);
 		}
 		User user = userService.getUser();
@@ -219,6 +241,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 			log.debug("sendOTPForUser method start {}.",userSettings);
 		}
 		if (!StringUtils.hasText(userSettings.getInternationalNumber())) {
+			if(log.isDebugEnabled()) {
+				log.error(MessageConstants.INVALID_PHONE_NUMBER);
+			}
 			throw new AppException(MessageConstants.INVALID_PHONE_NUMBER);
 		}
 		User user = userService.getUser();
@@ -249,6 +274,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 			log.debug("verifyCode request method{}.",userRequest);
 		}
 		if (!StringUtils.hasText(userRequest.getCode())) {
+			if(log.isDebugEnabled()) {
+				log.error(MessageConstants.AUTHENTICATION_FAILED);
+			}
 			throw new AppException(MessageConstants.AUTHENTICATION_FAILED);
 		}
 		User user = userService.getUser();
@@ -257,6 +285,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 			isValid = true;
 		}
 		if (!isValid) {
+			if(log.isDebugEnabled()) {
+				log.error(MessageConstants.AUTHENTICATION_FAILED);
+			}
 			throw new AppException(MessageConstants.AUTHENTICATION_FAILED);
 		} else {
 			resetUserDetails.execute(user);

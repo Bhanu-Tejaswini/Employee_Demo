@@ -13,14 +13,14 @@ import com.arraigntech.entity.Channels;
  */
 public class ChannelListUIResponse {
 
-	private List<Channels> channelList;
+	private List<ChannelUIResponse> channelList;
 	private boolean flag;
 
-	public List<Channels> getChannelList() {
+	public List<ChannelUIResponse> getChannelList() {
 		return channelList;
 	}
 
-	public void setChannelList(List<Channels> channelList) {
+	public void setChannelList(List<ChannelUIResponse> channelList) {
 		this.channelList = channelList;
 	}
 
@@ -32,9 +32,9 @@ public class ChannelListUIResponse {
 		this.flag = flag;
 	}
 
-	public ChannelListUIResponse(List<Channels> channelList, boolean flag) {
+	public ChannelListUIResponse(List<ChannelUIResponse> channelsList, boolean flag) {
 		super();
-		this.channelList = channelList;
+		this.channelList = channelsList;
 		this.flag = flag;
 	}
 

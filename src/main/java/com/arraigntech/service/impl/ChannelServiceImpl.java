@@ -25,6 +25,7 @@ import com.arraigntech.model.ChannelErrorUIResponse;
 import com.arraigntech.model.ChannelIngestionInfo;
 import com.arraigntech.model.ChannelListUIResponse;
 import com.arraigntech.model.ChannelStatus;
+import com.arraigntech.model.ChannelUIResponse;
 import com.arraigntech.model.CustomChannelDTO;
 import com.arraigntech.model.FacebookLongLivedTokenResponse;
 import com.arraigntech.model.UpdateAllTitleDTO;
@@ -74,6 +75,9 @@ public class ChannelServiceImpl implements ChannelService {
 			log.debug("createChannel method start {}.", channelDTO);
 		}
 		if (Objects.isNull(channelDTO)) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.DETAILS_MISSING);
+			}
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
 		if (channelDTO.getGraphDomain() != null && channelDTO.getGraphDomain().startsWith(FACEBOOK)) {
@@ -87,14 +91,23 @@ public class ChannelServiceImpl implements ChannelService {
 				channelid = channelDTO.getItems().get(0).getSnippet().getChannelId();
 			}
 		} catch (IndexOutOfBoundsException e) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.CHANNEL_NOT_EXISTS);
+			}
 			throw new AppException(MessageConstants.CHANNEL_NOT_EXISTS);
 		}
 
 		if (channelDTO.getItems().isEmpty() || !StringUtils.hasText(channelid)) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.CHANNEL_NOT_FOUND);
+			}
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
 		Channels channel = channelRepo.findByChannelId(channelid);
 		if (Objects.nonNull(channel)) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.CHANNEL_EXISTS);
+			}
 			throw new AppException(MessageConstants.CHANNEL_EXISTS);
 		}
 
@@ -106,6 +119,9 @@ public class ChannelServiceImpl implements ChannelService {
 				ingestionInfo = channelDTO.getItems().get(0).getCdn().getIngestionInfo();
 			}
 		} catch (IndexOutOfBoundsException e) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.CHANNEL_NOT_EXISTS);
+			}
 			throw new AppException(MessageConstants.CHANNEL_NOT_EXISTS);
 		}
 
@@ -134,14 +150,23 @@ public class ChannelServiceImpl implements ChannelService {
 		User newUser = userService.getUser();
 		List<Channels> facebookChannel = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.FACEBOOK);
 		if (facebookChannel.size() > 0) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.FACEBOOK_CHANNEL_EXISTS);
+			}
 			throw new AppException(MessageConstants.FACEBOOK_CHANNEL_EXISTS);
 		}
 		Channels channels = new Channels();
 		if (!StringUtils.hasText(channelDTO.getUserId())) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.FACEBOOK_USERID_NOTFOUND);
+			}
 			throw new AppException(MessageConstants.FACEBOOK_USERID_NOTFOUND);
 		}
 		Channels channel = channelRepo.findByFacebookUserId(channelDTO.getUserId());
 		if (Objects.nonNull(channel)) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.CHANNEL_EXISTS);
+			}
 			throw new AppException(MessageConstants.CHANNEL_EXISTS);
 		}
 		channels.setType(ChannelTypeProvider.FACEBOOK);
@@ -164,10 +189,16 @@ public class ChannelServiceImpl implements ChannelService {
 		}
 		if (Objects.isNull(customChannelDTO) || !StringUtils.hasText(customChannelDTO.getRtmpUrl())
 				|| !StringUtils.hasText(customChannelDTO.getStreamKey())) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.DETAILS_MISSING);
+			}
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
 		if (!(customChannelDTO.getRtmpUrl().startsWith("rtmps://")
 				&& customChannelDTO.getRtmpUrl().endsWith("/rtmp/"))) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.WRONG_INSTAGRAM_RTMPSURL);
+			}
 			throw new AppException(MessageConstants.WRONG_INSTAGRAM_RTMPSURL);
 		}
 		User newUser = userService.getUser();
@@ -213,6 +244,9 @@ public class ChannelServiceImpl implements ChannelService {
 					HttpEntity.EMPTY, FacebookLongLivedTokenResponse.class);
 			response = responseBody.getBody();
 		} catch (Exception e) {
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
 		if (log.isDebugEnabled()) {
@@ -227,10 +261,16 @@ public class ChannelServiceImpl implements ChannelService {
 			log.debug("removeChannel method start {}", channelId);
 		}
 		if (!StringUtils.hasText(channelId)) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.DETAILS_MISSING);
+			}
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
 		Channels newchannel = channelRepo.findByChannelId(channelId);
 		if (Objects.isNull(newchannel)) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.CHANNEL_NOT_FOUND);
+			}
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
 		channelRepo.delete(newchannel);
@@ -247,10 +287,16 @@ public class ChannelServiceImpl implements ChannelService {
 		}
 
 		if (!StringUtils.hasText(channelStatus.getChannelId())) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.DETAILS_MISSING);
+			}
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
 		Channels channel = channelRepo.findByChannelId(channelStatus.getChannelId());
 		if (Objects.isNull(channel)) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.CHANNEL_NOT_FOUND);
+			}
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
 		channel.setActive(true);
@@ -267,10 +313,16 @@ public class ChannelServiceImpl implements ChannelService {
 			log.debug("disableChannel method start {}.", channelStatus);
 		}
 		if (!StringUtils.hasText(channelStatus.getChannelId())) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.DETAILS_MISSING);
+			}
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
 		Channels channel = channelRepo.findByChannelId(channelStatus.getChannelId());
 		if (Objects.isNull(channel)) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.CHANNEL_NOT_FOUND);
+			}
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
 		channel.setActive(false);
@@ -304,15 +356,24 @@ public class ChannelServiceImpl implements ChannelService {
 			}
 		}
 		if (Objects.isNull(userChannels)) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.CHANNEL_NOT_FOUND);
+			}
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
+		List<ChannelUIResponse> channelsList = new ArrayList<>();
+		userChannels.stream().forEach(channel -> {
+			channelsList.add(new ChannelUIResponse(newUser.getUsername(), channel.getType(), channel.getChannelId(),
+					channel.getStreamName(), channel.getPrimaryUrl(), channel.getBackupUrl(), channel.isActive(),
+					channel.getAccessToken(), channel.getFacebookUserId(), channel.getUpdateTitle()));
+		});
 		if (log.isDebugEnabled()) {
 			log.debug("getUserChannels method end");
 		}
 		if (flag)
-			return new ChannelListUIResponse(userChannels, true);
+			return new ChannelListUIResponse(channelsList, true);
 		else
-			return new ChannelListUIResponse(userChannels, false);
+			return new ChannelListUIResponse(channelsList, false);
 	}
 
 	/**
@@ -367,10 +428,16 @@ public class ChannelServiceImpl implements ChannelService {
 			log.debug("addUpdateTitle method start");
 		}
 		if (!StringUtils.hasText(updateTitleDTO.getTitle()) || !StringUtils.hasText(updateTitleDTO.getChannelId())) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.DETAILS_MISSING);
+			}
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
 		Channels channel = channelRepo.findByChannelId(updateTitleDTO.getChannelId());
 		if (Objects.isNull(channel)) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.CHANNEL_NOT_FOUND);
+			}
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
 		UpdateTitle newTitle = updateTitleRepo.findByChannel(channel);
@@ -397,10 +464,16 @@ public class ChannelServiceImpl implements ChannelService {
 			log.debug("getUpdateTitle method start {}.", channelId);
 		}
 		if (!StringUtils.hasText(channelId)) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.DETAILS_MISSING);
+			}
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
 		Channels channel = channelRepo.findByChannelId(channelId);
 		if (Objects.isNull(channel)) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.CHANNEL_NOT_FOUND);
+			}
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
 		UpdateTitle data = updateTitleRepo.findByChannel(channel);
@@ -424,11 +497,17 @@ public class ChannelServiceImpl implements ChannelService {
 		}
 		if (Objects.isNull(updateAllTitleDTO) || !StringUtils.hasText(updateAllTitleDTO.getDescription())
 				|| !StringUtils.hasText(updateAllTitleDTO.getTitle())) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.DETAILS_MISSING);
+			}
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
 		User newUser = userService.getUser();
 		List<Channels> channelList = channelRepo.findByUser(newUser);
 		if (channelList.isEmpty()) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.CHANNEL_NOT_FOUND);
+			}
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
 		channelList.forEach(channel -> {

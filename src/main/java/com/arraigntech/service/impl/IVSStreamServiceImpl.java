@@ -149,7 +149,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 					IVSLiveStreamResponse.class);
 			liveStreamResponse = reponseEntity.getBody();
 		} catch (Exception e) {
-			log.error("error occurred while creating the live stream");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
 
@@ -219,6 +221,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		}
 		Streams stream = streamRepo.findByStreamId(streamId);
 		if (Objects.isNull(stream)) {
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.STREAM_NOT_EXISTS);
+			}
 			throw new AppException(MessageConstants.STREAM_NOT_EXISTS);
 		}
 		List<StreamTarget> streamTargets = streamTargetRepo.findByStream(stream);
@@ -233,7 +238,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		try {
 			restTemplate.exchange(url, HttpMethod.DELETE, request, String.class);
 		} catch (Exception e) {
-			log.error("error occurred while deleting the stream");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
 		if (streamTargets.isEmpty()) {
@@ -261,6 +268,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		// if there are no channels added means
 		if (youtubeChannels.isEmpty() && facebookChannels.isEmpty()) {
 			deleteStream(streamId);
+			if (log.isDebugEnabled()) {
+				log.error(MessageConstants.NO_CHANNELS_TO_STREAM);
+			}
 			throw new AppException(MessageConstants.NO_CHANNELS_TO_STREAM);
 		}
 		CompletableFuture.runAsync(() -> youtubeStream(youtubeChannels, streamId, outputId));
@@ -336,7 +346,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 					HttpEntity.EMPTY, FacebookStreamResponse.class);
 			facebookStreamResponse = responseBody.getBody();
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 
 		}
@@ -395,7 +407,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 					LiveStreamState.class);
 			response = responseEntity.getBody();
 		} catch (Exception e) {
-			log.error("error occurred while starting the live stream");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
 		Streams stream = streamRepo.findByStreamId(id);
@@ -427,7 +441,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 					LiveStreamState.class);
 			response = responseEntity.getBody();
 		} catch (Exception e) {
-			log.error("error occurred while stoping the live stream");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
 		// updating the status of the stream
@@ -461,7 +477,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 					LiveStreamState.class);
 			response = responseEntity.getBody();
 		} catch (Exception e) {
-			log.error("error occurred while fetching stream state");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
 		FetchStreamUIResponse result = new FetchStreamUIResponse(response.getLiveStreamState().getState());
@@ -508,7 +526,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	@Override
 	public String createStreamTarget(StreamTargetModel streamTargetModel, String streamId) {
 		if (log.isDebugEnabled()) {
-			log.debug("createStreaTarget method start {}.",streamTargetModel);
+			log.debug("createStreaTarget method start {}.", streamTargetModel);
 		}
 		String url = baseUrl + "/stream_targets/custom";
 		MultiValueMap<String, String> headers = getHeader();
@@ -522,7 +540,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 					StreamTargetDTO.class);
 			streamTargetResponse = reponseEntity.getBody();
 		} catch (Exception e) {
-			log.error("error occurred while creating stream target");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
 		// saving the response to mongodb
@@ -534,11 +554,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		StreamTargetModel streamTarResponse = streamTargetResponse.getStreamTarget();
 		StreamTarget streamTarget = new StreamTarget(streamTarResponse.getId(), streamTarResponse.getPrimary_url(),
 				streamTarResponse.getStream_name(), streamTarResponse.getBackup_url(), stream);
-		try {
-			streamTargetRepo.save(streamTarget);
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+		streamTargetRepo.save(streamTarget);
 		if (log.isDebugEnabled()) {
 			log.debug("createStreaTarget method end");
 		}
@@ -570,7 +586,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 					OutputStreamTargetDTO.class);
 			response = responseBody.getBody();
 		} catch (Exception e) {
-			log.error("error occurred while adding stream target");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
 		// saving response to mongodb
@@ -585,7 +603,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	@Override
 	public boolean deleteStreamTarget(String streamTargetId) {
 		if (log.isDebugEnabled()) {
-			log.debug("deleteStreamTarget method start {}",streamTargetId);
+			log.debug("deleteStreamTarget method start {}", streamTargetId);
 		}
 		String url = baseUrl + "/stream_targets/custom/" + streamTargetId;
 		MultiValueMap<String, String> headers = getHeader();
@@ -594,7 +612,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		try {
 			restTemplate.exchange(url, HttpMethod.DELETE, request, String.class);
 		} catch (Exception e) {
-			log.error("error occurred while deleting the streamTarget");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
 		if (log.isDebugEnabled()) {
@@ -627,7 +647,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		try {
 			restTemplate.exchange(url, HttpMethod.DELETE, request, String.class);
 		} catch (Exception e) {
-			log.error("error occurred while deleting the deleteOutputTarget");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
 		if (log.isDebugEnabled()) {

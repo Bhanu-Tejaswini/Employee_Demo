@@ -25,17 +25,23 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) {
-		log.debug("loadUserByUsername method start");
-
+		if(log.isDebugEnabled()) {
+			log.debug("loadUserByUsername method start");
+		}
 		User newUser = userRepo.findByEmailAll(email);
 
 		if (Objects.isNull(newUser)) {
+			if(log.isDebugEnabled()) {
+				log.error("Username or password is Invalid");
+			}
 			throw new AppException("Username or password is Invalid");
 		}
 		UserDetails userDetails = new AuthUserDetail(newUser);
 		// checks account is valid or expired
 		new AccountStatusUserDetailsChecker().check(userDetails);
-		log.debug("loadUserByUsername method end");
+		if(log.isDebugEnabled()) {
+			log.debug("loadUserByUsername method end");
+		}
 		return userDetails;
 
 	}

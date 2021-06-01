@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.arraigntech.model.EmailSettingsModel;
 import com.arraigntech.model.IVSPassword;
 import com.arraigntech.model.IVSResetPassword;
+import com.arraigntech.model.OverLayImageVO;
 import com.arraigntech.model.UserSettingsDTO;
 import com.arraigntech.model.response.BaseResponse;
 import com.arraigntech.service.AccountSettingService;
@@ -194,5 +195,5 @@ public class AccountUserController {
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, "true")
 			:	response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, "false");
-	}	
+	}
 }
