@@ -182,7 +182,7 @@ public class AccountUserController {
 	
 	@ApiOperation(value = "upload overLay URL")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-	@RequestMapping(value = "update/overlayurl", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/update/overlayurl", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> updateOverLayURL(@RequestBody OverLayImageVO imageVO) {
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		Boolean result = accountSettingService.updateOverLayURL(imageVO);
