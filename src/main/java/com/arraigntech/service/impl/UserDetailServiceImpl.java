@@ -2,46 +2,33 @@ package com.arraigntech.service.impl;
 
 import java.util.Objects;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
-import com.arraigntech.entity.User;
+import com.arraigntech.entity.UserEntity;
 import com.arraigntech.exceptions.AppException;
-import com.arraigntech.model.AuthUserDetail;
 import com.arraigntech.repository.UserRespository;
+import com.arraigntech.request.vo.AuthUserDetailVO;
 
 @Component
 public class UserDetailServiceImpl implements UserDetailsService {
-
-	public static final Logger log = LoggerFactory.getLogger(UserDetailServiceImpl.class);
 
 	@Autowired
 	private UserRespository userRepo;
 
 	@Override
 	public UserDetails loadUserByUsername(String email) {
-		if(log.isDebugEnabled()) {
-			log.debug("loadUserByUsername method start");
-		}
-		User newUser = userRepo.findByEmailAll(email);
+		UserEntity newUser = userRepo.findByEmailAll(email);
 
 		if (Objects.isNull(newUser)) {
-			if(log.isDebugEnabled()) {
-				log.error("Username or password is Invalid");
-			}
 			throw new AppException("Username or password is Invalid");
 		}
-		UserDetails userDetails = new AuthUserDetail(newUser);
+		UserDetails userDetails = new AuthUserDetailVO(newUser);
 		// checks account is valid or expired
 		new AccountStatusUserDetailsChecker().check(userDetails);
-		if(log.isDebugEnabled()) {
-			log.debug("loadUserByUsername method end");
-		}
 		return userDetails;
 
 	}

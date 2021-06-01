@@ -2,16 +2,16 @@ package com.arraigntech.service;
 
 import java.util.List;
 
-import com.arraigntech.entity.Channels;
-import com.arraigntech.streams.model.FetchStreamUIResponse;
-import com.arraigntech.streams.model.IVSLiveStreamResponse;
-import com.arraigntech.streams.model.StreamTargetModel;
-import com.arraigntech.streams.model.StreamUIRequest;
-import com.arraigntech.streams.model.StreamUIResponse;
+import com.arraigntech.entity.ChannelEntity;
+import com.arraigntech.wowza.request.vo.StreamUIRequestVO;
+import com.arraigntech.wowza.response.vo.FetchStreamUIResponseVO;
+import com.arraigntech.wowza.response.vo.IVSLiveStreamResponseVO;
+import com.arraigntech.wowza.response.vo.StreamTargetVO;
+import com.arraigntech.wowza.response.vo.StreamUIResponseVO;
 
 public interface IVSStreamService {
 
-	public StreamUIResponse createStream(StreamUIRequest streamRequest);
+	public StreamUIResponseVO createStream(StreamUIRequestVO streamRequest);
 	
 	public void startStream(String id);
 	
@@ -19,13 +19,13 @@ public interface IVSStreamService {
 	
 	public boolean deleteStream(String streamId);
 	
-	public FetchStreamUIResponse fetchStreamState(String id);
+	public FetchStreamUIResponseVO fetchStreamState(String id);
 	
-	public void saveStream(IVSLiveStreamResponse response);
+	public void saveStream(IVSLiveStreamResponseVO response);
 	
-	public void youtubeStream(List<Channels> youtubeChannels, String streamId, String outputId);
+	public void youtubeStream(List<ChannelEntity> youtubeChannels, String streamId, String outputId);
 	
-	public String createStreamTarget(StreamTargetModel streamTarget, String streamId);
+	public String createStreamTarget(StreamTargetVO streamTarget, String streamId);
 	
 	public boolean deleteStreamTarget(String streamId);
 	

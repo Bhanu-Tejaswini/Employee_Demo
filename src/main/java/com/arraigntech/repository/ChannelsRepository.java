@@ -4,20 +4,20 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.arraigntech.entity.Channels;
-import com.arraigntech.entity.User;
+import com.arraigntech.entity.ChannelEntity;
+import com.arraigntech.entity.UserEntity;
 import com.arraigntech.utility.ChannelTypeProvider;
 
-public interface ChannelsRepository extends JpaRepository<Channels, String> {
+public interface ChannelsRepository extends JpaRepository<ChannelEntity, String> {
 	
-	List<Channels> findByUser(User newUser);
+	List<ChannelEntity> findByUser(UserEntity newUser);
 	
-	Channels findByChannelId(String id);
+	ChannelEntity findByChannelId(String id);
 	
-	List<Channels> findByUserAndType(User newUser,ChannelTypeProvider type);
+	List<ChannelEntity> findByUserAndType(UserEntity newUser,ChannelTypeProvider type);
 	
-	Channels findByFacebookUserId(String userId);
+	ChannelEntity findByFacebookUserId(String userId);
 	
-	List<Channels> findByUserAndTypeAndActive(User newUser, ChannelTypeProvider type,boolean active);
+	List<ChannelEntity> findByUserAndTypeAndActive(UserEntity newUser, ChannelTypeProvider type,boolean active);
 
 }

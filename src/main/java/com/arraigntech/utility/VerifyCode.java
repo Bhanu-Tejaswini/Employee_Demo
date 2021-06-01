@@ -5,15 +5,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.arraigntech.exceptions.AppException;
-import com.arraigntech.model.UserSettingsDTO;
+import com.arraigntech.request.vo.UserSettingsVO;
 
 @Component
-public class VerifyCode implements Action<UserSettingsDTO, Boolean> {
+public class VerifyCode implements Action<UserSettingsVO, Boolean> {
 	
 	public static final Logger log = LoggerFactory.getLogger(VerifyCode.class);
 
 	@Override
-	public Boolean execute(UserSettingsDTO input) throws AppException {
+	public Boolean execute(UserSettingsVO input) throws AppException {
 		log.debug("execute method start");
 //		if (input.getCode().equals(Twilio.)) {
 //			return Boolean.TRUE;

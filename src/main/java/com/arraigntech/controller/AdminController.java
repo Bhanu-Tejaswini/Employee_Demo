@@ -3,8 +3,6 @@ package com.arraigntech.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,17 +17,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.arraigntech.entity.Permission;
-import com.arraigntech.entity.Role;
+import com.arraigntech.entity.PermissionEntity;
+import com.arraigntech.entity.RoleEntity;
 import com.arraigntech.exceptions.AppException;
-import com.arraigntech.model.RoleDTO;
+import com.arraigntech.request.vo.RoleVO;
 import com.arraigntech.service.impl.PermissionServiceImpl;
 import com.arraigntech.service.impl.RoleServiceImpl;
 
 @RestController
 public class AdminController {
 	
-	public static final Logger log = LoggerFactory.getLogger(AdminController.class);
 
 	@Autowired
 	private RoleServiceImpl roleService;
@@ -39,7 +36,7 @@ public class AdminController {
 
 
 	@PostMapping("/role")
-	public ResponseEntity<Void> registerRole(@RequestBody RoleDTO role) {
+	public ResponseEntity<Void> registerRole(@RequestBody RoleVO role) {
 		try {
 			roleService.createRole(role);
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
@@ -49,7 +46,7 @@ public class AdminController {
 	}
 
 	@PutMapping("/role")
-	public Role updateRole(@RequestBody Role role) {
+	public RoleEntity updateRole(@RequestBody RoleEntity role) {
 		return roleService.update(role);
 	}
 
@@ -66,7 +63,7 @@ public class AdminController {
 	@GetMapping("/role")
 //	@PreAuthorize("hasAuthority('ROLE_admin')")
 	public ResponseEntity<?> getAllRole() {
-		List<Role> roles = new ArrayList<>();
+		List<RoleEntity> roles = new ArrayList<>();
 		try {
 			roles = roleService.getAll();
 			return ResponseEntity.ok(roles);
@@ -76,12 +73,12 @@ public class AdminController {
 	}
 
 	@GetMapping("/role-page")
-	public Page<Role> getPaginatedRole(@RequestParam("page") int page, @RequestParam("limit") int limit) {
+	public Page<RoleEntity> getPaginatedRole(@RequestParam("page") int page, @RequestParam("limit") int limit) {
 		return roleService.getPaginated(page, limit);
 	}
 
 	@PostMapping("/permission")
-	public ResponseEntity<Void> registerPermission(@RequestBody Permission permission) {
+	public ResponseEntity<Void> registerPermission(@RequestBody PermissionEntity permission) {
 		try {
 			permissionService.create(permission);
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
@@ -91,7 +88,7 @@ public class AdminController {
 	}
 
 	@PutMapping("/permission")
-	public Permission updatePermission(@RequestBody Permission permission) {
+	public PermissionEntity updatePermission(@RequestBody PermissionEntity permission) {
 		return permissionService.update(permission);
 	}
 
@@ -107,7 +104,7 @@ public class AdminController {
 
 	@GetMapping("/permission")
 	public ResponseEntity<?> getAllPermission() {
-		List<Permission> permissions = new ArrayList<>();
+		List<PermissionEntity> permissions = new ArrayList<>();
 		try {
 			permissions = permissionService.getAll();
 			return ResponseEntity.ok(permissions);
@@ -117,7 +114,7 @@ public class AdminController {
 	}
 
 	@GetMapping("/permission-page")
-	public Page<Permission> getPaginatedPermission(@RequestParam("page") int page, @RequestParam("limit") int limit) {
+	public Page<PermissionEntity> getPaginatedPermission(@RequestParam("page") int page, @RequestParam("limit") int limit) {
 		return permissionService.getPaginated(page, limit);
 	}
 

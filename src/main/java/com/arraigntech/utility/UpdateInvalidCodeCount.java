@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.arraigntech.entity.User;
+import com.arraigntech.entity.UserEntity;
 import com.arraigntech.exceptions.AppException;
 import com.arraigntech.repository.UserRespository;
 
@@ -16,7 +16,7 @@ import com.arraigntech.repository.UserRespository;
  *
  */
 @Component
-public class UpdateInvalidCodeCount implements Action<User, Integer> {
+public class UpdateInvalidCodeCount implements Action<UserEntity, Integer> {
 	public static final Logger log = LoggerFactory.getLogger(UpdateInvalidCodeCount.class);
 	
 	@Value("${app.user.restrictionCount:5}") 
@@ -26,7 +26,7 @@ public class UpdateInvalidCodeCount implements Action<User, Integer> {
 	private UserRespository userRepo;
 
 	@Override
-	public Integer execute(User user) throws AppException {
+	public Integer execute(UserEntity user) throws AppException {
 		log.debug("Customer details id {} ,version {}", user.getId());
 		Integer count = user.getInvalidCodeAttemptCount() == null ? 0 : user.getInvalidCodeAttemptCount();
 		count++;

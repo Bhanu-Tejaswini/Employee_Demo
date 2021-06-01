@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import com.arraigntech.entity.StreamTarget;
-import com.arraigntech.entity.Streams;
+import com.arraigntech.entity.StreamTargetEntity;
+import com.arraigntech.entity.StreamEntity;
 import com.arraigntech.repository.StreamRepository;
 import com.arraigntech.repository.StreamTargetRepository;
 
@@ -31,7 +31,7 @@ public class Schedulers {
 	public void deleteStreams() {
 		Date now = new Date();
 		Date deleteDate = getDeleteDate(now, 30);
-		List<Streams> streamList = streamRepo.findByCreatedAtBefore(deleteDate);
+		List<StreamEntity> streamList = streamRepo.findByCreatedAtBefore(deleteDate);
 		streamRepo.deleteInBatch(streamList);
 	}
 	
@@ -39,7 +39,7 @@ public class Schedulers {
 	public void deleteStreamTargets() {
 		Date now = new Date();
 		Date deleteDate = getDeleteDate(now, 30);
-		List<StreamTarget> streamTargetList = streamTargetRepo.findByCreatedAtBefore(deleteDate);
+		List<StreamTargetEntity> streamTargetList = streamTargetRepo.findByCreatedAtBefore(deleteDate);
 		streamTargetRepo.deleteInBatch(streamTargetList);
 	}
 

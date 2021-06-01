@@ -4,11 +4,11 @@ import java.io.IOException;
 
 import javax.mail.MessagingException;
 
-import com.arraigntech.model.Email;
+import com.arraigntech.request.vo.EmailVO;
 
 import freemarker.template.TemplateException;
 
 public interface MailService {
 
-	Boolean sendEmail(Email email) throws MessagingException, IOException, TemplateException;
+	Boolean sendEmail(EmailVO email) throws MessagingException, IOException, TemplateException;
 }

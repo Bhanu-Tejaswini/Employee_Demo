@@ -2,8 +2,6 @@ package com.arraigntech.controller;
 
 import java.net.HttpURLConnection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.arraigntech.model.AccountSettingVO;
-import com.arraigntech.model.response.BaseResponse;
+import com.arraigntech.request.vo.AccountSettingVO;
+import com.arraigntech.request.vo.response.BaseResponse;
 import com.arraigntech.service.AccountSettingService;
 
 import io.swagger.annotations.ApiOperation;
@@ -22,8 +20,6 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 public class PublicController {
 	
-	public static final Logger log = LoggerFactory.getLogger(PublicController.class);
-	
 	@Autowired
 	protected AccountSettingService accountSettingService;
 	
@@ -32,9 +28,6 @@ public class PublicController {
 	@RequestMapping(value = "/timezonelist", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@CrossOrigin(origins = "*")
 	public BaseResponse<AccountSettingVO> getTimeZonesList() {
-		if(log.isDebugEnabled()) {
-			log.debug("timezonelist and country list");
-		}
 		return new BaseResponse<AccountSettingVO>(accountSettingService.getTimeZonesList()).withSuccess(true);
 	}
 }

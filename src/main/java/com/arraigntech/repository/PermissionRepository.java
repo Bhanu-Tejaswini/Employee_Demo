@@ -3,10 +3,10 @@ package com.arraigntech.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.arraigntech.entity.Permission;
+import com.arraigntech.entity.PermissionEntity;
 
 @Repository	
-public interface PermissionRepository extends JpaRepository<Permission,String> {
+public interface PermissionRepository extends JpaRepository<PermissionEntity,String> {
 
-	Permission findByName(String name);
+	PermissionEntity findByName(String name);
 }

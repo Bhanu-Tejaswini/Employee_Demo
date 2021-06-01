@@ -1,9 +1,9 @@
 package com.arraigntech.service;
 
 import com.arraigntech.exceptions.AppException;
-import com.arraigntech.model.AccountSettingVO;
-import com.arraigntech.model.OverLayImageVO;
-import com.arraigntech.model.UserSettingsDTO;
+import com.arraigntech.request.vo.AccountSettingVO;
+import com.arraigntech.request.vo.OverLayImageVO;
+import com.arraigntech.request.vo.UserSettingsVO;
 
 /**
  * 
@@ -15,7 +15,7 @@ public interface AccountSettingService {
 
 	AccountSettingVO getTimeZonesList();
 
-	Boolean sendOTPForUser(UserSettingsDTO userSettings);
+	Boolean sendOTPForUser(UserSettingsVO userSettings);
 
 	Boolean saveUserName(String name);
 
@@ -29,8 +29,8 @@ public interface AccountSettingService {
 
 	Boolean updateEmail(String email);
 
-	UserSettingsDTO fetchUserSettings();
+	UserSettingsVO fetchUserSettings();
 
-	Boolean verifyCode(UserSettingsDTO userRequest) throws AppException;
+	Boolean verifyCode(UserSettingsVO userRequest) throws AppException;
 
 }

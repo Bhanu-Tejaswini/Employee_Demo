@@ -3,11 +3,11 @@ package com.arraigntech.repository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import com.arraigntech.entity.Role;
+import com.arraigntech.entity.RoleEntity;
 
 @Repository
-public interface RoleRepository extends PagingAndSortingRepository<Role, String> {
+public interface RoleRepository extends PagingAndSortingRepository<RoleEntity, String> {
 
-	Role findByName(String name);
+	RoleEntity findByName(String name);
 
 }

@@ -2,11 +2,11 @@ package com.arraigntech.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.arraigntech.entity.EmailSettings;
-import com.arraigntech.entity.User;
+import com.arraigntech.entity.EmailSettingEntity;
+import com.arraigntech.entity.UserEntity;
 
-public interface EmailSettingsRepository extends JpaRepository<EmailSettings,String> {
+public interface EmailSettingsRepository extends JpaRepository<EmailSettingEntity,String> {
 	
-	EmailSettings findByUser(User user);
+	EmailSettingEntity findByUser(UserEntity user);
 
 }

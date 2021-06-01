@@ -2,10 +2,10 @@ package com.arraigntech.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.arraigntech.entity.Channels;
-import com.arraigntech.entity.UpdateTitle;
+import com.arraigntech.entity.ChannelEntity;
+import com.arraigntech.entity.UpdateTitleEntity;
 
-public interface UpdateTitleRepository extends JpaRepository<UpdateTitle, String> {
+public interface UpdateTitleRepository extends JpaRepository<UpdateTitleEntity, String> {
 
-	UpdateTitle findByChannel(Channels channel);
+	UpdateTitleEntity findByChannel(ChannelEntity channel);
 }
