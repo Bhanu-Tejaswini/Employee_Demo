@@ -42,4 +42,8 @@ public class UpdateTitleDTO {
 		this.description = description;
 	}
 
+	@Override
+	public String toString() {
+		return "UpdateTitleDTO [channelId=" + channelId + ", title=" + title + ", description=" + description + "]";
+	}
 }

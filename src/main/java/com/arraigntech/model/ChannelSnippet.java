@@ -1,13 +1,9 @@
 package com.arraigntech.model;
 
-public class ChannelSnippet {
-	private String channelId;
+public class ChannelSnippet extends ChannelStatus {
 
-	public String getChannelId() {
-		return channelId;
-	}
-
-	public void setChannelId(String channelId) {
-		this.channelId = channelId;
+	@Override
+	public String toString() {
+		return "ChannelSnippet [channelId=" + getChannelId() + "]";
 	}
 }

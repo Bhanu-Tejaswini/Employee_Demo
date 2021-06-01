@@ -37,4 +37,9 @@ public class CustomChannelDTO {
 		this.rtmpUrl = rtmpUrl;
 	}
 
+	@Override
+	public String toString() {
+		return "CustomChannelDTO [channelType=" + channelType + ", streamKey=" + streamKey + ", rtmpUrl=" + rtmpUrl
+				+ "]";
+	}
 }

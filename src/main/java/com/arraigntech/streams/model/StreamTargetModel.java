@@ -82,4 +82,10 @@ public class StreamTargetModel {
 
 	}
 
+	@Override
+	public String toString() {
+		return "StreamTargetModel [id=" + id + ", name=" + name + ", provider=" + provider + ", primary_url="
+				+ primary_url + ", stream_name=" + stream_name + ", backup_url=" + backup_url + "]";
+	}
+
 }

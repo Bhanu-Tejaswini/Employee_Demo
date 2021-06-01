@@ -17,4 +17,8 @@ public class DirectPlaybackUrls {
 		this.webrtc = webrtc;
 	}
 
+	@Override
+	public String toString() {
+		return "DirectPlaybackUrls [webrtc=" + webrtc + "]";
+	}
 }

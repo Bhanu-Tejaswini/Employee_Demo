@@ -83,4 +83,10 @@ public class TokenResponse {
 		this.jti = jti;
 	}
 
+	@Override
+	public String toString() {
+		return "TokenResponse [access_token=" + access_token + ", token_type=" + token_type + ", refresh_token="
+				+ refresh_token + ", expires_in=" + expires_in + ", scope=" + scope + ", email=" + email
+				+ ", resourceids=" + resourceids + ", jti=" + jti + "]";
+	}
 }

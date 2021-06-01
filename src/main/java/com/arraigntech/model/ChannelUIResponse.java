@@ -122,4 +122,11 @@ public class ChannelUIResponse {
 
 	}
 
+	@Override
+	public String toString() {
+		return "ChannelUIResponse [username=" + username + ", type=" + type + ", channelId=" + channelId
+				+ ", streamName=" + streamName + ", primaryUrl=" + primaryUrl + ", backupUrl=" + backupUrl + ", active="
+				+ active + ", accessToken=" + accessToken + ", facebookUserId=" + facebookUserId + ", updateTitle="
+				+ updateTitle + "]";
+	}
 }

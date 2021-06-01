@@ -15,4 +15,9 @@ public class FacebookStreamResponse {
 	public void setStream_url(String stream_url) {
 		this.stream_url = stream_url;
 	}
+
+	@Override
+	public String toString() {
+		return "FacebookStreamResponse [stream_url=" + stream_url + "]";
+	}
 }

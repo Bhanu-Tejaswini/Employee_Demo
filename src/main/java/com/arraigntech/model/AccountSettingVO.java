@@ -8,7 +8,7 @@ import java.util.List;
  * @author tulabandula.kumar
  *
  */
-public class AccountSettingVO implements Serializable{
+public class AccountSettingVO implements Serializable {
 	
 	/**
 	 * 
@@ -45,7 +45,9 @@ public class AccountSettingVO implements Serializable{
 		this.countries = countries;
 	}
 
-    
-	
-
+	@Override
+	public String toString() {
+		return "AccountSettingVO [language=" + language + ", timeZonesList=" + timeZonesList + ", countries="
+				+ countries + "]";
+	}
 }

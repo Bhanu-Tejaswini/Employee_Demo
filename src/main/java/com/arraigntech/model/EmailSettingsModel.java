@@ -71,4 +71,11 @@ public class EmailSettingsModel {
 	public EmailSettingsModel() {
 		
 	}
+
+	@Override
+	public String toString() {
+		return "EmailSettingsModel [systemAlerts=" + systemAlerts + ", monthlyStreamingReports="
+				+ monthlyStreamingReports + ", instantStreamingReport=" + instantStreamingReport + ", promotions="
+				+ promotions + ", productUpdates=" + productUpdates + ", blogDigest=" + blogDigest + "]";
+	}
 }

@@ -30,6 +30,9 @@ public class UpdateAllTitleDTO {
 	public UpdateAllTitleDTO() {
 		
 	}
-	
 
+	@Override
+	public String toString() {
+		return "UpdateAllTitleDTO [title=" + title + ", description=" + description + "]";
+	}
 }

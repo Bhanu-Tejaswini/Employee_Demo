@@ -20,4 +20,8 @@ public class UserToken {
 		this.password = password;
 	}
 
+	@Override
+	public String toString() {
+		return "UserToken [username=" + username + ", password=" + password + "]";
+	}
 }

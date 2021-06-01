@@ -48,4 +48,10 @@ public class ChannelDTO {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+
+	@Override
+	public String toString() {
+		return "ChannelDTO [items=" + items + ", graphDomain=" + graphDomain + ", accessToken=" + accessToken
+				+ ", userId=" + userId + "]";
+	}
 }

@@ -11,6 +11,7 @@ public class OverLayImageVO implements Serializable {
 	
 	private String overLayURL;
 	private String overLayType;
+	
 	public String getOverLayURL() {
 		return overLayURL;
 	}
@@ -24,6 +25,8 @@ public class OverLayImageVO implements Serializable {
 		this.overLayType = overLayType;
 	}
 	
-	
-
+	@Override
+	public String toString() {
+		return "OverLayImageVO [overLayURL=" + overLayURL + ", overLayType=" + overLayType + "]";
+	}
 }

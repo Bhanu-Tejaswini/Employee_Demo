@@ -42,4 +42,8 @@ public class ChannelListUIResponse {
 
 	}
 
+	@Override
+	public String toString() {
+		return "ChannelListUIResponse [channelList=" + channelList + ", flag=" + flag + "]";
+	}
 }

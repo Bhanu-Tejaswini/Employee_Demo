@@ -36,4 +36,9 @@ public class OutputStreamTargetDTO {
 	public void setStreamId(String streamId) {
 		this.streamId = streamId;
 	}
+
+	@Override
+	public String toString() {
+		return "OutputStreamTargetDTO [outputStreamTarget=" + outputStreamTarget + ", streamId=" + streamId + "]";
+	}
 }

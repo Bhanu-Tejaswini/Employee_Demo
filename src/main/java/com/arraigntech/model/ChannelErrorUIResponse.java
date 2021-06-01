@@ -39,4 +39,9 @@ public class ChannelErrorUIResponse {
 	public ChannelErrorUIResponse() {
 		
 	}
+
+	@Override
+	public String toString() {
+		return "ChannelErrorUIResponse [provider=" + provider + ", channelId=" + channelId + "]";
+	}
 }

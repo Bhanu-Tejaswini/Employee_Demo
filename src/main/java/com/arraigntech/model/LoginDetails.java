@@ -21,4 +21,8 @@ public class LoginDetails {
 		this.password = password;
 	}
 
+	@Override
+	public String toString() {
+		return "LoginDetails [email=" + email + ", password=" + password + "]";
+	}
 }

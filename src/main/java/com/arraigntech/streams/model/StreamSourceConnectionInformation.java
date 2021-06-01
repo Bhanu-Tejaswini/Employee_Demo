@@ -30,4 +30,10 @@ public class StreamSourceConnectionInformation {
 		this.stream_name = stream_name;
 	}
 
+	@Override
+	public String toString() {
+		return "StreamSourceConnectionInformation [sdp_url=" + sdp_url + ", application_name=" + application_name
+				+ ", stream_name=" + stream_name + "]";
+	}
+
 }

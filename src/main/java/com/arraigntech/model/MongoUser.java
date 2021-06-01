@@ -48,4 +48,8 @@ public class MongoUser {
 		this.username = username;
 	}
 
+	@Override
+	public String toString() {
+		return "MongoUser [userId=" + userId + ", email=" + email + ", username=" + username + "]";
+	}
 }

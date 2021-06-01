@@ -60,4 +60,10 @@ public class StreamUIResponse {
 		this.streamId = streamId;
 		this.streamStatus = streamStatus;
 	}
+
+	@Override
+	public String toString() {
+		return "StreamUIResponse [sdpUrl=" + sdpUrl + ", applicationName=" + applicationName + ", streamName="
+				+ streamName + ", streamId=" + streamId + ", streamStatus=" + streamStatus + "]";
+	}
 }

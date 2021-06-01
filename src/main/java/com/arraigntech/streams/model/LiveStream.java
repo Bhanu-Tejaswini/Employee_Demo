@@ -17,7 +17,6 @@ public class LiveStream {
 	public boolean player_responsive;
 	public boolean recording;
 
-//	public boolean vod_stream;
 	public int getAspect_ratio_height() {
 		return aspect_ratio_height;
 	}
@@ -104,5 +103,14 @@ public class LiveStream {
 
 	public void setRecording(boolean recording) {
 		this.recording = recording;
+	}
+
+	@Override
+	public String toString() {
+		return "LiveStream [aspect_ratio_height=" + aspect_ratio_height + ", aspect_ratio_width=" + aspect_ratio_width
+				+ ", billing_mode=" + billing_mode + ", broadcast_location=" + broadcast_location + ", encoder="
+				+ encoder + ", name=" + name + ", transcoder_type=" + transcoder_type + ", delivery_method="
+				+ delivery_method + ", delivery_type=" + delivery_type + ", player_responsive=" + player_responsive
+				+ ", recording=" + recording + "]";
 	}
 }

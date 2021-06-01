@@ -8,7 +8,7 @@ public class ChannelItems {
 	@JsonProperty("snippet")
 	private ChannelSnippet snippet;
 	@JsonProperty("cdn")
-	private ChannelCdn cdn;
+	private ChannelCDN cdn;
 
 	public String getKind() {
 		return kind;
@@ -26,11 +26,11 @@ public class ChannelItems {
 		this.snippet = snippet;
 	}
 
-	public ChannelCdn getCdn() {
+	public ChannelCDN getCdn() {
 		return cdn;
 	}
 
-	public void setCdn(ChannelCdn cdn) {
+	public void setCdn(ChannelCDN cdn) {
 		this.cdn = cdn;
 	}
 
