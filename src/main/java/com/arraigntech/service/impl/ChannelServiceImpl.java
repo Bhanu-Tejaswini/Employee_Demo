@@ -70,7 +70,9 @@ public class ChannelServiceImpl implements ChannelService {
 
 	@Override
 	public boolean createChannel(ChannelDTO channelDTO) {
-		log.debug("createChannel method start");
+		if (log.isDebugEnabled()) {
+			log.debug("createChannel method start {}.", channelDTO);
+		}
 		if (Objects.isNull(channelDTO)) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
@@ -118,12 +120,17 @@ public class ChannelServiceImpl implements ChannelService {
 		channels.setUser(newUser);
 		channelRepo.save(channels);
 		log.debug("createChannel Method end");
+		if (log.isDebugEnabled()) {
+			log.debug("createChannel method end");
+		}
 		return true;
 	}
 
 	@Override
 	public boolean addFaceBookChannel(ChannelDTO channelDTO) {
-		log.debug("addFaceBookChannel method start");
+		if (log.isDebugEnabled()) {
+			log.debug("addFaceBookChannel method start {}.", channelDTO);
+		}
 		User newUser = userService.getUser();
 		List<Channels> facebookChannel = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.FACEBOOK);
 		if (facebookChannel.size() > 0) {
@@ -144,14 +151,17 @@ public class ChannelServiceImpl implements ChannelService {
 		channels.setActive(true);
 		channels.setUser(newUser);
 		channelRepo.save(channels);
-		log.debug("addFaceBookChannel method end");
+		if (log.isDebugEnabled()) {
+			log.debug("addFaceBookChannel method end");
+		}
 		return true;
-
 	}
 
 	@Override
 	public boolean addInstagramChannel(CustomChannelDTO customChannelDTO) {
-		log.debug("addInstagramChannel method start");
+		if (log.isDebugEnabled()) {
+			log.debug("addInstagramChannel method start {}.", customChannelDTO);
+		}
 		if (Objects.isNull(customChannelDTO) || !StringUtils.hasText(customChannelDTO.getRtmpUrl())
 				|| !StringUtils.hasText(customChannelDTO.getStreamKey())) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
@@ -181,13 +191,17 @@ public class ChannelServiceImpl implements ChannelService {
 			channel.setActive(true);
 		}
 		channelRepo.save(channel);
-		log.debug("addInstagramChannel method end");
+		if (log.isDebugEnabled()) {
+			log.debug("addInstagramChannel method end");
+		}
 		return true;
 	}
 
 	@Override
 	public String execute(String accessToken) {
-		log.debug("execute method start");
+		if (log.isDebugEnabled()) {
+			log.debug("execute method start {}", accessToken);
+		}
 		UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
 		String url = builder.scheme("https").host(GRAPH_API_URL).queryParam(CLIENT_ID, appId)
 				.queryParam(CLIENT_SECRET, appSecret).queryParam(GRANT_TYPE, FB_EXCHANGE_TOKEN1)
@@ -201,13 +215,17 @@ public class ChannelServiceImpl implements ChannelService {
 		} catch (Exception e) {
 			throw new AppException(e.getMessage());
 		}
-		log.debug("execute method end");
+		if (log.isDebugEnabled()) {
+			log.debug("execute method end");
+		}
 		return response.getAccess_token();
 	}
 
 	@Override
 	public boolean removechannel(String channelId) {
-		log.debug("removeChannel method start");
+		if (log.isDebugEnabled()) {
+			log.debug("removeChannel method start {}", channelId);
+		}
 		if (!StringUtils.hasText(channelId)) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
@@ -216,13 +234,18 @@ public class ChannelServiceImpl implements ChannelService {
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
 		channelRepo.delete(newchannel);
-		log.debug("removeChannel method end");
+		if (log.isDebugEnabled()) {
+			log.debug("removeChannel method end");
+		}
 		return true;
 	}
 
 	@Override
 	public String enableChannel(ChannelStatus channelStatus) {
-		log.debug("enableChannel method start");
+		if (log.isDebugEnabled()) {
+			log.debug("enableChannel method start {}.", channelStatus);
+		}
+
 		if (!StringUtils.hasText(channelStatus.getChannelId())) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
@@ -232,13 +255,17 @@ public class ChannelServiceImpl implements ChannelService {
 		}
 		channel.setActive(true);
 		channelRepo.save(channel);
-		log.debug("enableChannel method end");
+		if (log.isDebugEnabled()) {
+			log.debug("enableChannel method end");
+		}
 		return MessageConstants.CHANNEL_ENABLED;
 	}
 
 	@Override
 	public String disableChannel(ChannelStatus channelStatus) {
-		log.debug("disableChannel method start");
+		if (log.isDebugEnabled()) {
+			log.debug("disableChannel method start {}.", channelStatus);
+		}
 		if (!StringUtils.hasText(channelStatus.getChannelId())) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
@@ -248,18 +275,25 @@ public class ChannelServiceImpl implements ChannelService {
 		}
 		channel.setActive(false);
 		channelRepo.save(channel);
-		log.debug("disableChannel method end");
+		if (log.isDebugEnabled()) {
+			log.debug("disableChannel method end");
+		}
 		return MessageConstants.CHANNEL_DISABLED;
 	}
 
 	@Override
 	public List<Channels> findByUserAndTypeAndActive(User newUser, ChannelTypeProvider type, boolean active) {
+		if (log.isDebugEnabled()) {
+			log.debug("findByUserAndTypeAndActive method");
+		}
 		return channelRepo.findByUserAndTypeAndActive(newUser, type, active);
 	}
 
 	@Override
 	public ChannelListUIResponse getUserChannels() {
-		log.debug("getUserChannels method start");
+		if (log.isDebugEnabled()) {
+			log.debug("getUserChannels method start");
+		}
 		User newUser = userService.getUser();
 		List<Channels> userChannels = channelRepo.findByUser(newUser);
 		List<Channels> userFaceBookChannels = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.FACEBOOK);
@@ -272,7 +306,9 @@ public class ChannelServiceImpl implements ChannelService {
 		if (Objects.isNull(userChannels)) {
 			throw new AppException(MessageConstants.CHANNEL_NOT_FOUND);
 		}
-		log.debug("getUserChannels method end");
+		if (log.isDebugEnabled()) {
+			log.debug("getUserChannels method end");
+		}
 		if (flag)
 			return new ChannelListUIResponse(userChannels, true);
 		else
@@ -285,7 +321,9 @@ public class ChannelServiceImpl implements ChannelService {
 	 */
 	@Override
 	public boolean validChannel(Channels channel) {
-		log.debug("validChannel method start");
+		if (log.isDebugEnabled()) {
+			log.debug("validChannel method start");
+		}
 		String url = "https://graph.facebook.com/" + channel.getFacebookUserId() + "?access_token="
 				+ channel.getAccessToken();
 		System.out.println(url);
@@ -295,13 +333,17 @@ public class ChannelServiceImpl implements ChannelService {
 		} catch (Exception e) {
 			return false;
 		}
-		log.debug("validChannel method end");
+		if (log.isDebugEnabled()) {
+			log.debug("validChannel method end");
+		}
 		return true;
 	}
 
 	@Override
 	public List<ChannelErrorUIResponse> getErrorChannels() {
-		log.debug("getErrorChannels method start");
+		if (log.isDebugEnabled()) {
+			log.debug("getErrorChannels method start");
+		}
 		User newUser = userService.getUser();
 		List<Channels> facebookChannels = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.FACEBOOK);
 		List<ChannelErrorUIResponse> channelList = new ArrayList<>();
@@ -313,13 +355,17 @@ public class ChannelServiceImpl implements ChannelService {
 				channelList.add(errorChannel);
 			}
 		});
-		log.debug("getErrorChannels method end");
+		if (log.isDebugEnabled()) {
+			log.debug("getErrorChannels method end");
+		}
 		return channelList;
 	}
 
 	@Override
 	public boolean addUpdateTitle(UpdateTitleDTO updateTitleDTO) {
-		log.debug("addUpdateTitle method start");
+		if (log.isDebugEnabled()) {
+			log.debug("addUpdateTitle method start");
+		}
 		if (!StringUtils.hasText(updateTitleDTO.getTitle()) || !StringUtils.hasText(updateTitleDTO.getChannelId())) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
@@ -339,13 +385,17 @@ public class ChannelServiceImpl implements ChannelService {
 			newTitle.setDescription(updateTitleDTO.getDescription());
 			updateTitleRepo.save(newTitle);
 		}
-		log.debug("addUpdateTitle method end");
+		if (log.isDebugEnabled()) {
+			log.debug("addUpdateTitle method end");
+		}
 		return true;
 	}
 
 	@Override
 	public UpdateTitleDTO getUpdateTitle(String channelId) {
-		log.debug("getUpdateTitle method start");
+		if (log.isDebugEnabled()) {
+			log.debug("getUpdateTitle method start {}.", channelId);
+		}
 		if (!StringUtils.hasText(channelId)) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
@@ -361,13 +411,17 @@ public class ChannelServiceImpl implements ChannelService {
 		updateTitleDTO.setTitle(data.getTitle());
 		updateTitleDTO.setDescription(data.getDescription());
 		updateTitleDTO.setChannelId(channelId);
-		log.debug("getUpdateTitle method end");
+		if (log.isDebugEnabled()) {
+			log.debug("getUpdateTitle method end");
+		}
 		return updateTitleDTO;
 	}
 
 	@Override
 	public boolean updateAllTitles(UpdateAllTitleDTO updateAllTitleDTO) {
-		log.debug("updateAllTitles method start");
+		if (log.isDebugEnabled()) {
+			log.debug("updateAllTitles method start {}.", updateAllTitleDTO);
+		}
 		if (Objects.isNull(updateAllTitleDTO) || !StringUtils.hasText(updateAllTitleDTO.getDescription())
 				|| !StringUtils.hasText(updateAllTitleDTO.getTitle())) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
@@ -381,7 +435,9 @@ public class ChannelServiceImpl implements ChannelService {
 			addUpdateTitle(new UpdateTitleDTO(channel.getChannelId(), updateAllTitleDTO.getTitle(),
 					updateAllTitleDTO.getDescription()));
 		});
-		log.debug("updateAllTitles method end");
+		if (log.isDebugEnabled()) {
+			log.debug("updateAllTitles method end");
+		}
 		return true;
 	}
 }

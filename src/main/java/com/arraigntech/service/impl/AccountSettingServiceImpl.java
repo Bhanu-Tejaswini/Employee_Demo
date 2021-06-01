@@ -69,29 +69,42 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 
 	@Override
 	public AccountSettingVO getTimeZonesList() {
-		log.debug("getTimeZonesList method start");
+		if(log.isDebugEnabled()) {
+			log.debug("getTimeZonesList method start");
+		}
 		AccountSettingVO settingsVO = new AccountSettingVO();
 		Set<String> availableZoneIds = ZoneId.getAvailableZoneIds();
 		List<String> timeZonesList = new ArrayList<String>(availableZoneIds);
 		settingsVO.setLanguage(UtilEnum.ENGLISH.name());
 		settingsVO.setTimeZonesList(timeZonesList);
 		settingsVO.setCountries(getCountiresList());
-		log.debug("getTimeZonesList method end");
+		if(log.isDebugEnabled()) {
+			log.debug("getTimeZonesList method end");
+		}
 		return settingsVO;
 	}
 
 	private List<String> getCountiresList() {
+		if(log.isDebugEnabled()) {
+			log.debug("getCountiresList method start");
+		}
 		String[] countryCodes = Locale.getISOCountries();
 		List<String> countriesList = new ArrayList<>();
 		for (String countryCode : countryCodes) {
 			Locale obj = new Locale("", countryCode);
 			countriesList.add(obj.getDisplayCountry());
 		}
+		if(log.isDebugEnabled()) {
+			log.debug("getCountiresList method end");
+		}
 		return countriesList;
 	}
 
 	@Override
 	public Boolean saveUserName(String name) {
+		if(log.isDebugEnabled()) {
+			log.debug("saveUserName method start {}",name);
+		}
 		if (!StringUtils.hasText(name)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
@@ -102,33 +115,52 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		}
 		user.setUsername(name);
 		userService.saveUser(user);
+		if(log.isDebugEnabled()) {
+			log.debug("saveUserName method end");
+		}
 		return true;
 	}
 
 	@Override
 	public Boolean updateLanguage(String language) {
+		if(log.isDebugEnabled()) {
+			log.debug("updateLanguage method start {}",language);
+		}
 		if (!StringUtils.hasText(language)) {
 			throw new AppException(MessageConstants.DATA_MISSING);
 		}
 		User user = userService.getUser();
 		user.setLanguage(language);
 		userService.saveUser(user);
+		if(log.isDebugEnabled()) {
+			log.debug("updateLanguage method end");
+		}
 		return true;
 	}
 
 	@Override
 	public Boolean updatePincode(String pinCode) {
+		if(log.isDebugEnabled()) {
+			log.debug("updatePincode method start {}",pinCode);
+		}
+
 		if (!StringUtils.hasText(pinCode)) {
 			throw new AppException(MessageConstants.DATA_MISSING);
 		}
 		User user = userService.getUser();
 		user.setPincode(pinCode);
 		userService.saveUser(user);
+		if(log.isDebugEnabled()) {
+			log.debug("updatePincode method end");
+		}
 		return true;
 	}
 
 	@Override
 	public Boolean updateEmail(String email) {
+		if(log.isDebugEnabled()) {
+			log.debug("updateEmail method start {}",email);
+		}
 		if (!StringUtils.hasText(email)) {
 			throw new AppException(MessageConstants.DATA_MISSING);
 		}
@@ -139,32 +171,33 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		}
 		user.setEmail(email);
 		userService.saveUser(user);
+		if(log.isDebugEnabled()) {
+			log.debug("updateEmail method end");
+		}
 		return true;
 	}
 
 	@Override
 	public Boolean updateTimeZone(String timeZone) {
+		if(log.isDebugEnabled()) {
+			log.debug("updateTimeZone method start {}",timeZone);
+		}
 		if (!StringUtils.hasText(timeZone)) {
 			throw new AppException(MessageConstants.DATA_MISSING);
 		}
 		User user = userService.getUser();
 		user.setTimeZone(timeZone);
 		userService.saveUser(user);
+		if(log.isDebugEnabled()) {
+			log.debug("updateTimeZone method end");
+		}
 		return true;
 	}
 
-//	@Override
-//	public Boolean updateMobileNumber(String mobileNumber) {
-//		if(!StringUtils.hasText(mobileNumber)) {
-//			throw new AppException(MessageConstants.DATA_MISSING);
-//		}
-//		User user = getUser();
-//		user.setNumber(mobileNumber);
-//		userRepo.save(user);
-//		return true;
-//	}
-
 	public UserSettingsDTO fetchUserSettings() {
+		if(log.isDebugEnabled()) {
+			log.debug("fetchUserSettings method start");
+		}
 		User newUser = userService.getUser();
 		Map<String, String> mobileNumbersMap = new HashMap<>();
 		mobileNumbersMap.put(MessageConstants.DIAL_CODE, newUser.getDialCode());
@@ -173,12 +206,18 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		mobileNumbersMap.put(MessageConstants.NATIONAL_NUMBER, newUser.getNationalNumber());
 		mobileNumbersMap.put(MessageConstants.INTERNATIONAL_NUMBER, newUser.getInternationalNumber());
 		mobileNumbersMap.put(MessageConstants.NUMBER_MOBILE, newUser.getNumber());
+		if(log.isDebugEnabled()) {
+			log.debug("fetchUserSettings method end {}.",mobileNumbersMap);
+		}
 		return new UserSettingsDTO(newUser.getEmail(), newUser.getPincode(), newUser.getUsername(),
 				newUser.getLanguage(), newUser.getTimeZone(), mobileNumbersMap);
 	}
 
 	@Override
 	public Boolean sendOTPForUser(UserSettingsDTO userSettings) {
+		if(log.isDebugEnabled()) {
+			log.debug("sendOTPForUser method start {}.",userSettings);
+		}
 		if (!StringUtils.hasText(userSettings.getInternationalNumber())) {
 			throw new AppException(MessageConstants.INVALID_PHONE_NUMBER);
 		}
@@ -198,12 +237,17 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 				new com.twilio.type.PhoneNumber(twilioPhoneNumber), // The Twilio phone number
 				"Please enter the OTP:" + otp).create();
 		userService.saveUser(user);
+		if(log.isDebugEnabled()) {
+			log.debug("sendOTPForUser method end");
+		}
 		return true;
 	}
 
 	@Override
 	public Boolean verifyCode(UserSettingsDTO userRequest) throws AppException {
-		log.debug("verifyCode request{}");
+		if(log.isDebugEnabled()) {
+			log.debug("verifyCode request method{}.",userRequest);
+		}
 		if (!StringUtils.hasText(userRequest.getCode())) {
 			throw new AppException(MessageConstants.AUTHENTICATION_FAILED);
 		}
@@ -217,12 +261,17 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		} else {
 			resetUserDetails.execute(user);
 		}
-		log.debug("verifyCode response{}", isValid);
+		if(log.isDebugEnabled()) {
+			log.debug("verifyCode response method {}", isValid);
+		}
 		return isValid;
 	}
 
 	@Override
 	public Boolean verifyMobileNumber() {
+		if(log.isDebugEnabled()) {
+			log.debug("verifyMobileNumber method");
+		}
 		User newUser = userService.getUser();
 		if(StringUtils.hasText(newUser.getInternationalNumber()))
 			return true;

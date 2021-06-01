@@ -20,7 +20,9 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(AppException.class)
 	public BaseResponse<ErrorResponse> handleAppException(AppException e) {
-		LOGGER.error(e.getMessage(), e);
+		if(LOGGER.isDebugEnabled()) {
+			LOGGER.error(e.getMessage(), e);
+		}
 		BaseResponse<ErrorResponse> response = new BaseResponse<ErrorResponse>();
 		response.withResponseMessage(MESSAGE, e.getMessage());
 		response.withSuccess(false);

@@ -42,7 +42,9 @@ public class ChannelsController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> addChannel(@RequestBody ChannelDTO channelDTO) {
-		log.debug("Adding channel");
+		if(log.isDebugEnabled()) {
+			log.debug("Adding channel {}.",channelDTO);
+		}
 		Boolean result = channelService.createChannel(channelDTO);
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		return result
@@ -58,7 +60,9 @@ public class ChannelsController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/custom", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> addCustomChannel(@RequestBody CustomChannelDTO customChannelDTO) {
-		log.debug("Adding custom channel");
+		if(log.isDebugEnabled()) {
+			log.debug("Adding custom channel {}.",customChannelDTO);
+		}
 		Boolean result = channelService.addInstagramChannel(customChannelDTO);
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		return result
@@ -74,7 +78,9 @@ public class ChannelsController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/enable", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<String> enableChannel(@RequestBody ChannelStatus channelStatus) {
-		log.debug("Enabling channel");
+		if(log.isDebugEnabled()) {
+			log.debug("Enabling channell {}.",channelStatus);
+		}
 		BaseResponse<String> response = new BaseResponse<>();
 		String info=channelService.enableChannel(channelStatus);
 		return response.withSuccess(true)
@@ -85,7 +91,9 @@ public class ChannelsController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/disable", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<String> disableChannel(@RequestBody ChannelStatus channelStatus) {
-		log.debug("Disabling channel");
+		if(log.isDebugEnabled()) {
+			log.debug("Disabling channel {}.",channelStatus);
+		}
 		BaseResponse<String> response = new BaseResponse<>();
 		String info=channelService.disableChannel(channelStatus);
 		return response.withSuccess(true)
@@ -96,7 +104,9 @@ public class ChannelsController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/fetch", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<List<Channels>> getChannelList() {
-		log.debug("Get the list of channels of user");
+		if(log.isDebugEnabled()) {
+			log.debug("Get the list of channels of user");
+		}
 		ChannelListUIResponse userChannels = channelService.getUserChannels();
 		if(userChannels.isFlag())
 			return new BaseResponse<List<Channels>>(userChannels.getChannelList()).withSuccess(true);
@@ -108,7 +118,9 @@ public class ChannelsController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/error", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<List<ChannelErrorUIResponse>> getErrorChannelList() {
-		log.debug("get the list of error channels");
+		if(log.isDebugEnabled()) {
+			log.debug("get the list of error channels");
+		}
 		return new BaseResponse<List<ChannelErrorUIResponse>>(channelService.getErrorChannels()).withSuccess(true);
 	}
 	
@@ -117,7 +129,9 @@ public class ChannelsController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/title", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> addChannel(@RequestBody UpdateTitleDTO updateTitleDTO) {
-		log.debug("update channel title");
+		if(log.isDebugEnabled()) {
+			log.debug("update channel title {}.",updateTitleDTO);
+		}
 		Boolean result = channelService.addUpdateTitle(updateTitleDTO);
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		return result
@@ -133,7 +147,9 @@ public class ChannelsController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/title/all", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> updateChannelTitleAll(@RequestBody UpdateAllTitleDTO updateAllTitleDTO) {
-		log.debug("Add all channel title	");
+		if(log.isDebugEnabled()) {
+			log.debug("Add all channel title {}.",updateAllTitleDTO);
+		}
 		Boolean result = channelService.updateAllTitles(updateAllTitleDTO);
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		return result
@@ -149,7 +165,9 @@ public class ChannelsController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/{channelId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> addChannel(@PathVariable String channelId) {
-		log.debug("Remove the channel");
+		if(log.isDebugEnabled()) {
+			log.debug("Remove the channel {}",channelId);
+		}
 		Boolean result = channelService.removechannel(channelId);
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		return result
@@ -165,7 +183,9 @@ public class ChannelsController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/title/{channelId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<UpdateTitleDTO> getChannelTitle(@PathVariable("channelId") String channelId) {
-		log.debug("Get the title of the channel");
+		if(log.isDebugEnabled()) {
+			log.debug("Get the title of the channel {}",channelId);
+		}
 		return new BaseResponse<UpdateTitleDTO>(channelService.getUpdateTitle(channelId)).withSuccess(true);
 	}
 	

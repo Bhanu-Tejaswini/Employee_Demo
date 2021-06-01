@@ -1,14 +1,11 @@
 package com.arraigntech.controller;
 
 import java.net.HttpURLConnection;
-import java.security.Principal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,23 +39,13 @@ public class AuthController {
 	@Autowired
 	private SocialLoginServiceImpl socialLoginService;
 
-	@GetMapping("/user")
-//	@PreAuthorize("hasAuthority('update_profile')")
-	public Principal getUser(Principal principal) {
-		return principal;
-	}
-
-	@GetMapping("/admin")
-	@PreAuthorize("hasAuthority('create_profile')")
-	public String getAdmin() {
-		return "This is admin data";
-	}
-
 	@ApiOperation(value = "save and register user")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> saveAndUpdateCustomer(@RequestBody UserDTO user) {
-		log.debug("save and register user");
+		if(log.isDebugEnabled()) {
+			log.debug("save and register user {}.",user);
+		}	
 		return new BaseResponse<Boolean>(userService.register(user)).withSuccess(true);
 	}
 
@@ -66,7 +53,9 @@ public class AuthController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/forgot-password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> forgotPassword(@RequestBody IVSTokenEmail tokenEmail) {
-		log.debug("Forgot password");
+		if(log.isDebugEnabled()) {
+			log.debug("Forgot password {}.",tokenEmail);
+		}
 		return new BaseResponse<Boolean>(userService.forgotPassword(tokenEmail.getEmail())).withSuccess(true);
 	}
 
@@ -74,7 +63,9 @@ public class AuthController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<String> login(@RequestBody LoginDetails login) {
-		log.debug("User Login");
+		if(log.isDebugEnabled()) {
+			log.debug("User Login {}.",login);
+		}
 		BaseResponse<String> response = new BaseResponse<>();
 		LoginResponseDTO responseMessage = userService.generateToken(login);
 		return responseMessage.isFlag()
@@ -91,10 +82,11 @@ public class AuthController {
 	@RequestMapping(value = "/reset-password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<String> resetPassword(@RequestHeader(name = "Authorization", required = true) String token,
 			@RequestBody IVSResetPassword pass) {
-		log.debug("Reseting the password");
+		if(log.isDebugEnabled()) {
+			log.debug("Reseting the password {}",token);
+		}
 		BaseResponse<String> response = new BaseResponse<>();
 		userService.updatePassword(token, pass.getPassword());
-		
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.PASSWORDMESSAGE).build();
 	}
@@ -104,7 +96,9 @@ public class AuthController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/google-login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<String> getGoogleToken(@RequestBody SocialLoginDTO socialLogin) {
-		log.debug("Google signin");
+		if(log.isDebugEnabled()) {
+			log.debug("Google signin {}.",socialLogin);
+		}
 		BaseResponse<String> response = new BaseResponse<>();
 		LoginResponseDTO responseMessage = socialLoginService.getGoogleToken(socialLogin);
 		return responseMessage.isFlag()
@@ -119,7 +113,9 @@ public class AuthController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/facebook-login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<String> getFacebookToken(@RequestBody SocialLoginDTO socialLogin) {
-		log.debug("Facebook signin");
+		if(log.isDebugEnabled()) {
+			log.debug("Facebook signin {}.",socialLogin);
+		}
 		BaseResponse<String> response = new BaseResponse<>();
 		LoginResponseDTO responseMessage = socialLoginService.getFacebookToken(socialLogin);
 		return responseMessage.isFlag()
@@ -135,7 +131,9 @@ public class AuthController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/verify/token", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> registerationLink(@RequestHeader(name = "Authorization", required = true) String token) {
-		log.debug("registration link verification");
+		if(log.isDebugEnabled()) {
+			log.debug("registration link verification {}",token);
+		}
 		Boolean result = userService.verifyRegisterationToken(token);
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		return result
@@ -151,7 +149,9 @@ public class AuthController {
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/resend-verifylink", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> resendRegisterationLink(@RequestBody IVSTokenEmail emailDTO) {
-		log.debug("Resend registration link");
+		if(log.isDebugEnabled()) {
+			log.debug("Resend registration link {}.",emailDTO);
+		}
 		Boolean result = userService.sendRegisterationLink(emailDTO.getEmail());
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		return result

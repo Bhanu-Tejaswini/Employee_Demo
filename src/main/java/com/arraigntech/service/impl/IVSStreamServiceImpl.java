@@ -117,12 +117,13 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @return the header
 	 */
 	public MultiValueMap<String, String> getHeader() {
-		log.debug("wowza header start");
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 		headers.add("Content-Type", "application/json");
 		headers.set("wsc-api-key", wscApiKey);
 		headers.set("wsc-access-key", wscAccessKey);
-		log.debug("wowza header end");
+		if (log.isDebugEnabled()) {
+			log.debug("wowza header {}.", headers);
+		}
 		return headers;
 	}
 
@@ -134,7 +135,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 */
 	@Override
 	public StreamUIResponse createStream(StreamUIRequest streamRequest) {
-		log.debug("create stream start");
+		if (log.isDebugEnabled()) {
+			log.debug("createStream method start {}.", streamRequest);
+		}
 		User newUser = userService.getUser();
 		IVSLiveStream liveStream = populateStreamData(streamRequest);
 		String url = baseUrl + "/live_streams";
@@ -168,7 +171,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 				liveStreamResponse.getLiveStreamResponse().getDirect_playback_urls().getWebrtc(), streamId));
 		StreamSourceConnectionInformation response = liveStreamResponse.getLiveStreamResponse()
 				.getSource_connection_information();
-		log.debug("create stream end");
+		if (log.isDebugEnabled()) {
+			log.debug("creatStream method end");
+		}
 		return new StreamUIResponse(response.getSdp_url(), response.getApplication_name(), response.getStream_name(),
 				streamId, "starting");
 	}
@@ -178,6 +183,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @return
 	 */
 	private IVSLiveStream populateStreamData(StreamUIRequest streamRequest) {
+		if (log.isDebugEnabled()) {
+			log.debug("populateStreamData method start {}.", streamRequest);
+		}
 		IVSLiveStream ivsLiveStream = new IVSLiveStream();
 		LiveStream liveStream = new LiveStream();
 		liveStream.setAspect_ratio_height(streamRequest.getAspectRatioHeight());
@@ -191,8 +199,10 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		liveStream.setPlayer_responsive(PLAYER_RESPONSIVE);
 		liveStream.setRecording(RECORDING);
 		liveStream.setTranscoder_type(TRANSCODER_TYPE);
-
 		ivsLiveStream.setLiveStream(liveStream);
+		if (log.isDebugEnabled()) {
+			log.debug("populateStreamData method end");
+		}
 		return ivsLiveStream;
 	}
 
@@ -204,7 +214,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 */
 	@Override
 	public boolean deleteStream(String streamId) {
-		log.debug("deleteStream start");
+		if (log.isDebugEnabled()) {
+			log.debug("deleteStream method start {}", streamId);
+		}
 		Streams stream = streamRepo.findByStreamId(streamId);
 		if (Objects.isNull(stream)) {
 			throw new AppException(MessageConstants.STREAM_NOT_EXISTS);
@@ -229,12 +241,16 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		}
 		// Also deleting the stream target
 		streamTargets.stream().forEach(streamTarget -> deleteStreamTarget(streamTarget.getStreamTargetId()));
-		log.debug("deleteStream end");
+		if (log.isDebugEnabled()) {
+			log.debug("deleteStream method end");
+		}
 		return true;
 	}
 
 	public Boolean channelsStream(String streamId, String outputId) {
-		log.debug("channelStream method start");
+		if (log.isDebugEnabled()) {
+			log.debug("channelStream method start");
+		}
 		User newUser = userService.getUser();
 		List<Channels> youtubeChannels = channelService.findByUserAndTypeAndActive(newUser, ChannelTypeProvider.YOUTUBE,
 				true);
@@ -248,12 +264,13 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			throw new AppException(MessageConstants.NO_CHANNELS_TO_STREAM);
 		}
 		CompletableFuture.runAsync(() -> youtubeStream(youtubeChannels, streamId, outputId));
-		CompletableFuture.runAsync(() -> facebookStream(facebookChannels, streamId, outputId))
-		.handle((res, e) -> {
+		CompletableFuture.runAsync(() -> facebookStream(facebookChannels, streamId, outputId)).handle((res, e) -> {
 			throw new AppException(e.getMessage());
 		});
 		CompletableFuture.runAsync(() -> instagramStream(instagramChannels, streamId, outputId));
-		log.debug("channelStream method end");
+		if (log.isDebugEnabled()) {
+			log.debug("channelStream method end");
+		}
 		return true;
 	}
 
@@ -264,7 +281,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @return
 	 */
 	public void instagramStream(List<Channels> instagramChannels, String streamId, String outputId) {
-		log.debug("instagramStream method start");
+		if (log.isDebugEnabled()) {
+			log.debug("instagramStream method start");
+		}
 		instagramChannels.stream().forEach(channel -> {
 			String streamTargetId = createStreamTarget(
 					new StreamTargetModel("INSTGRAM_" + RandomIdGenerator.generate(5), RTMPS, channel.getPrimaryUrl(),
@@ -272,7 +291,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 					streamId);
 			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId));
 		});
-		log.debug("instagramStream method end");
+		if (log.isDebugEnabled()) {
+			log.debug("instagramStream method end");
+		}
 	}
 
 	/**
@@ -281,7 +302,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @param outputId
 	 */
 	private void facebookStream(List<Channels> facebookChannels, String streamId, String outputId) {
-		log.debug("facebookStream start");
+		if (log.isDebugEnabled()) {
+			log.debug("facebookStream method start");
+		}
 		facebookChannels.stream().forEach(channel -> {
 			FacebookStreamRequest facebookStreamRequest = getFacebookStreamData(channel);
 			String streamTargetId = createStreamTarget(new StreamTargetModel(
@@ -289,13 +312,18 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 					facebookStreamRequest.getStreamName(), facebookStreamRequest.getPrimaryUrl()), streamId);
 			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId));
 		});
-		log.debug("facebookStream end");
+		if (log.isDebugEnabled()) {
+			log.debug("facebookStream method end");
+		}
 	}
 
 	/**
 	 * @return
 	 */
 	private FacebookStreamRequest getFacebookStreamData(Channels channel) {
+		if (log.isDebugEnabled()) {
+			log.debug("getFacebookStreamData method start {}.", channel);
+		}
 		log.debug("getFacebookStreamData start");
 		String uri = graphUrl + channel.getFacebookUserId() + "/live_videos";
 		UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
@@ -312,12 +340,13 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			throw new AppException(e.getMessage());
 
 		}
-
 		String[] responseData = facebookStreamResponse.getStream_url().split("/");
 		FacebookStreamRequest facebookStreamRequest = new FacebookStreamRequest();
 		facebookStreamRequest.setPrimaryUrl(responseData[0] + "//" + responseData[2] + "/" + responseData[3] + "/");
 		facebookStreamRequest.setStreamName(responseData[4]);
-		log.debug("getFacebookStreamData end");
+		if (log.isDebugEnabled()) {
+			log.debug("getFacebookStreamData method end");
+		}
 		return facebookStreamRequest;
 	}
 
@@ -332,13 +361,17 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 */
 	@Override
 	public void youtubeStream(List<Channels> youtubeChannels, String streamId, String outputId) {
-		log.debug("youtubestream start");
+		if (log.isDebugEnabled()) {
+			log.debug("youtubestream method start");
+		}
 		youtubeChannels.stream().forEach(channel -> {
 			String streamTargetId = createStreamTarget(new StreamTargetModel("YOUTUBE_" + RandomIdGenerator.generate(5),
 					RTMP, channel.getPrimaryUrl(), channel.getStreamName(), channel.getBackupUrl()), streamId);
 			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId));
 		});
-		log.debug("youtubestream end");
+		if (log.isDebugEnabled()) {
+			log.debug("youtubestream method end");
+		}
 	}
 
 	/**
@@ -349,7 +382,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 */
 	@Override
 	public void startStream(String id) {
-		log.debug("startStream start");
+		if (log.isDebugEnabled()) {
+			log.debug("startStream method start {}", id);
+		}
 		String url = baseUrl + "/live_streams/" + id + "/start";
 		MultiValueMap<String, String> headers = getHeader();
 
@@ -365,10 +400,10 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		}
 		Streams stream = streamRepo.findByStreamId(id);
 		stream.setActive(true);
-		;
 		streamRepo.save(stream);
-		log.debug("startStream end");
-		//		return response.getLiveStreamState().getState();
+		if (log.isDebugEnabled()) {
+			log.debug("startStream method end");
+		}
 	}
 
 	/**
@@ -379,7 +414,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 */
 	@Override
 	public String stopStream(String id) {
-		log.debug("stopStream start");
+		if (log.isDebugEnabled()) {
+			log.debug("stopStream method start {}", id);
+		}
 		String url = baseUrl + "/live_streams/" + id + "/stop";
 		MultiValueMap<String, String> headers = getHeader();
 
@@ -397,7 +434,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		Streams stream = streamRepo.findByStreamId(id);
 		stream.setActive(false);
 		streamRepo.save(stream);
-		log.debug("stopStream end");
+		if (log.isDebugEnabled()) {
+			log.debug("stopStream method end");
+		}
 		return response.getLiveStreamState().getState();
 	}
 
@@ -409,7 +448,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 */
 	@Override
 	public FetchStreamUIResponse fetchStreamState(String id) {
-		log.debug("fetchStreamState start");
+		if (log.isDebugEnabled()) {
+			log.debug("fetchstreamState method start {}", id);
+		}
 		String url = baseUrl + "/live_streams/" + id + "/state";
 		MultiValueMap<String, String> headers = getHeader();
 
@@ -423,8 +464,10 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			log.error("error occurred while fetching stream state");
 			throw new AppException(e.getMessage());
 		}
-		log.debug("fetchstreamState end");
 		FetchStreamUIResponse result = new FetchStreamUIResponse(response.getLiveStreamState().getState());
+		if (log.isDebugEnabled()) {
+			log.debug("fetchstreamState method end");
+		}
 		return result;
 	}
 
@@ -435,7 +478,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 */
 	@Override
 	public void saveStream(IVSLiveStreamResponse response) {
-		log.debug("saveStream start");
+		if (log.isDebugEnabled()) {
+			log.debug("saveStream method start {}.", response);
+		}
 		Streams stream = new Streams();
 
 		User newUser = userService.getUser();
@@ -449,7 +494,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		stream.setStreamUrl(response.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(0).getUrl());
 		stream.setUser(newUser);
 		streamRepo.save(stream);
-		log.debug("saveStream end");
+		if (log.isDebugEnabled()) {
+			log.debug("saveStream method end");
+		}
 	}
 
 	/**
@@ -460,7 +507,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 */
 	@Override
 	public String createStreamTarget(StreamTargetModel streamTargetModel, String streamId) {
-		log.debug("createStreamTarget start");
+		if (log.isDebugEnabled()) {
+			log.debug("createStreaTarget method start {}.",streamTargetModel);
+		}
 		String url = baseUrl + "/stream_targets/custom";
 		MultiValueMap<String, String> headers = getHeader();
 		StreamTargetDTO streamTargetDTO = new StreamTargetDTO();
@@ -490,7 +539,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		log.debug("createStreaTarget end");
+		if (log.isDebugEnabled()) {
+			log.debug("createStreaTarget method end");
+		}
 		return streamTarResponse.getId();
 	}
 
@@ -504,7 +555,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 */
 	@Override
 	public boolean addStreamTarget(String streamId, String outputId, String streamTargetId) {
-		log.debug("addStreamTarget start");
+		if (log.isDebugEnabled()) {
+			log.debug("addStreamTarget method start");
+		}
 		String url = baseUrl + "/transcoders/" + streamId + "/outputs/" + outputId + "/output_stream_targets";
 		MultiValueMap<String, String> headers = getHeader();
 
@@ -523,14 +576,17 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		// saving response to mongodb
 		response.setStreamId(streamId);
 		outputStreamTargetRepo.save(response);
-		log.debug("addStreamTarget end");
+		if (log.isDebugEnabled()) {
+			log.debug("addStreamTarget method end");
+		}
 		return true;
 	}
 
 	@Override
 	public boolean deleteStreamTarget(String streamTargetId) {
-		log.debug("deleteStreamTarget start");
-
+		if (log.isDebugEnabled()) {
+			log.debug("deleteStreamTarget method start {}",streamTargetId);
+		}
 		String url = baseUrl + "/stream_targets/custom/" + streamTargetId;
 		MultiValueMap<String, String> headers = getHeader();
 
@@ -541,21 +597,29 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			log.error("error occurred while deleting the streamTarget");
 			throw new AppException(e.getMessage());
 		}
-		log.debug("deleteStreamTarget end");
+		if (log.isDebugEnabled()) {
+			log.debug("deleteStreamTarget method end");
+		}
 		return true;
 	}
 
 	public Boolean deleteOutputTargetAll(List<Webrtc> webrtcList, String streamId) {
-		log.debug("deleteOutputTargetAll start");
+		if (log.isDebugEnabled()) {
+			log.debug("deleteOutputTargetAll method start");
+		}
 		webrtcList.stream().skip(4).forEach(output -> {
 			deleteOutputTarget(streamId, output.getOutput_id());
 		});
-		log.debug("deleteOutputTargetAll end");
+		if (log.isDebugEnabled()) {
+			log.debug("deleteOutputTargetAll method end");
+		}
 		return true;
 	}
 
 	public Boolean deleteOutputTarget(String streamId, String outputId) {
-		log.debug("deleteOutputTarget start");
+		if (log.isDebugEnabled()) {
+			log.debug("deleteOutputTarget method start");
+		}
 		String url = baseUrl + "/transcoders/" + streamId + "/outputs/" + outputId;
 		MultiValueMap<String, String> headers = getHeader();
 
@@ -566,7 +630,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			log.error("error occurred while deleting the deleteOutputTarget");
 			throw new AppException(e.getMessage());
 		}
-		log.debug("deleteOutputTarget end");
+		if (log.isDebugEnabled()) {
+			log.debug("deleteOutputTarget method end");
+		}
 		return true;
 	}
 }
