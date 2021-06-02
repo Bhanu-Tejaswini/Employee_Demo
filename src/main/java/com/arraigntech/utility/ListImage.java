@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import org.springframework.stereotype.Component;
 
-import com.arraigntech.request.vo.ImageModelVO;
+import com.arraigntech.request.ImageModelVO;
 
 @Component
 public class ListImage {

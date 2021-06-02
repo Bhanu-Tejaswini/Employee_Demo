@@ -1,9 +1,9 @@
 package com.arraigntech.service;
 
 import com.arraigntech.exceptions.AppException;
-import com.arraigntech.request.vo.AccountSettingVO;
-import com.arraigntech.request.vo.OverLayImageVO;
-import com.arraigntech.request.vo.UserSettingsVO;
+import com.arraigntech.request.AccountSettingVO;
+import com.arraigntech.request.OverLayImageVO;
+import com.arraigntech.request.UserSettingsVO;
 
 /**
  * 

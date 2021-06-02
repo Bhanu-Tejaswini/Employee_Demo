@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import com.arraigntech.entity.UserEntity;
 import com.arraigntech.exceptions.AppException;
 import com.arraigntech.repository.UserRespository;
-import com.arraigntech.request.vo.AuthUserDetailVO;
+import com.arraigntech.request.AuthUserDetailVO;
 
 @Component
 public class UserDetailServiceImpl implements UserDetailsService {

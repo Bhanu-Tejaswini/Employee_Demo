@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.arraigntech.request.vo.EmailVO;
+import com.arraigntech.request.EmailVO;
 
 @Component
 public class FormEmailData {

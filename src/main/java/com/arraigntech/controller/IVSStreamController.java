@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.arraigntech.request.vo.response.BaseResponse;
+import com.arraigntech.response.BaseResponse;
 import com.arraigntech.service.IVSStreamService;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.wowza.request.vo.StreamUIRequestVO;

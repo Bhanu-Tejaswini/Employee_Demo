@@ -20,7 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.arraigntech.entity.PermissionEntity;
 import com.arraigntech.entity.RoleEntity;
 import com.arraigntech.exceptions.AppException;
-import com.arraigntech.request.vo.RoleVO;
+import com.arraigntech.request.RoleVO;
 import com.arraigntech.service.impl.PermissionServiceImpl;
 import com.arraigntech.service.impl.RoleServiceImpl;
 

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import javax.mail.MessagingException;
 
-import com.arraigntech.request.vo.EmailVO;
+import com.arraigntech.request.EmailVO;
 
 import freemarker.template.TemplateException;
 

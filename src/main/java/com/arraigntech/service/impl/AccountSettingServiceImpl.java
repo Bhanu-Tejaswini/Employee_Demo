@@ -16,8 +16,8 @@ import org.springframework.util.StringUtils;
 
 import com.arraigntech.entity.UserEntity;
 import com.arraigntech.exceptions.AppException;
-import com.arraigntech.request.vo.AccountSettingVO;
-import com.arraigntech.request.vo.UserSettingsVO;
+import com.arraigntech.request.AccountSettingVO;
+import com.arraigntech.request.UserSettingsVO;
 import com.arraigntech.service.AccountSettingService;
 import com.arraigntech.service.UserService;
 import com.arraigntech.utility.MessageConstants;
