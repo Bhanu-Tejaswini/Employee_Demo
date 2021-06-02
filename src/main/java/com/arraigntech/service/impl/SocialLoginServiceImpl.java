@@ -18,9 +18,9 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.stereotype.Service;
 
 import com.arraigntech.entity.UserEntity;
-import com.arraigntech.request.vo.SocialLoginVO;
-import com.arraigntech.request.vo.UserVO;
-import com.arraigntech.response.vo.LoginResponseVO;
+import com.arraigntech.request.SocialLoginVO;
+import com.arraigntech.request.UserVO;
+import com.arraigntech.response.LoginResponseVO;
 import com.arraigntech.service.SocialLoginService;
 import com.arraigntech.service.UserService;
 import com.arraigntech.utility.AuthenticationProvider;

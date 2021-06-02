@@ -12,7 +12,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import com.arraigntech.request.vo.EmailVO;
+import com.arraigntech.request.EmailVO;
 import com.arraigntech.service.MailService;
 
 import freemarker.template.Configuration;

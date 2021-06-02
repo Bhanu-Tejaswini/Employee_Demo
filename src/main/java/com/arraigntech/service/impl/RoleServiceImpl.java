@@ -13,7 +13,7 @@ import com.arraigntech.entity.RoleEntity;
 import com.arraigntech.exceptions.AppException;
 import com.arraigntech.repository.PermissionRepository;
 import com.arraigntech.repository.RoleRepository;
-import com.arraigntech.request.vo.RoleVO;
+import com.arraigntech.request.RoleVO;
 import com.arraigntech.service.IVSService;
 import com.arraigntech.utility.MessageConstants;
 

@@ -6,10 +6,10 @@ package com.arraigntech.service;
 import com.arraigntech.entity.EmailSettingEntity;
 import com.arraigntech.entity.UserEntity;
 import com.arraigntech.exceptions.AppException;
-import com.arraigntech.request.vo.EmailSettingsVO;
-import com.arraigntech.request.vo.LoginDetailsVO;
-import com.arraigntech.request.vo.UserVO;
-import com.arraigntech.response.vo.LoginResponseVO;
+import com.arraigntech.request.EmailSettingsVO;
+import com.arraigntech.request.LoginDetailsVO;
+import com.arraigntech.request.UserVO;
+import com.arraigntech.response.LoginResponseVO;
 
 /**
  * @author Bhaskara S
