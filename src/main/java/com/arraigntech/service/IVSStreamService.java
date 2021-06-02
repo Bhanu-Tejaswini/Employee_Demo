@@ -8,6 +8,7 @@ import com.arraigntech.wowza.response.vo.FetchStreamUIResponseVO;
 import com.arraigntech.wowza.response.vo.IVSLiveStreamResponseVO;
 import com.arraigntech.wowza.response.vo.StreamTargetVO;
 import com.arraigntech.wowza.response.vo.StreamUIResponseVO;
+import com.arraigntech.wowza.response.vo.WebrtcVO;
 
 public interface IVSStreamService {
 
@@ -23,7 +24,7 @@ public interface IVSStreamService {
 	
 	public void saveStream(IVSLiveStreamResponseVO response);
 	
-	public void youtubeStream(List<ChannelEntity> youtubeChannels, String streamId, String outputId);
+	public void youtubeStream(List<ChannelEntity> youtubeChannels, String streamId, List<WebrtcVO> webrtcList);
 	
 	public String createStreamTarget(StreamTargetVO streamTarget, String streamId);
 	

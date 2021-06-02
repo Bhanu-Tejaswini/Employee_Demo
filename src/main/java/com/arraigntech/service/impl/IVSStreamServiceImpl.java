@@ -161,13 +161,11 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		// checking whether stream has been started completly, if started return the
 		// response
 		String streamId = liveStreamResponse.getLiveStreamResponse().getId();
-		String outputId = liveStreamResponse.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(2)
-				.getOutput_id();
+		List<WebrtcVO> webrtcList = liveStreamResponse.getLiveStreamResponse().getDirect_playback_urls().getWebrtc();
 		// adds youtube channels in the target
-		channelsStream(streamId, outputId);
+		channelsStream(streamId, webrtcList);
 		CompletableFuture.runAsync(() -> startStream(streamId));
-		CompletableFuture.runAsync(() -> deleteOutputTargetAll(
-				liveStreamResponse.getLiveStreamResponse().getDirect_playback_urls().getWebrtc(), streamId));
+		CompletableFuture.runAsync(() -> deleteOutputTargetAll(webrtcList, streamId));
 		StreamSourceConnectionInformationVO response = liveStreamResponse.getLiveStreamResponse()
 				.getSource_connection_information();
 		return new StreamUIResponseVO(response.getSdp_url(), response.getApplication_name(), response.getStream_name(),
@@ -233,10 +231,10 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		return true;
 	}
 
-	public Boolean channelsStream(String streamId, String outputId) {
+	public Boolean channelsStream(String streamId, List<WebrtcVO> webrtcList) {
 		UserEntity newUser = userService.getUser();
-		List<ChannelEntity> youtubeChannels = channelService.findByUserAndTypeAndActive(newUser, ChannelTypeProvider.YOUTUBE,
-				true);
+		List<ChannelEntity> youtubeChannels = channelService.findByUserAndTypeAndActive(newUser,
+				ChannelTypeProvider.YOUTUBE, true);
 		List<ChannelEntity> facebookChannels = channelService.findByUserAndTypeAndActive(newUser,
 				ChannelTypeProvider.FACEBOOK, true);
 		List<ChannelEntity> instagramChannels = channelService.findByUserAndTypeAndActive(newUser,
@@ -246,11 +244,14 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			deleteStream(streamId);
 			throw new AppException(MessageConstants.NO_CHANNELS_TO_STREAM);
 		}
-		CompletableFuture.runAsync(() -> youtubeStream(youtubeChannels, streamId, outputId));
-		CompletableFuture.runAsync(() -> facebookStream(facebookChannels, streamId, outputId)).handle((res, e) -> {
-			throw new AppException(e.getMessage());
-		});
-		CompletableFuture.runAsync(() -> instagramStream(instagramChannels, streamId, outputId));
+
+		CompletableFuture.runAsync(() -> youtubeStream(youtubeChannels, streamId, webrtcList));
+		CompletableFuture.runAsync(() -> facebookStream(facebookChannels, streamId, webrtcList.get(2).getOutput_id()))
+				.handle((res, e) -> {
+					throw new AppException(e.getMessage());
+				});
+		CompletableFuture
+				.runAsync(() -> instagramStream(instagramChannels, streamId, webrtcList.get(2).getOutput_id()));
 		return true;
 	}
 
@@ -262,10 +263,8 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 */
 	public void instagramStream(List<ChannelEntity> instagramChannels, String streamId, String outputId) {
 		instagramChannels.stream().forEach(channel -> {
-			String streamTargetId = createStreamTarget(
-					new StreamTargetVO("INSTGRAM_" + RandomIdGenerator.generate(5), RTMPS, channel.getPrimaryUrl(),
-							channel.getStreamName(), channel.getBackupUrl()),
-					streamId);
+			String streamTargetId = createStreamTarget(new StreamTargetVO("INSTGRAM_" + RandomIdGenerator.generate(5),
+					RTMPS, channel.getPrimaryUrl(), channel.getStreamName(), channel.getBackupUrl()), streamId);
 			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId));
 		});
 	}
@@ -278,9 +277,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	private void facebookStream(List<ChannelEntity> facebookChannels, String streamId, String outputId) {
 		facebookChannels.stream().forEach(channel -> {
 			FacebookStreamRequestVO facebookStreamRequest = getFacebookStreamData(channel);
-			String streamTargetId = createStreamTarget(new StreamTargetVO(
-					"FACEBOOK_" + RandomIdGenerator.generate(5), RTMPS, facebookStreamRequest.getPrimaryUrl(),
-					facebookStreamRequest.getStreamName(), facebookStreamRequest.getPrimaryUrl()), streamId);
+			String streamTargetId = createStreamTarget(new StreamTargetVO("FACEBOOK_" + RandomIdGenerator.generate(5),
+					RTMPS, facebookStreamRequest.getPrimaryUrl(), facebookStreamRequest.getStreamName(),
+					facebookStreamRequest.getPrimaryUrl()), streamId);
 			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId));
 		});
 	}
@@ -320,16 +319,18 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @param youtubeChannels
 	 *
 	 * @param streamId        the stream id
-	 * @param outputId        the output id
+	 * @param webrtcList      the output id
 	 * @return true, if successful
 	 */
 	@Override
-	public void youtubeStream(List<ChannelEntity> youtubeChannels, String streamId, String outputId) {
+	public void youtubeStream(List<ChannelEntity> youtubeChannels, String streamId, List<WebrtcVO> webrtcList) {
 		youtubeChannels.stream().forEach(channel -> {
 			String streamTargetId = createStreamTarget(new StreamTargetVO("YOUTUBE_" + RandomIdGenerator.generate(5),
 					RTMP, channel.getPrimaryUrl(), channel.getStreamName(), channel.getBackupUrl()), streamId);
-			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId));
+			CompletableFuture
+					.runAsync(() -> addStreamTarget(streamId, webrtcList.get(3).getOutput_id(), streamTargetId));
 		});
+
 	}
 
 	/**
@@ -471,8 +472,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		// saving the streamTargetId in the database
 		StreamEntity stream = streamRepo.findByStreamId(streamId);
 		StreamTargetVO streamTarResponse = streamTargetResponse.getStreamTarget();
-		StreamTargetEntity streamTarget = new StreamTargetEntity(streamTarResponse.getId(), streamTarResponse.getPrimary_url(),
-				streamTarResponse.getStream_name(), streamTarResponse.getBackup_url(), stream);
+		StreamTargetEntity streamTarget = new StreamTargetEntity(streamTarResponse.getId(),
+				streamTarResponse.getPrimary_url(), streamTarResponse.getStream_name(),
+				streamTarResponse.getBackup_url(), stream);
 		streamTargetRepo.save(streamTarget);
 		return streamTarResponse.getId();
 	}
