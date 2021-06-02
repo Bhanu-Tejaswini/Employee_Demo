@@ -3,18 +3,24 @@ package com.arraigntech.controller;
 import java.net.HttpURLConnection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.arraigntech.exceptions.AppException;
 import com.arraigntech.request.vo.EmailSettingsVO;
 import com.arraigntech.request.vo.IVSPasswordVO;
 import com.arraigntech.request.vo.IVSResetPasswordVO;
 import com.arraigntech.request.vo.UserSettingsVO;
 import com.arraigntech.request.vo.response.BaseResponse;
 import com.arraigntech.service.AccountSettingService;
+import com.arraigntech.service.DocumentS3Service;
 import com.arraigntech.service.impl.UserServiceImpl;
 import com.arraigntech.utility.MessageConstants;
 
@@ -33,6 +39,13 @@ public class AccountUserController {
 
 	@Autowired
 	protected AccountSettingService accountSettingService;
+	
+	@Value("${mutlipartfile.size}")
+	private int multiPartFileSize;
+	
+	@Autowired
+	private DocumentS3Service s3Service;
+	
 
 	@ApiOperation(value = "Update password")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
@@ -148,5 +161,31 @@ public class AccountUserController {
 		Boolean result = accountSettingService.verifyMobileNumber();
 		return result ? response.withSuccess(true).withResponseMessage(MessageConstants.KEY_SUCCESS, "true")
 				: response.withSuccess(true).withResponseMessage(MessageConstants.KEY_SUCCESS, "false");
+	}
+	
+	public static final String FILE_SIZE_ERROR="File size exceeds limit 2MB";
+
+    @RequestMapping(method = RequestMethod.POST, value = "/upload/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public BaseResponse<String> uploadFile(@RequestParam("file") MultipartFile file, String type) {
+		BaseResponse<String> response = new BaseResponse<>();
+		if(file.getSize() > (multiPartFileSize * 1024 * 1024)) {
+			throw new AppException(MessageConstants.FILE_SIZE_ERROR);
+		}
+		String documentPath = s3Service.uploadFile(file);
+		s3Service.saveAWSDocumentDetails(type, documentPath);
+		return documentPath != null ? response.withSuccess(true)
+				.withResponseMessage(MessageConstants.KEY_SUCCESS, "file uploaded successfully") :
+					response.withSuccess(true)
+					.withResponseMessage(MessageConstants.KEY_SUCCESS, "Exception in uploading the file to S3");
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/delete/{fileUrl}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<String> deleteFile(@PathVariable String path) {
+		BaseResponse<String> response = new BaseResponse<>();
+		Boolean documentPath = s3Service.deleteFileFromS3Bucket(path);
+		return documentPath != null ? response.withSuccess(true)
+				.withResponseMessage(MessageConstants.KEY_SUCCESS, "file deleted successfully") :
+					response.withSuccess(true)
+					.withResponseMessage(MessageConstants.KEY_SUCCESS, "Exception in deleting the file to S3");
 	}
 }
