@@ -2,8 +2,6 @@ package com.arraigntech.controller;
 
 import java.net.HttpURLConnection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -15,13 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.arraigntech.Exception.AppException;
-import com.arraigntech.model.EmailSettingsModel;
-import com.arraigntech.model.IVSPassword;
-import com.arraigntech.model.IVSResetPassword;
-import com.arraigntech.model.OverLayImageVO;
-import com.arraigntech.model.UserSettingsDTO;
-import com.arraigntech.model.response.BaseResponse;
+import com.arraigntech.exceptions.AppException;
+import com.arraigntech.request.EmailSettingsVO;
+import com.arraigntech.request.IVSPasswordVO;
+import com.arraigntech.request.IVSResetPasswordVO;
+import com.arraigntech.request.UserSettingsVO;
+import com.arraigntech.response.BaseResponse;
 import com.arraigntech.service.AccountSettingService;
 import com.arraigntech.service.DocumentS3Service;
 import com.arraigntech.service.impl.UserServiceImpl;
@@ -34,13 +31,12 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping("/account")
 public class AccountUserController {
-	
-	public static final Logger log = LoggerFactory.getLogger(AccountUserController.class);
-	public static final String MOBILENUMBER_VERIFIED="MobileNumberVerified";
-	
+
+	public static final String MOBILENUMBER_VERIFIED = "MobileNumberVerified";
+
 	@Autowired
 	private UserServiceImpl userService;
-	
+
 	@Autowired
 	protected AccountSettingService accountSettingService;
 	
@@ -51,163 +47,125 @@ public class AccountUserController {
 	@Value("${mutlipartfile.size}")
 	private long mutliPartFileSize;
 	
+
 	@ApiOperation(value = "Update password")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/update-password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<String> resetPassword(@RequestBody IVSPassword pass) {
-		return new BaseResponse<String>(userService.updateAccountPassword(pass.getPassword(),pass.getNewpassword())).withSuccess(true);
+	public BaseResponse<String> resetPassword(@RequestBody IVSPasswordVO pass) {
+		return new BaseResponse<String>(userService.updateAccountPassword(pass.getPassword(), pass.getNewpassword()))
+				.withSuccess(true);
 	}
 
 	@ApiOperation(value = "Fetch email Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/email-settings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<EmailSettingsModel> getEmailSettings() {
-		return new BaseResponse<EmailSettingsModel>(userService.getEmailSetting()).withSuccess(true);
+	public BaseResponse<EmailSettingsVO> getEmailSettings() {
+		return new BaseResponse<EmailSettingsVO>(userService.getEmailSetting()).withSuccess(true);
 	}
-	
+
 	@ApiOperation(value = "save email Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/email-settings", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<String> postEmailSettings(@RequestBody EmailSettingsModel emailSettingsModel) {
+	public BaseResponse<String> postEmailSettings(@RequestBody EmailSettingsVO emailSettingsModel) {
 		return new BaseResponse<String>(userService.saveEmailSettings(emailSettingsModel)).withSuccess(true);
 	}
-	
+
 	@ApiOperation(value = "Fetch user Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/user-settings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<UserSettingsDTO> getUserSettings() {
-		return new BaseResponse<UserSettingsDTO>(accountSettingService.fetchUserSettings()).withSuccess(true);
+	public BaseResponse<UserSettingsVO> getUserSettings() {
+		return new BaseResponse<UserSettingsVO>(accountSettingService.fetchUserSettings()).withSuccess(true);
 	}
-	
-//	@ApiOperation(value = "save user Settings")
-//	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-//	@RequestMapping(value = "/user-settings", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-//	@CrossOrigin(origins = "*")
-//	public BaseResponse<String> postUserSettings(@RequestBody UserSettingsDTO userSettings) {
-//		return new BaseResponse<String>(userService.saveUserSettings(userSettings)).withSuccess(true);
-//	}
-	
-	
+
 	@ApiOperation(value = "send a OTP for mobile number verification")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-	@RequestMapping(value = "/sendOTP", method = RequestMethod.POST,
-			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<Boolean> sendOTPForUser(@RequestBody UserSettingsDTO userSettings) {
-		log.debug("send a OTP for user");
-		return new BaseResponse<Boolean>(accountSettingService.sendOTPForUser(userSettings))
-				.withSuccess(true);
+	@RequestMapping(value = "/sendOTP", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<Boolean> sendOTPForUser(@RequestBody UserSettingsVO userSettings) {
+		return new BaseResponse<Boolean>(accountSettingService.sendOTPForUser(userSettings)).withSuccess(true);
 	}
-	
+
 	@ApiOperation(value = "save userName Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "username/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<Boolean> userNameUpdate(@RequestBody UserSettingsDTO userSettings) {
+	public BaseResponse<Boolean> userNameUpdate(@RequestBody UserSettingsVO userSettings) {
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.saveUserName(userSettings.getUsername());
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.USERNAME_UPDATE).build();
 	}
-	
+
 	@ApiOperation(value = "save email Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "email/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<Boolean> emailUpdate(@RequestBody UserSettingsDTO userSettings) {
+	public BaseResponse<Boolean> emailUpdate(@RequestBody UserSettingsVO userSettings) {
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.updateEmail(userSettings.getEmail());
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.EMAILSETTINGSMESSAGE).build();
 	}
-	
-//	@ApiOperation(value = "save mobilenumber Settings")
-//	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-//	@RequestMapping(value = "mobilenumber/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-//	public BaseResponse<Boolean> mobileNumberUpdate(@RequestBody UserSettingsDTO userSettings) {
-//		BaseResponse<Boolean> response = new BaseResponse<>();
-//		accountSettingService.updateMobileNumber(userSettings.getMobilenumber());
-//		return response.withSuccess(true)
-//				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.MOBILENUMBER_UPDATE).build();
-//	}
-	
+
 	@ApiOperation(value = "save pincode Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "pincode/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<Boolean> pincodeUpdate(@RequestBody UserSettingsDTO userSettings) {
+	public BaseResponse<Boolean> pincodeUpdate(@RequestBody UserSettingsVO userSettings) {
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.updatePincode(userSettings.getPincode());
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.PINCODE_UPDATE).build();
 	}
-	
+
 	@ApiOperation(value = "save language Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "language/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<Boolean> languageUpdate(@RequestBody UserSettingsDTO userSettings) {
+	public BaseResponse<Boolean> languageUpdate(@RequestBody UserSettingsVO userSettings) {
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.updateLanguage(userSettings.getLanguage());
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.LANGUAGE_UPDATE).build();
 	}
-	
+
 	@ApiOperation(value = "save timeZone Settings")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "timeZone/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<Boolean> timeZoneUpdate(@RequestBody UserSettingsDTO userSettings) {
+	public BaseResponse<Boolean> timeZoneUpdate(@RequestBody UserSettingsVO userSettings) {
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.updateTimeZone(userSettings.getTimezone());
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.TIMEZONE_UPDATE).build();
 	}
-	
+
 	@ApiOperation(value = "verify OTP")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "verify/otp", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<Boolean> otpVeriifcation(@RequestBody UserSettingsDTO userSettings) {
+	public BaseResponse<Boolean> otpVeriifcation(@RequestBody UserSettingsVO userSettings) {
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		accountSettingService.verifyCode(userSettings);
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.OTP_VERIFICATION).build();
 	}
-	
+
 	@ApiOperation(value = "Delete user account")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/user", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<Boolean> deleteUser(@RequestBody IVSResetPassword password) {
+	public BaseResponse<Boolean> deleteUser(@RequestBody IVSResetPasswordVO password) {
 		BaseResponse<Boolean> response = new BaseResponse<>();
-		log.debug("Delete user account");
 		userService.delete(password.getPassword());
 		return response.withSuccess(true)
 				.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.USER_DELETED).build();
 	}
-	
+
 	@ApiOperation(value = "verify mobile number")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "verify/mobilenumber", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<Boolean> mobilenumberVerification() {
 		BaseResponse<Boolean> response = new BaseResponse<>();
 		Boolean result = accountSettingService.verifyMobileNumber();
-		return result?
-				response.withSuccess(true)
-				.withResponseMessage(MessageConstants.KEY_SUCCESS, "true")
-			:	response.withSuccess(true)
-				.withResponseMessage(MessageConstants.KEY_SUCCESS, "false");
-	}
-	
-	@ApiOperation(value = "upload overLay URL")
-	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-	@RequestMapping(value = "/update/overlayurl", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<Boolean> updateOverLayURL(@RequestBody OverLayImageVO imageVO) {
-		BaseResponse<Boolean> response = new BaseResponse<>();
-		Boolean result = accountSettingService.updateOverLayURL(imageVO);
-		return result?
-				response.withSuccess(true)
-				.withResponseMessage(MessageConstants.KEY_SUCCESS, "true")
-			:	response.withSuccess(true)
-				.withResponseMessage(MessageConstants.KEY_SUCCESS, "false");
+		return result ? response.withSuccess(true).withResponseMessage(MessageConstants.KEY_SUCCESS, "true")
+				: response.withSuccess(true).withResponseMessage(MessageConstants.KEY_SUCCESS, "false");
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/upload/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public BaseResponse<String> uploadFile(@RequestParam("file") MultipartFile file, String type) {
-		log.debug("uploadFile method in controller to upload a file");
 		BaseResponse<String> response = new BaseResponse<>();
 		if(file.getSize() > (mutliPartFileSize * 1024 * 1024)) {
 			throw new AppException(MessageConstants.FILE_SIZE_ERROR);
@@ -222,7 +180,6 @@ public class AccountUserController {
 	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/delete/{fileUrl}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<String> deleteFile(@PathVariable String path) {
-		log.debug("uploadFile method in controller to delete a file");
 		BaseResponse<String> response = new BaseResponse<>();
 		Boolean documentPath = s3Service.deleteFileFromS3Bucket(path);
 		return documentPath != null ? response.withSuccess(true)

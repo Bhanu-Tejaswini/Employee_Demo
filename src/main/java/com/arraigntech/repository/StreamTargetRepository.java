@@ -8,16 +8,16 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.arraigntech.entity.StreamTarget;
-import com.arraigntech.entity.Streams;
+import com.arraigntech.entity.StreamTargetEntity;
+import com.arraigntech.entity.StreamEntity;
 
 /**
  * @author Bhaskara S
  *
  */
-public interface StreamTargetRepository extends JpaRepository<StreamTarget, String> {
+public interface StreamTargetRepository extends JpaRepository<StreamTargetEntity, String> {
 	
-	List<StreamTarget> findByStream(Streams stream);
+	List<StreamTargetEntity> findByStream(StreamEntity stream);
 	
-	List<StreamTarget> findByCreatedAtBefore(Date date);
+	List<StreamTargetEntity> findByCreatedAtBefore(Date date);
 }

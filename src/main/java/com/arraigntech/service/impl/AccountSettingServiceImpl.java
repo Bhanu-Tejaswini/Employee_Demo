@@ -8,23 +8,18 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.arraigntech.Exception.AppException;
-import com.arraigntech.entity.User;
-import com.arraigntech.model.AccountSettingVO;
-import com.arraigntech.model.OverLayImageVO;
-import com.arraigntech.model.UserSettingsDTO;
-import com.arraigntech.repository.UserRespository;
+import com.arraigntech.entity.UserEntity;
+import com.arraigntech.exceptions.AppException;
+import com.arraigntech.request.AccountSettingVO;
+import com.arraigntech.request.UserSettingsVO;
 import com.arraigntech.service.AccountSettingService;
-import com.arraigntech.utility.CommonUtils;
+import com.arraigntech.service.UserService;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.utility.OtpGenerator;
 import com.arraigntech.utility.ResetUserDetails;
@@ -40,8 +35,6 @@ import com.twilio.rest.api.v2010.account.Message;
  */
 @Service
 public class AccountSettingServiceImpl implements AccountSettingService {
-
-	public static final Logger log = LoggerFactory.getLogger(AccountSettingServiceImpl.class);
 
 	@Autowired
 	protected OtpGenerator otpGenerator;
@@ -62,7 +55,7 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 	private String twilioPhoneNumber;
 
 	@Autowired
-	private UserRespository userRepo;
+	private UserService userService;
 
 	@Autowired
 	protected VerifyCode verifyCode;
@@ -72,14 +65,12 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 
 	@Override
 	public AccountSettingVO getTimeZonesList() {
-		log.debug("getTimeZonesList method start");
 		AccountSettingVO settingsVO = new AccountSettingVO();
 		Set<String> availableZoneIds = ZoneId.getAvailableZoneIds();
 		List<String> timeZonesList = new ArrayList<String>(availableZoneIds);
 		settingsVO.setLanguage(UtilEnum.ENGLISH.name());
 		settingsVO.setTimeZonesList(timeZonesList);
 		settingsVO.setCountries(getCountiresList());
-		log.debug("getTimeZonesList method end");
 		return settingsVO;
 	}
 
@@ -98,13 +89,13 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		if (!StringUtils.hasText(name)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}
-		User user = getUser();
-		User checkUser = userRepo.findByUsernameAndIdNot(name, user.getId());
+		UserEntity user = userService.getUser();
+		UserEntity checkUser = userService.findByUsernameAndIdNot(name, user.getId());
 		if (Objects.nonNull(checkUser)) {
 			throw new AppException(MessageConstants.USER_EXISTS_USERNAME);
 		}
 		user.setUsername(name);
-		userRepo.save(user);
+		userService.saveUser(user);
 		return true;
 	}
 
@@ -113,9 +104,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		if (!StringUtils.hasText(language)) {
 			throw new AppException(MessageConstants.DATA_MISSING);
 		}
-		User user = getUser();
+		UserEntity user = userService.getUser();
 		user.setLanguage(language);
-		userRepo.save(user);
+		userService.saveUser(user);
 		return true;
 	}
 
@@ -124,9 +115,9 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		if (!StringUtils.hasText(pinCode)) {
 			throw new AppException(MessageConstants.DATA_MISSING);
 		}
-		User user = getUser();
+		UserEntity user = userService.getUser();
 		user.setPincode(pinCode);
-		userRepo.save(user);
+		userService.saveUser(user);
 		return true;
 	}
 
@@ -135,13 +126,13 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		if (!StringUtils.hasText(email)) {
 			throw new AppException(MessageConstants.DATA_MISSING);
 		}
-		User user = getUser();
-		User checkUser = userRepo.findByEmailAndIdNot(email, user.getId());
+		UserEntity user = userService.getUser();
+		UserEntity checkUser = userService.findByEmailAndIdNot(email, user.getId());
 		if (Objects.nonNull(checkUser)) {
 			throw new AppException(MessageConstants.EMAIL_EXISTS);
 		}
 		user.setEmail(email);
-		userRepo.save(user);
+		userService.saveUser(user);
 		return true;
 	}
 
@@ -150,25 +141,14 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		if (!StringUtils.hasText(timeZone)) {
 			throw new AppException(MessageConstants.DATA_MISSING);
 		}
-		User user = getUser();
+		UserEntity user = userService.getUser();
 		user.setTimeZone(timeZone);
-		userRepo.save(user);
+		userService.saveUser(user);
 		return true;
 	}
 
-//	@Override
-//	public Boolean updateMobileNumber(String mobileNumber) {
-//		if(!StringUtils.hasText(mobileNumber)) {
-//			throw new AppException(MessageConstants.DATA_MISSING);
-//		}
-//		User user = getUser();
-//		user.setNumber(mobileNumber);
-//		userRepo.save(user);
-//		return true;
-//	}
-
-	public UserSettingsDTO fetchUserSettings() {
-		User newUser = getUser();
+	public UserSettingsVO fetchUserSettings() {
+		UserEntity newUser = userService.getUser();
 		Map<String, String> mobileNumbersMap = new HashMap<>();
 		mobileNumbersMap.put(MessageConstants.DIAL_CODE, newUser.getDialCode());
 		mobileNumbersMap.put(MessageConstants.COUNTRY_CODE, newUser.getCountryCode());
@@ -176,16 +156,16 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		mobileNumbersMap.put(MessageConstants.NATIONAL_NUMBER, newUser.getNationalNumber());
 		mobileNumbersMap.put(MessageConstants.INTERNATIONAL_NUMBER, newUser.getInternationalNumber());
 		mobileNumbersMap.put(MessageConstants.NUMBER_MOBILE, newUser.getNumber());
-		return new UserSettingsDTO(newUser.getEmail(), newUser.getPincode(), newUser.getUsername(),
+		return new UserSettingsVO(newUser.getEmail(), newUser.getPincode(), newUser.getUsername(),
 				newUser.getLanguage(), newUser.getTimeZone(), mobileNumbersMap);
 	}
 
 	@Override
-	public Boolean sendOTPForUser(UserSettingsDTO userSettings) {
+	public Boolean sendOTPForUser(UserSettingsVO userSettings) {
 		if (!StringUtils.hasText(userSettings.getInternationalNumber())) {
 			throw new AppException(MessageConstants.INVALID_PHONE_NUMBER);
 		}
-		User user = getUser();
+		UserEntity user = userService.getUser();
 		// generate OTP
 		user.setDialCode(userSettings.getDialCode());
 		user.setCountryCode(userSettings.getCountryCode());
@@ -200,17 +180,16 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 																								// are sending text to
 				new com.twilio.type.PhoneNumber(twilioPhoneNumber), // The Twilio phone number
 				"Please enter the OTP:" + otp).create();
-		userRepo.save(user);
+		userService.saveUser(user);
 		return true;
 	}
 
 	@Override
-	public Boolean verifyCode(UserSettingsDTO userRequest) throws AppException {
-		log.debug("verifyCode request{}");
+	public Boolean verifyCode(UserSettingsVO userRequest) throws AppException {
 		if (!StringUtils.hasText(userRequest.getCode())) {
 			throw new AppException(MessageConstants.AUTHENTICATION_FAILED);
 		}
-		User user = getUser();
+		UserEntity user = userService.getUser();
 		Boolean isValid = verifyCode.execute(userRequest);
 		if (userRequest.getCode().equalsIgnoreCase(user.getOtp())) {
 			isValid = true;
@@ -220,37 +199,15 @@ public class AccountSettingServiceImpl implements AccountSettingService {
 		} else {
 			resetUserDetails.execute(user);
 		}
-		log.debug("verifyCode response{}", isValid);
 		return isValid;
 	}
 
 	@Override
 	public Boolean verifyMobileNumber() {
-		User newUser = getUser();
+		UserEntity newUser = userService.getUser();
 		if(StringUtils.hasText(newUser.getInternationalNumber()))
 			return true;
 		else
 			return false;
-	}
-
-	// returns currently logged in user details
-	private User getUser() {
-		User user = userRepo.findByEmail(CommonUtils.getUser());
-		if (Objects.isNull(user)) {
-			throw new AppException(MessageConstants.USER_NOT_FOUND);
-		}
-		return user;
-	}
-
-	@Override
-	public Boolean updateOverLayURL(OverLayImageVO imageVO) {
-		if(Objects.isNull(imageVO)) {
-			throw new AppException(MessageConstants.INVALID_REQUEST);
-		}
-		User user = getUser();
-		user.setOverLayUrl(imageVO.getOverLayURL());
-		user.setOverLayType(imageVO.getOverLayType());
-		userRepo.save(user);
-		return true;
 	}
 }

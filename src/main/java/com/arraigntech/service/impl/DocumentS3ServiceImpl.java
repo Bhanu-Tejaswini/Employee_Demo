@@ -21,12 +21,12 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
-import com.arraigntech.Exception.AppException;
-import com.arraigntech.entity.User;
-import com.arraigntech.model.AwsDocument;
-import com.arraigntech.model.MongoUser;
+import com.arraigntech.entity.UserEntity;
+import com.arraigntech.exceptions.AppException;
 import com.arraigntech.mongorepos.s3DocumentRepository;
 import com.arraigntech.repository.UserRespository;
+import com.arraigntech.request.AwsDocument;
+import com.arraigntech.response.MongoUserVO;
 import com.arraigntech.service.DocumentS3Service;
 import com.arraigntech.utility.CommonUtils;
 import com.arraigntech.utility.FileUtils;
@@ -105,8 +105,8 @@ public class DocumentS3ServiceImpl implements DocumentS3Service {
 	
 	public Boolean saveAWSDocumentDetails(String documentType, String documentURL) {
 		LOGGER.debug("Uploading file with name= " + documentType);
-		User newUser=getUser();
-		MongoUser user = new MongoUser(newUser.getId(),newUser.getEmail(),newUser.getUsername());
+		UserEntity newUser=getUser();
+		MongoUserVO user = new MongoUserVO(newUser.getId(),newUser.getEmail(),newUser.getUsername());
 		AwsDocument document = new AwsDocument(bucketName, documentType, documentURL, user);
 		documentRepository.save(document);
 		return true;
@@ -117,8 +117,8 @@ public class DocumentS3ServiceImpl implements DocumentS3Service {
 	 *
 	 * @return the user
 	 */
-	private User getUser() {
-		User user = userRepo.findByEmail(CommonUtils.getUser());
+	private UserEntity getUser() {
+		UserEntity user = userRepo.findByEmail(CommonUtils.getUser());
 		if (Objects.isNull(user)) {
 			throw new AppException(MessageConstants.USER_NOT_FOUND);
 		}

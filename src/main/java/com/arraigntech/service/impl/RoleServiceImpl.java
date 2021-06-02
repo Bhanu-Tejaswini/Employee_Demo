@@ -8,12 +8,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.arraigntech.Exception.AppException;
-import com.arraigntech.entity.Permission;
-import com.arraigntech.entity.Role;
-import com.arraigntech.model.RoleDTO;
+import com.arraigntech.entity.PermissionEntity;
+import com.arraigntech.entity.RoleEntity;
+import com.arraigntech.exceptions.AppException;
 import com.arraigntech.repository.PermissionRepository;
 import com.arraigntech.repository.RoleRepository;
+import com.arraigntech.request.RoleVO;
 import com.arraigntech.service.IVSService;
 import com.arraigntech.utility.MessageConstants;
 
@@ -22,7 +22,7 @@ import com.arraigntech.utility.MessageConstants;
  *
  */
 @Service
-public class RoleServiceImpl implements IVSService<Role, String> {
+public class RoleServiceImpl implements IVSService<RoleEntity, String> {
 
 	@Autowired
 	private RoleRepository roleRepo;
@@ -31,7 +31,7 @@ public class RoleServiceImpl implements IVSService<Role, String> {
 	private PermissionRepository permissionRepo;
 
 	@Override
-	public Page<Role> getPaginated(Integer page, Integer limit) {
+	public Page<RoleEntity> getPaginated(Integer page, Integer limit) {
 		return roleRepo.findAll(PageRequest.of(page, limit));
 	}
 
@@ -42,19 +42,19 @@ public class RoleServiceImpl implements IVSService<Role, String> {
 	 * @param role the role
 	 * @return the role
 	 */
-	public Role createRole(RoleDTO role) {
-		Role newRole=new Role();
+	public RoleEntity createRole(RoleVO role) {
+		RoleEntity newRole=new RoleEntity();
 		newRole.setName(role.getName());
 		for(String str:role.getPermission()) {
-			Permission permission=permissionRepo.findByName(str);
+			PermissionEntity permission=permissionRepo.findByName(str);
 			newRole.getPermissions().add(permission);
 		}
 		return roleRepo.save(newRole);
 	}
 
 	@Override
-	public Role update(Role entity) {
-		for (Permission permission : entity.getPermissions()) {
+	public RoleEntity update(RoleEntity entity) {
+		for (PermissionEntity permission : entity.getPermissions()) {
 			entity.getPermissions().add(permission);
 		}
 		return roleRepo.save(entity);
@@ -62,7 +62,7 @@ public class RoleServiceImpl implements IVSService<Role, String> {
 
 
 	public boolean delete(String id) throws AppException {
-		Optional<Role> newRole = roleRepo.findById(id);
+		Optional<RoleEntity> newRole = roleRepo.findById(id);
 		if (!newRole.isPresent()) {
 			throw new AppException(MessageConstants.DATA_NOT_FOUND);
 		}
@@ -71,8 +71,8 @@ public class RoleServiceImpl implements IVSService<Role, String> {
 	}
 
 	@Override
-	public List<Role> getAll() throws AppException {
-		List<Role> roles = (List<Role>) roleRepo.findAll();
+	public List<RoleEntity> getAll() throws AppException {
+		List<RoleEntity> roles = (List<RoleEntity>) roleRepo.findAll();
 		if (roles.isEmpty()) {
 			throw new AppException(MessageConstants.DATA_NOT_FOUND);
 		}
@@ -80,8 +80,8 @@ public class RoleServiceImpl implements IVSService<Role, String> {
 	}
 
 	@Override
-	public Role getById(String id) throws AppException {
-		Optional<Role> role = roleRepo.findById(id);
+	public RoleEntity getById(String id) throws AppException {
+		Optional<RoleEntity> role = roleRepo.findById(id);
 		if (!role.isPresent()) {
 			throw new AppException(MessageConstants.DATA_NOT_FOUND);
 		}
@@ -90,7 +90,7 @@ public class RoleServiceImpl implements IVSService<Role, String> {
 
 
 	@Override
-	public Role create(Role entity) {
+	public RoleEntity create(RoleEntity entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}

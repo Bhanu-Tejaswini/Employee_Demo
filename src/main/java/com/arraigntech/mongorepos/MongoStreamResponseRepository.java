@@ -3,9 +3,9 @@ package com.arraigntech.mongorepos;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.arraigntech.streamsModel.IVSLiveStreamResponse;
+import com.arraigntech.wowza.response.vo.IVSLiveStreamResponseVO;
 
 
-public interface MongoStreamResponseRepository extends  MongoRepository<IVSLiveStreamResponse, String>{
+public interface MongoStreamResponseRepository extends  MongoRepository<IVSLiveStreamResponseVO, String>{
 	
 }

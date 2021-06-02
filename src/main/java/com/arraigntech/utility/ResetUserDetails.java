@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.arraigntech.Exception.AppException;
-import com.arraigntech.entity.User;
+import com.arraigntech.entity.UserEntity;
+import com.arraigntech.exceptions.AppException;
 import com.arraigntech.repository.UserRespository;
 
 /**
@@ -18,7 +18,7 @@ import com.arraigntech.repository.UserRespository;
  *
  */
 @Component
-public class ResetUserDetails implements Action<User, Boolean> {
+public class ResetUserDetails implements Action<UserEntity, Boolean> {
 	
 	public static final Logger log = LoggerFactory.getLogger(ResetUserDetails.class);
 	
@@ -29,7 +29,7 @@ public class ResetUserDetails implements Action<User, Boolean> {
 	private long verificationTimeMinute;
 
 	@Override
-	public Boolean execute(User user) throws AppException {
+	public Boolean execute(UserEntity user) throws AppException {
 		log.debug("Customer details id {} ,version {}", user.getId());
 		//String code = customer.getEmail().toLowerCase();
 		user.setCodeSentCounter(0);

@@ -2,13 +2,13 @@ package com.arraigntech.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.arraigntech.entity.ResetToken;
-import com.arraigntech.entity.User;
+import com.arraigntech.entity.ResetTokenEntity;
+import com.arraigntech.entity.UserEntity;
 
-public interface ResetTokenRepository extends JpaRepository<ResetToken, String> {
+public interface ResetTokenRepository extends JpaRepository<ResetTokenEntity, String> {
 	
-	ResetToken findByToken(String token);
+	ResetTokenEntity findByToken(String token);
 	
-	ResetToken findByUser(User newUser);
+	ResetTokenEntity findByUser(UserEntity newUser);
 
 }

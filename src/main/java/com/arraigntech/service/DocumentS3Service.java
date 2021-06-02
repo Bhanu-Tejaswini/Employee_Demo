@@ -2,7 +2,7 @@ package com.arraigntech.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.arraigntech.Exception.AppException;
+import com.arraigntech.exceptions.AppException;
 
 public interface DocumentS3Service {
 	

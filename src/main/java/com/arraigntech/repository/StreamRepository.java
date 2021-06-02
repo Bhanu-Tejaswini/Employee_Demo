@@ -6,13 +6,13 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.arraigntech.entity.Streams;
+import com.arraigntech.entity.StreamEntity;
 
 @Repository
-public interface StreamRepository extends JpaRepository<Streams, String> {
+public interface StreamRepository extends JpaRepository<StreamEntity, String> {
 	
-	Streams findByStreamId(String streamId);
+	StreamEntity findByStreamId(String streamId);
 	
-	List<Streams> findByCreatedAtBefore(Date date);
+	List<StreamEntity> findByCreatedAtBefore(Date date);
 
 }

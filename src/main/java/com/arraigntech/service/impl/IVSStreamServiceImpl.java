@@ -17,39 +17,38 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.arraigntech.Exception.AppException;
-import com.arraigntech.entity.Channels;
-import com.arraigntech.entity.StreamTarget;
-import com.arraigntech.entity.Streams;
-import com.arraigntech.entity.User;
-import com.arraigntech.model.MongoUser;
+import com.arraigntech.entity.ChannelEntity;
+import com.arraigntech.entity.StreamTargetEntity;
+import com.arraigntech.entity.StreamEntity;
+import com.arraigntech.entity.UserEntity;
+import com.arraigntech.exceptions.AppException;
 import com.arraigntech.mongorepos.MongoStreamResponseRepository;
 import com.arraigntech.mongorepos.MongoStreamTargetRepository;
 import com.arraigntech.mongorepos.OutputStreamTargetRepository;
-import com.arraigntech.repository.ChannelsRepository;
 import com.arraigntech.repository.StreamRepository;
 import com.arraigntech.repository.StreamTargetRepository;
-import com.arraigntech.repository.UserRespository;
+import com.arraigntech.response.MongoUserVO;
+import com.arraigntech.service.ChannelService;
 import com.arraigntech.service.IVSStreamService;
-import com.arraigntech.streamsModel.FacebookStreamRequest;
-import com.arraigntech.streamsModel.FacebookStreamResponse;
-import com.arraigntech.streamsModel.FetchStreamUIResponse;
-import com.arraigntech.streamsModel.IVSLiveStream;
-import com.arraigntech.streamsModel.IVSLiveStreamResponse;
-import com.arraigntech.streamsModel.LiveStream;
-import com.arraigntech.streamsModel.LiveStreamState;
-import com.arraigntech.streamsModel.OutputStreamTarget;
-import com.arraigntech.streamsModel.OutputStreamTargetDTO;
-import com.arraigntech.streamsModel.StreamSourceConnectionInformation;
-import com.arraigntech.streamsModel.StreamTargetDTO;
-import com.arraigntech.streamsModel.StreamTargetModel;
-import com.arraigntech.streamsModel.StreamUIRequest;
-import com.arraigntech.streamsModel.StreamUIResponse;
-import com.arraigntech.streamsModel.Webrtc;
+import com.arraigntech.service.UserService;
 import com.arraigntech.utility.ChannelTypeProvider;
-import com.arraigntech.utility.CommonUtils;
 import com.arraigntech.utility.MessageConstants;
 import com.arraigntech.utility.RandomIdGenerator;
+import com.arraigntech.wowza.request.vo.FacebookStreamRequestVO;
+import com.arraigntech.wowza.request.vo.IVSLiveStreamVO;
+import com.arraigntech.wowza.request.vo.LiveStreamVO;
+import com.arraigntech.wowza.request.vo.StreamSourceConnectionInformationVO;
+import com.arraigntech.wowza.request.vo.StreamUIRequestVO;
+import com.arraigntech.wowza.response.vo.FacebookStreamResponseVO;
+import com.arraigntech.wowza.response.vo.FetchStreamUIResponseVO;
+import com.arraigntech.wowza.response.vo.IVSLiveStreamResponseVO;
+import com.arraigntech.wowza.response.vo.LiveStreamStateVO;
+import com.arraigntech.wowza.response.vo.OutputStreamTargetRootVO;
+import com.arraigntech.wowza.response.vo.OutputStreamTargetVO;
+import com.arraigntech.wowza.response.vo.StreamTargetRootVO;
+import com.arraigntech.wowza.response.vo.StreamTargetVO;
+import com.arraigntech.wowza.response.vo.StreamUIResponseVO;
+import com.arraigntech.wowza.response.vo.WebrtcVO;
 
 /**
  * The Class IVSStreamServiceImpl.
@@ -69,7 +68,6 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	private static final String DELIVERY_TYPE = "single-bitrate";
 	private static final boolean PLAYER_RESPONSIVE = true;
 	private static final boolean RECORDING = false;
-	private static final String STARTING = "starting";
 	private static final String STATUS = "status";
 	private static final String LIVE_NOW = "LIVE_NOW";
 	private static final String ACCESS_TOKEN = "access_token";
@@ -80,15 +78,8 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	@Autowired
 	private RestTemplate restTemplate;
 
-
 	@Autowired
 	private StreamRepository streamRepo;
-
-	@Autowired
-	private UserRespository userRepo;
-
-	@Autowired
-	private ChannelsRepository channelRepo;
 
 	@Value("${wowza.url}")
 	private String baseUrl;
@@ -101,6 +92,12 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 
 	@Value("${facebook.streamurl}")
 	private String graphUrl;
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private ChannelService channelService;
 
 	@Autowired
 	private MongoStreamResponseRepository streamResponseRepo;
@@ -120,12 +117,13 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @return the header
 	 */
 	public MultiValueMap<String, String> getHeader() {
-		log.debug("wowza header start");
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 		headers.add("Content-Type", "application/json");
 		headers.set("wsc-api-key", wscApiKey);
 		headers.set("wsc-access-key", wscAccessKey);
-		log.debug("wowza header end");
+		if (log.isDebugEnabled()) {
+			log.debug("wowza header {}.", headers);
+		}
 		return headers;
 	}
 
@@ -136,25 +134,26 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @return the stream UI response
 	 */
 	@Override
-	public StreamUIResponse createStream(StreamUIRequest streamRequest) {
-		log.debug("create stream start");
-		User newUser=getUser();
-		IVSLiveStream liveStream = populateStreamData(streamRequest);
+	public StreamUIResponseVO createStream(StreamUIRequestVO streamRequest) {
+		UserEntity newUser = userService.getUser();
+		IVSLiveStreamVO liveStream = populateStreamData(streamRequest);
 		String url = baseUrl + "/live_streams";
 		MultiValueMap<String, String> headers = getHeader();
-		HttpEntity<IVSLiveStream> request = new HttpEntity<>(liveStream, headers);
-		IVSLiveStreamResponse liveStreamResponse;
+		HttpEntity<IVSLiveStreamVO> request = new HttpEntity<>(liveStream, headers);
+		IVSLiveStreamResponseVO liveStreamResponse;
 		try {
-			ResponseEntity<IVSLiveStreamResponse> reponseEntity = restTemplate.exchange(url, HttpMethod.POST, request,
-					IVSLiveStreamResponse.class);
+			ResponseEntity<IVSLiveStreamResponseVO> reponseEntity = restTemplate.exchange(url, HttpMethod.POST, request,
+					IVSLiveStreamResponseVO.class);
 			liveStreamResponse = reponseEntity.getBody();
 		} catch (Exception e) {
-			log.error("error occurred while creating the live stream");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
 
 		// saving the response data to mongodb
-		liveStreamResponse.setUser(new MongoUser(newUser.getId(),newUser.getEmail(),newUser.getUsername()));
+		liveStreamResponse.setUser(new MongoUserVO(newUser.getId(), newUser.getEmail(), newUser.getUsername()));
 		streamResponseRepo.save(liveStreamResponse);
 		// saving necessary details to postgresql
 		saveStream(liveStreamResponse);
@@ -162,17 +161,16 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		// checking whether stream has been started completly, if started return the
 		// response
 		String streamId = liveStreamResponse.getLiveStreamResponse().getId();
-		String outputId = liveStreamResponse.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(3)
+		String outputId = liveStreamResponse.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(2)
 				.getOutput_id();
 		// adds youtube channels in the target
 		channelsStream(streamId, outputId);
 		CompletableFuture.runAsync(() -> startStream(streamId));
 		CompletableFuture.runAsync(() -> deleteOutputTargetAll(
 				liveStreamResponse.getLiveStreamResponse().getDirect_playback_urls().getWebrtc(), streamId));
-		StreamSourceConnectionInformation response = liveStreamResponse.getLiveStreamResponse()
+		StreamSourceConnectionInformationVO response = liveStreamResponse.getLiveStreamResponse()
 				.getSource_connection_information();
-		log.debug("create stream end");
-		return new StreamUIResponse(response.getSdp_url(), response.getApplication_name(), response.getStream_name(),
+		return new StreamUIResponseVO(response.getSdp_url(), response.getApplication_name(), response.getStream_name(),
 				streamId, "starting");
 	}
 
@@ -180,9 +178,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @param streamRequest
 	 * @return
 	 */
-	private IVSLiveStream populateStreamData(StreamUIRequest streamRequest) {
-		IVSLiveStream ivsLiveStream = new IVSLiveStream();
-		LiveStream liveStream = new LiveStream();
+	private IVSLiveStreamVO populateStreamData(StreamUIRequestVO streamRequest) {
+		IVSLiveStreamVO ivsLiveStream = new IVSLiveStreamVO();
+		LiveStreamVO liveStream = new LiveStreamVO();
 		liveStream.setAspect_ratio_height(streamRequest.getAspectRatioHeight());
 		liveStream.setAspect_ratio_width(streamRequest.getAspectRatioWidth());
 		liveStream.setBilling_mode(BILLINT_MODE);
@@ -194,7 +192,6 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		liveStream.setPlayer_responsive(PLAYER_RESPONSIVE);
 		liveStream.setRecording(RECORDING);
 		liveStream.setTranscoder_type(TRANSCODER_TYPE);
-
 		ivsLiveStream.setLiveStream(liveStream);
 		return ivsLiveStream;
 	}
@@ -207,12 +204,11 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 */
 	@Override
 	public boolean deleteStream(String streamId) {
-		log.debug("deleteStream start");
-		Streams stream = streamRepo.findByStreamId(streamId);
+		StreamEntity stream = streamRepo.findByStreamId(streamId);
 		if (Objects.isNull(stream)) {
 			throw new AppException(MessageConstants.STREAM_NOT_EXISTS);
 		}
-		List<StreamTarget> streamTargets = streamTargetRepo.findByStream(stream);
+		List<StreamTargetEntity> streamTargets = streamTargetRepo.findByStream(stream);
 		if (stream.isActive()) {
 			if (!fetchStreamState(streamId).equals(STOPPED))
 				stopStream(streamId);
@@ -224,7 +220,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		try {
 			restTemplate.exchange(url, HttpMethod.DELETE, request, String.class);
 		} catch (Exception e) {
-			log.error("error occurred while deleting the stream");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
 		if (streamTargets.isEmpty()) {
@@ -232,28 +230,27 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		}
 		// Also deleting the stream target
 		streamTargets.stream().forEach(streamTarget -> deleteStreamTarget(streamTarget.getStreamTargetId()));
-		log.debug("deleteStream end");
 		return true;
 	}
 
 	public Boolean channelsStream(String streamId, String outputId) {
-		log.debug("channelStream method start");
-		User newUser = getUser();
-		List<Channels> youtubeChannels = channelRepo.findByUserAndTypeAndActive(newUser, ChannelTypeProvider.YOUTUBE,true);
-		List<Channels> facebookChannels = channelRepo.findByUserAndTypeAndActive(newUser, ChannelTypeProvider.FACEBOOK,true);
-		List<Channels> instagramChannels = channelRepo.findByUserAndTypeAndActive(newUser, ChannelTypeProvider.INSTAGRAM,true);
+		UserEntity newUser = userService.getUser();
+		List<ChannelEntity> youtubeChannels = channelService.findByUserAndTypeAndActive(newUser, ChannelTypeProvider.YOUTUBE,
+				true);
+		List<ChannelEntity> facebookChannels = channelService.findByUserAndTypeAndActive(newUser,
+				ChannelTypeProvider.FACEBOOK, true);
+		List<ChannelEntity> instagramChannels = channelService.findByUserAndTypeAndActive(newUser,
+				ChannelTypeProvider.INSTAGRAM, true);
 		// if there are no channels added means
 		if (youtubeChannels.isEmpty() && facebookChannels.isEmpty()) {
 			deleteStream(streamId);
 			throw new AppException(MessageConstants.NO_CHANNELS_TO_STREAM);
 		}
 		CompletableFuture.runAsync(() -> youtubeStream(youtubeChannels, streamId, outputId));
-		CompletableFuture.runAsync(() -> facebookStream(facebookChannels, streamId, outputId))
-		.handle((res, e) -> {
+		CompletableFuture.runAsync(() -> facebookStream(facebookChannels, streamId, outputId)).handle((res, e) -> {
 			throw new AppException(e.getMessage());
 		});
 		CompletableFuture.runAsync(() -> instagramStream(instagramChannels, streamId, outputId));
-		log.debug("channelStream method end");
 		return true;
 	}
 
@@ -263,14 +260,14 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @param outputId
 	 * @return
 	 */
-	public void instagramStream(List<Channels> instagramChannels, String streamId, String outputId) {
-		log.debug("instagramStream method start");
+	public void instagramStream(List<ChannelEntity> instagramChannels, String streamId, String outputId) {
 		instagramChannels.stream().forEach(channel -> {
-			String streamTargetId = createStreamTarget(new StreamTargetModel("INSTGRAM_" + RandomIdGenerator.generate(5),
-					RTMPS, channel.getPrimaryUrl(), channel.getStreamName(), channel.getBackupUrl()), streamId);
+			String streamTargetId = createStreamTarget(
+					new StreamTargetVO("INSTGRAM_" + RandomIdGenerator.generate(5), RTMPS, channel.getPrimaryUrl(),
+							channel.getStreamName(), channel.getBackupUrl()),
+					streamId);
 			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId));
 		});
-		log.debug("instagramStream method end");
 	}
 
 	/**
@@ -278,44 +275,42 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @param streamId
 	 * @param outputId
 	 */
-	private void facebookStream(List<Channels> facebookChannels, String streamId, String outputId) {
-		log.debug("facebookStream start");
+	private void facebookStream(List<ChannelEntity> facebookChannels, String streamId, String outputId) {
 		facebookChannels.stream().forEach(channel -> {
-			FacebookStreamRequest facebookStreamRequest = getFacebookStreamData(channel);
-			String streamTargetId = createStreamTarget(new StreamTargetModel(
+			FacebookStreamRequestVO facebookStreamRequest = getFacebookStreamData(channel);
+			String streamTargetId = createStreamTarget(new StreamTargetVO(
 					"FACEBOOK_" + RandomIdGenerator.generate(5), RTMPS, facebookStreamRequest.getPrimaryUrl(),
 					facebookStreamRequest.getStreamName(), facebookStreamRequest.getPrimaryUrl()), streamId);
 			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId));
 		});
-		log.debug("facebookStream end");
 	}
 
 	/**
 	 * @return
 	 */
-	private FacebookStreamRequest getFacebookStreamData(Channels channel) {
+	private FacebookStreamRequestVO getFacebookStreamData(ChannelEntity channel) {
 		log.debug("getFacebookStreamData start");
 		String uri = graphUrl + channel.getFacebookUserId() + "/live_videos";
 		UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
 		String url = builder.scheme("https").host(uri).queryParam(STATUS, LIVE_NOW)
 				.queryParam(ACCESS_TOKEN, channel.getAccessToken()).build().toString();
 
-		FacebookStreamResponse facebookStreamResponse;
+		FacebookStreamResponseVO facebookStreamResponse;
 		try {
-			ResponseEntity<FacebookStreamResponse> responseBody = restTemplate.exchange(url, HttpMethod.POST,
-					HttpEntity.EMPTY, FacebookStreamResponse.class);
+			ResponseEntity<FacebookStreamResponseVO> responseBody = restTemplate.exchange(url, HttpMethod.POST,
+					HttpEntity.EMPTY, FacebookStreamResponseVO.class);
 			facebookStreamResponse = responseBody.getBody();
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 
 		}
-
 		String[] responseData = facebookStreamResponse.getStream_url().split("/");
-		FacebookStreamRequest facebookStreamRequest = new FacebookStreamRequest();
+		FacebookStreamRequestVO facebookStreamRequest = new FacebookStreamRequestVO();
 		facebookStreamRequest.setPrimaryUrl(responseData[0] + "//" + responseData[2] + "/" + responseData[3] + "/");
 		facebookStreamRequest.setStreamName(responseData[4]);
-		log.debug("getFacebookStreamData end");
 		return facebookStreamRequest;
 	}
 
@@ -329,14 +324,12 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @return true, if successful
 	 */
 	@Override
-	public void youtubeStream(List<Channels> youtubeChannels, String streamId, String outputId) {
-		log.debug("youtubestream start");
+	public void youtubeStream(List<ChannelEntity> youtubeChannels, String streamId, String outputId) {
 		youtubeChannels.stream().forEach(channel -> {
-			String streamTargetId = createStreamTarget(new StreamTargetModel("YOUTUBE_" + RandomIdGenerator.generate(5),
+			String streamTargetId = createStreamTarget(new StreamTargetVO("YOUTUBE_" + RandomIdGenerator.generate(5),
 					RTMP, channel.getPrimaryUrl(), channel.getStreamName(), channel.getBackupUrl()), streamId);
 			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId));
 		});
-		log.debug("youtubestream end");
 	}
 
 	/**
@@ -347,26 +340,24 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 */
 	@Override
 	public void startStream(String id) {
-		log.debug("startStream start");
 		String url = baseUrl + "/live_streams/" + id + "/start";
 		MultiValueMap<String, String> headers = getHeader();
 
 		HttpEntity<String> request = new HttpEntity<>(headers);
-		LiveStreamState response;
+		LiveStreamStateVO response;
 		try {
-			ResponseEntity<LiveStreamState> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, request,
-					LiveStreamState.class);
+			ResponseEntity<LiveStreamStateVO> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, request,
+					LiveStreamStateVO.class);
 			response = responseEntity.getBody();
 		} catch (Exception e) {
-			log.error("error occurred while starting the live stream");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
-		Streams stream = streamRepo.findByStreamId(id);
+		StreamEntity stream = streamRepo.findByStreamId(id);
 		stream.setActive(true);
-		;
 		streamRepo.save(stream);
-		log.debug("startStream end");
-		//		return response.getLiveStreamState().getState();
 	}
 
 	/**
@@ -377,25 +368,25 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 */
 	@Override
 	public String stopStream(String id) {
-		log.debug("stopStream start");
 		String url = baseUrl + "/live_streams/" + id + "/stop";
 		MultiValueMap<String, String> headers = getHeader();
 
 		HttpEntity<String> request = new HttpEntity<>(headers);
-		LiveStreamState response;
+		LiveStreamStateVO response;
 		try {
-			ResponseEntity<LiveStreamState> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, request,
-					LiveStreamState.class);
+			ResponseEntity<LiveStreamStateVO> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, request,
+					LiveStreamStateVO.class);
 			response = responseEntity.getBody();
 		} catch (Exception e) {
-			log.error("error occurred while stoping the live stream");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
 		// updating the status of the stream
-		Streams stream = streamRepo.findByStreamId(id);
+		StreamEntity stream = streamRepo.findByStreamId(id);
 		stream.setActive(false);
 		streamRepo.save(stream);
-		log.debug("stopStream end");
 		return response.getLiveStreamState().getState();
 	}
 
@@ -406,23 +397,23 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @return the live stream state
 	 */
 	@Override
-	public FetchStreamUIResponse fetchStreamState(String id) {
-		log.debug("fetchStreamState start");
+	public FetchStreamUIResponseVO fetchStreamState(String id) {
 		String url = baseUrl + "/live_streams/" + id + "/state";
 		MultiValueMap<String, String> headers = getHeader();
 
 		HttpEntity<String> request = new HttpEntity<>(headers);
-		LiveStreamState response;
+		LiveStreamStateVO response;
 		try {
-			ResponseEntity<LiveStreamState> responseEntity = restTemplate.exchange(url, HttpMethod.GET, request,
-					LiveStreamState.class);
+			ResponseEntity<LiveStreamStateVO> responseEntity = restTemplate.exchange(url, HttpMethod.GET, request,
+					LiveStreamStateVO.class);
 			response = responseEntity.getBody();
 		} catch (Exception e) {
-			log.error("error occurred while fetching stream state");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
-		log.debug("fetchstreamState end");
-		FetchStreamUIResponse result = new FetchStreamUIResponse(response.getLiveStreamState().getState());
+		FetchStreamUIResponseVO result = new FetchStreamUIResponseVO(response.getLiveStreamState().getState());
 		return result;
 	}
 
@@ -432,11 +423,10 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @param response the response
 	 */
 	@Override
-	public void saveStream(IVSLiveStreamResponse response) {
-		log.debug("saveStream start");
-		Streams stream = new Streams();
+	public void saveStream(IVSLiveStreamResponseVO response) {
+		StreamEntity stream = new StreamEntity();
 
-		User newUser = getUser();
+		UserEntity newUser = userService.getUser();
 		stream.setStreamId(response.getLiveStreamResponse().getId());
 		stream.setApplicationName(
 				response.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(0).getApplication_name());
@@ -447,7 +437,6 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		stream.setStreamUrl(response.getLiveStreamResponse().getDirect_playback_urls().getWebrtc().get(0).getUrl());
 		stream.setUser(newUser);
 		streamRepo.save(stream);
-		log.debug("saveStream end");
 	}
 
 	/**
@@ -457,21 +446,22 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @return the string
 	 */
 	@Override
-	public String createStreamTarget(StreamTargetModel streamTargetModel, String streamId) {
-		log.debug("createStreamTarget start");
+	public String createStreamTarget(StreamTargetVO streamTargetModel, String streamId) {
 		String url = baseUrl + "/stream_targets/custom";
 		MultiValueMap<String, String> headers = getHeader();
-		StreamTargetDTO streamTargetDTO = new StreamTargetDTO();
+		StreamTargetRootVO streamTargetDTO = new StreamTargetRootVO();
 		streamTargetDTO.setStreamTarget(streamTargetModel);
 
-		HttpEntity<StreamTargetDTO> request = new HttpEntity<>(streamTargetDTO, headers);
-		StreamTargetDTO streamTargetResponse;
+		HttpEntity<StreamTargetRootVO> request = new HttpEntity<>(streamTargetDTO, headers);
+		StreamTargetRootVO streamTargetResponse;
 		try {
-			ResponseEntity<StreamTargetDTO> reponseEntity = restTemplate.exchange(url, HttpMethod.POST, request,
-					StreamTargetDTO.class);
+			ResponseEntity<StreamTargetRootVO> reponseEntity = restTemplate.exchange(url, HttpMethod.POST, request,
+					StreamTargetRootVO.class);
 			streamTargetResponse = reponseEntity.getBody();
 		} catch (Exception e) {
-			log.error("error occurred while creating stream target");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
 		// saving the response to mongodb
@@ -479,16 +469,11 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		mongoStreamTargetRepo.save(streamTargetResponse);
 
 		// saving the streamTargetId in the database
-		Streams stream = streamRepo.findByStreamId(streamId);
-		StreamTargetModel streamTarResponse = streamTargetResponse.getStreamTarget();
-		StreamTarget streamTarget = new StreamTarget(streamTarResponse.getId(), streamTarResponse.getPrimary_url(),
+		StreamEntity stream = streamRepo.findByStreamId(streamId);
+		StreamTargetVO streamTarResponse = streamTargetResponse.getStreamTarget();
+		StreamTargetEntity streamTarget = new StreamTargetEntity(streamTarResponse.getId(), streamTarResponse.getPrimary_url(),
 				streamTarResponse.getStream_name(), streamTarResponse.getBackup_url(), stream);
-		try {
-			streamTargetRepo.save(streamTarget);
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		log.debug("createStreaTarget end");
+		streamTargetRepo.save(streamTarget);
 		return streamTarResponse.getId();
 	}
 
@@ -502,33 +487,31 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 */
 	@Override
 	public boolean addStreamTarget(String streamId, String outputId, String streamTargetId) {
-		log.debug("addStreamTarget start");
 		String url = baseUrl + "/transcoders/" + streamId + "/outputs/" + outputId + "/output_stream_targets";
 		MultiValueMap<String, String> headers = getHeader();
 
-		OutputStreamTarget outputStreamTarget = new OutputStreamTarget(streamTargetId, true);
-		OutputStreamTargetDTO outputStreamTargetDTO = new OutputStreamTargetDTO(outputStreamTarget);
-		HttpEntity<OutputStreamTargetDTO> request = new HttpEntity<>(outputStreamTargetDTO, headers);
-		OutputStreamTargetDTO response;
+		OutputStreamTargetVO outputStreamTarget = new OutputStreamTargetVO(streamTargetId, true);
+		OutputStreamTargetRootVO outputStreamTargetDTO = new OutputStreamTargetRootVO(outputStreamTarget);
+		HttpEntity<OutputStreamTargetRootVO> request = new HttpEntity<>(outputStreamTargetDTO, headers);
+		OutputStreamTargetRootVO response;
 		try {
-			ResponseEntity<OutputStreamTargetDTO> responseBody = restTemplate.exchange(url, HttpMethod.POST, request,
-					OutputStreamTargetDTO.class);
+			ResponseEntity<OutputStreamTargetRootVO> responseBody = restTemplate.exchange(url, HttpMethod.POST, request,
+					OutputStreamTargetRootVO.class);
 			response = responseBody.getBody();
 		} catch (Exception e) {
-			log.error("error occurred while adding stream target");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
 		// saving response to mongodb
 		response.setStreamId(streamId);
 		outputStreamTargetRepo.save(response);
-		log.debug("addStreamTarget end");
 		return true;
 	}
 
 	@Override
 	public boolean deleteStreamTarget(String streamTargetId) {
-		log.debug("deleteStreamTarget start");
-
 		String url = baseUrl + "/stream_targets/custom/" + streamTargetId;
 		MultiValueMap<String, String> headers = getHeader();
 
@@ -536,24 +519,22 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		try {
 			restTemplate.exchange(url, HttpMethod.DELETE, request, String.class);
 		} catch (Exception e) {
-			log.error("error occurred while deleting the streamTarget");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
-		log.debug("deleteStreamTarget end");
 		return true;
 	}
 
-	public Boolean deleteOutputTargetAll(List<Webrtc> webrtcList, String streamId) {
-		log.debug("deleteOutputTargetAll start");
+	public Boolean deleteOutputTargetAll(List<WebrtcVO> webrtcList, String streamId) {
 		webrtcList.stream().skip(4).forEach(output -> {
 			deleteOutputTarget(streamId, output.getOutput_id());
 		});
-		log.debug("deleteOutputTargetAll end");
 		return true;
 	}
 
 	public Boolean deleteOutputTarget(String streamId, String outputId) {
-		log.debug("deleteOutputTarget start");
 		String url = baseUrl + "/transcoders/" + streamId + "/outputs/" + outputId;
 		MultiValueMap<String, String> headers = getHeader();
 
@@ -561,23 +542,11 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		try {
 			restTemplate.exchange(url, HttpMethod.DELETE, request, String.class);
 		} catch (Exception e) {
-			log.error("error occurred while deleting the deleteOutputTarget");
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
 			throw new AppException(e.getMessage());
 		}
-		log.debug("deleteOutputTarget end");
 		return true;
-	}
-
-	/**
-	 * Gets the user.
-	 *
-	 * @return the user
-	 */
-	private User getUser() {
-		User user = userRepo.findByEmail(CommonUtils.getUser());
-		if (Objects.isNull(user)) {
-			throw new AppException(MessageConstants.USER_NOT_FOUND);
-		}
-		return user;
 	}
 }

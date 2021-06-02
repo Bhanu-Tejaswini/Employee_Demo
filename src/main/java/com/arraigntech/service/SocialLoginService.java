@@ -2,13 +2,13 @@ package com.arraigntech.service;
 
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 
-import com.arraigntech.entity.User;
-import com.arraigntech.model.LoginResponseDTO;
-import com.arraigntech.model.SocialLoginDTO;
+import com.arraigntech.entity.UserEntity;
+import com.arraigntech.request.SocialLoginVO;
+import com.arraigntech.response.LoginResponseVO;
 
 public interface SocialLoginService {
-	public LoginResponseDTO getGoogleToken(SocialLoginDTO socialLogin);
-	public LoginResponseDTO getFacebookToken(SocialLoginDTO socialLogin);
-	public OAuth2AccessToken getAccessToken(User user);
+	public LoginResponseVO getGoogleToken(SocialLoginVO socialLogin);
+	public LoginResponseVO getFacebookToken(SocialLoginVO socialLogin);
+	public OAuth2AccessToken getAccessToken(UserEntity user);
 
 }

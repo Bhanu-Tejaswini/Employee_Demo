@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.arraigntech.entity.User;
+import com.arraigntech.entity.UserEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class LoggedInUserDetails implements UserDetails {
@@ -26,7 +26,7 @@ public class LoggedInUserDetails implements UserDetails {
 
 	final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
-	public LoggedInUserDetails(User user) {
+	public LoggedInUserDetails(UserEntity user) {
 		this.id = user.getId();
 		this.email = user.getEmail();
 		this.userName = user.getUsername();

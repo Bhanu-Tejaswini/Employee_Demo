@@ -4,12 +4,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.arraigntech.Exception.AppException;
-import com.arraigntech.service.impl.UserServiceImpl;
+import com.arraigntech.exceptions.AppException;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -24,9 +22,6 @@ import io.jsonwebtoken.UnsupportedJwtException;
 public class IVSJwtUtil {
 
 	private String secret;
-	
-	@Autowired
-	private UserServiceImpl userService;
 
 	@Value("${jwt.secret}")
 	public void setSecret(String secret) {

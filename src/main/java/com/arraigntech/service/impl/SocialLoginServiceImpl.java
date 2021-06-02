@@ -1,4 +1,4 @@
-	package com.arraigntech.service.impl;
+package com.arraigntech.service.impl;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,105 +17,86 @@ import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.stereotype.Service;
 
-import com.arraigntech.entity.Role;
-import com.arraigntech.entity.User;
-import com.arraigntech.model.LoginResponseDTO;
-import com.arraigntech.model.SocialLoginDTO;
-import com.arraigntech.model.UserDTO;
-import com.arraigntech.repository.RoleRepository;
-import com.arraigntech.repository.UserRespository;
+import com.arraigntech.entity.UserEntity;
+import com.arraigntech.request.SocialLoginVO;
+import com.arraigntech.request.UserVO;
+import com.arraigntech.response.LoginResponseVO;
 import com.arraigntech.service.SocialLoginService;
+import com.arraigntech.service.UserService;
 import com.arraigntech.utility.AuthenticationProvider;
 import com.arraigntech.utility.RandomPasswordGenerator;
 
 @Service
 public class SocialLoginServiceImpl implements SocialLoginService {
-	
-	public static final String ROLE="ROLE_USER";
+
+	public static final String ROLE_USER = "ROLE_USER";
 
 	@Autowired
 	private DefaultTokenServices tokenService;
-	
+
 	@Autowired
-	private RoleRepository roleRepo;
-	
-	@Autowired
-	private UserRespository userRepo;
-	
-	@Autowired
-	private UserServiceImpl userService;
+	private UserService userService;
 
 	@Value("${client-id}")
 	private String clientId;
 
 	@Autowired
 	private UserDetailServiceImpl userDetailsService;
-	
-	public LoginResponseDTO getGoogleToken(SocialLoginDTO socialLogin) {
-		//checks whether email is verified or not
-		String getEmail=socialLogin.getEmail();
-		String username=getUsername(socialLogin.getUsername());
-		String role=ROLE;
-	
-		User checkUser=userRepo.findByEmailAll(getEmail);
-		if(Objects.isNull(checkUser)) {
-			userService.register(new UserDTO(username.toLowerCase(),getEmail,RandomPasswordGenerator.generatePassword(),Arrays.asList(role),AuthenticationProvider.GOOGLE));
-			User user = userRepo.findByEmailAll(getEmail);
+
+	public LoginResponseVO getGoogleToken(SocialLoginVO socialLogin) {
+		String username = getUsername(socialLogin.getUsername());
+		UserEntity checkUser = userService.findByEmailAll(socialLogin.getEmail());
+		if (Objects.isNull(checkUser)) {
+			userService.register(new UserVO(username.toLowerCase(), socialLogin.getEmail(),
+					RandomPasswordGenerator.generatePassword(), Arrays.asList(ROLE_USER),
+					AuthenticationProvider.GOOGLE));
+			UserEntity user = userService.findByEmailAll(socialLogin.getEmail());
 			user.setActive(true);
 			user.setEmailVerified(true);
-			userRepo.save(user);
-			
+			userService.saveUser(user);
+			OAuth2AccessToken token = getAccessToken(user);
+			return new LoginResponseVO(token.toString(), true);
+
 		}
-		User newUser = new User();
-		newUser.setUsername(username);
-		newUser.setEmail(getEmail);
-		newUser.setPassword("");
-		Role newRole = roleRepo.findByName(role);
-		newUser.getRoles().add(newRole);
-		OAuth2AccessToken token=getAccessToken(newUser);
-		return new LoginResponseDTO(token.toString(),true);
-	}
-	
-	public LoginResponseDTO getFacebookToken(SocialLoginDTO socialLogin) {
-		//checks whether email is verified or not
-		String getEmail=socialLogin.getEmail();
-		String username=getUsername(socialLogin.getUsername());
-		String role=ROLE;
-		User checkUser=userRepo.findByEmailAll(getEmail);
-		if(Objects.isNull(checkUser)) {
-			userService.register(new UserDTO(username.toLowerCase(),getEmail,RandomPasswordGenerator.generatePassword(),Arrays.asList(role),AuthenticationProvider.FACEBOOK));
-			User user = userRepo.findByEmailAll(getEmail);
-			user.setActive(true);
-			user.setEmailVerified(true);
-			userRepo.save(user);
-		}
-		User newUser = new User();
-		newUser.setUsername(username);
-		newUser.setEmail(getEmail);
-		newUser.setPassword("");
-		Role newRole = roleRepo.findByName(role);
-		newUser.getRoles().add(newRole);
-		OAuth2AccessToken token=getAccessToken(newUser);
-		return new LoginResponseDTO(token.toString(),true);
+		OAuth2AccessToken token = getAccessToken(checkUser);
+		return new LoginResponseVO(token.toString(), true);
 	}
 
-	public String getUsername(String value) {
-		String[] newUsername=value.split(" ");
-		String username="";
-		if(newUsername.length >1) {
-			for(int i=0;i<newUsername.length;i++) {
-				username= username + newUsername[i];
-				if(i==newUsername.length-1)	
+	public LoginResponseVO getFacebookToken(SocialLoginVO socialLogin) {
+		String username = getUsername(socialLogin.getUsername());
+		UserEntity checkUser = userService.findByEmailAll(socialLogin.getEmail());
+		if (Objects.isNull(checkUser)) {
+			userService.register(new UserVO(username.toLowerCase(), socialLogin.getEmail(),
+					RandomPasswordGenerator.generatePassword(), Arrays.asList(ROLE_USER),
+					AuthenticationProvider.FACEBOOK));
+			UserEntity user = userService.findByEmailAll(socialLogin.getEmail());
+			user.setActive(true);
+			user.setEmailVerified(true);
+			userService.saveUser(user);
+			OAuth2AccessToken token = getAccessToken(user);
+			return new LoginResponseVO(token.toString(), true);
+		}
+		OAuth2AccessToken token = getAccessToken(checkUser);
+		return new LoginResponseVO(token.toString(), true);
+	}
+
+	private String getUsername(String value) {
+		String[] newUsername = value.split(" ");
+		String username = "";
+		if (newUsername.length > 1) {
+			for (int i = 0; i < newUsername.length; i++) {
+				username = username + newUsername[i];
+				if (i == newUsername.length - 1)
 					break;
-				username=username + "_";
+				username = username + "_";
 			}
-		}else {
-			username=newUsername[0];
+		} else {
+			username = newUsername[0];
 		}
 		return username;
 	}
-	
-	public OAuth2AccessToken getAccessToken(User user) {
+
+	public OAuth2AccessToken getAccessToken(UserEntity user) {
 		HashMap<String, String> authorizationParameters = new HashMap<String, String>();
 		authorizationParameters.put("scope", "read");
 		authorizationParameters.put("username", user.getEmail());
@@ -139,9 +120,7 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 		OAuth2Request authorizationRequest = new OAuth2Request(authorizationParameters, clientId, authorities, true,
 				scopes, null, "", responseType, null);
 
-		User userPrincipal =  (User) userDetailsService.loadUserByUsername(user.getEmail());
-//				new org.springframework.security.core.userdetails.User(
-//				user.getEmail(), user.getPassword(), authorities);
+		UserEntity userPrincipal = (UserEntity) userDetailsService.loadUserByUsername(user.getEmail());
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userPrincipal,
 				null, authorities);
 
@@ -149,10 +128,7 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 				authenticationToken);
 		authenticationRequest.setAuthenticated(true);
 		OAuth2AccessToken accessToken = tokenService.createAccessToken(authenticationRequest);
-
 		return accessToken;
 	}
-
-
 
 }
