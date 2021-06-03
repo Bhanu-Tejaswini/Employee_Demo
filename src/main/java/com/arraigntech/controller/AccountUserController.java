@@ -40,6 +40,7 @@ public class AccountUserController {
 	@Autowired
 	protected AccountSettingService accountSettingService;
 	
+<<<<<<< HEAD
 	@Autowired
 	private DocumentS3Service s3Service;
 	
@@ -47,6 +48,14 @@ public class AccountUserController {
 	@Value("${mutlipartfile.size}")
 	private long mutliPartFileSize;
 	
+=======
+	@Value("${mutlipartfile.size}")
+	private int multiPartFileSize;
+	
+	@Autowired
+	private DocumentS3Service s3Service;
+	
+>>>>>>> fbf73b9ede2195b1a2d0bf59bf5a8ea98fbf6a8d
 
 	@ApiOperation(value = "Update password")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
@@ -164,10 +173,19 @@ public class AccountUserController {
 				: response.withSuccess(true).withResponseMessage(MessageConstants.KEY_SUCCESS, "false");
 	}
 	
+<<<<<<< HEAD
 	@RequestMapping(method = RequestMethod.POST, value = "/upload/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public BaseResponse<String> uploadFile(@RequestParam("file") MultipartFile file, String type) {
 		BaseResponse<String> response = new BaseResponse<>();
 		if(file.getSize() > (mutliPartFileSize * 1024 * 1024)) {
+=======
+	public static final String FILE_SIZE_ERROR="File size exceeds limit 2MB";
+
+    @RequestMapping(method = RequestMethod.POST, value = "/upload/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public BaseResponse<String> uploadFile(@RequestParam("file") MultipartFile file, String type) {
+		BaseResponse<String> response = new BaseResponse<>();
+		if(file.getSize() > (multiPartFileSize * 1024 * 1024)) {
+>>>>>>> fbf73b9ede2195b1a2d0bf59bf5a8ea98fbf6a8d
 			throw new AppException(MessageConstants.FILE_SIZE_ERROR);
 		}
 		String documentPath = s3Service.uploadFile(file);
