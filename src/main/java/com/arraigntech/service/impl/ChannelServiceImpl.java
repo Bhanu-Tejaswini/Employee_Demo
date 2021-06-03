@@ -22,16 +22,16 @@ import com.arraigntech.entity.UserEntity;
 import com.arraigntech.exceptions.AppException;
 import com.arraigntech.repository.ChannelsRepository;
 import com.arraigntech.repository.UpdateTitleRepository;
-import com.arraigntech.request.ChannelIngestionInfoVO;
-import com.arraigntech.request.ChannelStatusVO;
-import com.arraigntech.request.ChannelVO;
-import com.arraigntech.request.CustomChannelVO;
-import com.arraigntech.request.UpdateAllTitleVO;
-import com.arraigntech.response.ChannelErrorUIResponseVO;
-import com.arraigntech.response.ChannelListUIResponseVO;
-import com.arraigntech.response.ChannelUIResponseVO;
-import com.arraigntech.response.FacebookLongLivedTokenResponseVO;
-import com.arraigntech.response.UpdateTitleVO;
+import com.arraigntech.request.vo.ChannelIngestionInfoVO;
+import com.arraigntech.request.vo.ChannelStatusVO;
+import com.arraigntech.request.vo.ChannelVO;
+import com.arraigntech.request.vo.CustomChannelVO;
+import com.arraigntech.request.vo.UpdateAllTitleVO;
+import com.arraigntech.response.vo.ChannelErrorUIResponseVO;
+import com.arraigntech.response.vo.ChannelListUIResponseVO;
+import com.arraigntech.response.vo.ChannelUIResponseVO;
+import com.arraigntech.response.vo.FacebookLongLivedTokenResponseVO;
+import com.arraigntech.response.vo.UpdateTitleVO;
 import com.arraigntech.service.ChannelService;
 import com.arraigntech.service.UserService;
 import com.arraigntech.utility.ChannelTypeProvider;
@@ -347,8 +347,7 @@ public class ChannelServiceImpl implements ChannelService {
 
 	@Override
 	public boolean updateAllTitles(UpdateAllTitleVO updateAllTitleDTO) {
-		if (Objects.isNull(updateAllTitleDTO) || !StringUtils.hasText(updateAllTitleDTO.getDescription())
-				|| !StringUtils.hasText(updateAllTitleDTO.getTitle())) {
+		if (Objects.isNull(updateAllTitleDTO) || !StringUtils.hasText(updateAllTitleDTO.getTitle())) {
 			throw new AppException(MessageConstants.DETAILS_MISSING);
 		}
 		UserEntity newUser = userService.getUser();

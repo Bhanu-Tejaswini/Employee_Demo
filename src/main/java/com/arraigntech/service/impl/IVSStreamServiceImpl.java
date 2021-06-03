@@ -27,7 +27,7 @@ import com.arraigntech.mongorepos.MongoStreamTargetRepository;
 import com.arraigntech.mongorepos.OutputStreamTargetRepository;
 import com.arraigntech.repository.StreamRepository;
 import com.arraigntech.repository.StreamTargetRepository;
-import com.arraigntech.response.MongoUserVO;
+import com.arraigntech.response.vo.MongoUserVO;
 import com.arraigntech.service.ChannelService;
 import com.arraigntech.service.IVSStreamService;
 import com.arraigntech.service.UserService;
@@ -330,7 +330,6 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			CompletableFuture
 					.runAsync(() -> addStreamTarget(streamId, webrtcList.get(3).getOutput_id(), streamTargetId));
 		});
-
 	}
 
 	/**

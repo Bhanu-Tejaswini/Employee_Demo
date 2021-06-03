@@ -4,7 +4,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.arraigntech.entity.VSBaseModel;
-import com.arraigntech.response.MongoUserVO;
+import com.arraigntech.response.vo.MongoUserVO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Document(collection = "streams")

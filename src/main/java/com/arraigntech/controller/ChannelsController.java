@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.arraigntech.request.ChannelStatusVO;
-import com.arraigntech.request.ChannelVO;
-import com.arraigntech.request.CustomChannelVO;
-import com.arraigntech.request.UpdateAllTitleVO;
-import com.arraigntech.response.BaseResponse;
-import com.arraigntech.response.ChannelErrorUIResponseVO;
-import com.arraigntech.response.ChannelListUIResponseVO;
-import com.arraigntech.response.ChannelUIResponseVO;
-import com.arraigntech.response.UpdateTitleVO;
+import com.arraigntech.request.vo.ChannelStatusVO;
+import com.arraigntech.request.vo.ChannelVO;
+import com.arraigntech.request.vo.CustomChannelVO;
+import com.arraigntech.request.vo.UpdateAllTitleVO;
+import com.arraigntech.response.vo.BaseResponse;
+import com.arraigntech.response.vo.ChannelErrorUIResponseVO;
+import com.arraigntech.response.vo.ChannelListUIResponseVO;
+import com.arraigntech.response.vo.ChannelUIResponseVO;
+import com.arraigntech.response.vo.UpdateTitleVO;
 import com.arraigntech.service.impl.ChannelServiceImpl;
 import com.arraigntech.utility.MessageConstants;
 

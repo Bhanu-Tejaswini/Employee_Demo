@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.arraigntech.exceptions.AppException;
-import com.arraigntech.request.UserSettingsVO;
+import com.arraigntech.request.vo.UserSettingsVO;
 
 @Component
 public class VerifyCode implements Action<UserSettingsVO, Boolean> {

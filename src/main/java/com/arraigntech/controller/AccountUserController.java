@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.arraigntech.exceptions.AppException;
-import com.arraigntech.request.EmailSettingsVO;
-import com.arraigntech.request.IVSPasswordVO;
-import com.arraigntech.request.IVSResetPasswordVO;
-import com.arraigntech.request.UserSettingsVO;
-import com.arraigntech.response.BaseResponse;
+import com.arraigntech.request.vo.EmailSettingsVO;
+import com.arraigntech.request.vo.IVSPasswordVO;
+import com.arraigntech.request.vo.IVSResetPasswordVO;
+import com.arraigntech.request.vo.UserSettingsVO;
+import com.arraigntech.response.vo.BaseResponse;
 import com.arraigntech.service.AccountSettingService;
 import com.arraigntech.service.DocumentS3Service;
 import com.arraigntech.service.impl.UserServiceImpl;

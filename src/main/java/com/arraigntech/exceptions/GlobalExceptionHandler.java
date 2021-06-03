@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.arraigntech.exceptions.Model.ErrorResponse;
-import com.arraigntech.response.BaseResponse;
+import com.arraigntech.response.vo.BaseResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

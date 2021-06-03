@@ -7,13 +7,13 @@ import java.util.List;
 
 import com.arraigntech.entity.ChannelEntity;
 import com.arraigntech.entity.UserEntity;
-import com.arraigntech.request.ChannelStatusVO;
-import com.arraigntech.request.ChannelVO;
-import com.arraigntech.request.CustomChannelVO;
-import com.arraigntech.request.UpdateAllTitleVO;
-import com.arraigntech.response.ChannelErrorUIResponseVO;
-import com.arraigntech.response.ChannelListUIResponseVO;
-import com.arraigntech.response.UpdateTitleVO;
+import com.arraigntech.request.vo.ChannelStatusVO;
+import com.arraigntech.request.vo.ChannelVO;
+import com.arraigntech.request.vo.CustomChannelVO;
+import com.arraigntech.request.vo.UpdateAllTitleVO;
+import com.arraigntech.response.vo.ChannelErrorUIResponseVO;
+import com.arraigntech.response.vo.ChannelListUIResponseVO;
+import com.arraigntech.response.vo.UpdateTitleVO;
 import com.arraigntech.utility.ChannelTypeProvider;
 
 /**
