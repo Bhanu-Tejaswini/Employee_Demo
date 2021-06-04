@@ -1,16 +1,16 @@
-<form action='/charge' method='POST' id='checkout-form'>
+<form action='/payment/charge' method='POST' id='checkout-form'>
     <input type='hidden' th:value='${amount}' name='amount' />
-    <label>Price:<span th:text='${amount/100}' /></label>
+    <label>Price:<span th:text='${amount}' /></label>
     <script
        src='https://checkout.stripe.com/checkout.js' 
        class='stripe-button'
        th:attr='data-key=${stripePublicKey}, 
          data-amount=${amount}, 
          data-currency=${currency}'
-       data-name='Baeldung'
-       data-description='Spring course checkout'
+       data-name='Vstreem'
+       data-description='Vstreem Subscription checkout'
        data-image
-         ='https://www.baeldung.com/wp-content/themes/baeldung/favicon/android-chrome-192x192.png'
+         ='https://vstreem.com/assets/img/logo-min.png'
        data-locale='auto'
        data-zip-code='false'>
    </script>
