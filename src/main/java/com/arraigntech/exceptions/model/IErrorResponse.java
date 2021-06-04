@@ -1,4 +1,4 @@
-package com.arraigntech.exceptions.Model;
+package com.arraigntech.exceptions.model;
 
 import java.io.Serializable;
 

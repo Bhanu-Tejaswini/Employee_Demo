@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.arraigntech.exceptions.Model.ErrorResponse;
+import com.arraigntech.exceptions.model.ErrorResponse;
 import com.arraigntech.response.vo.BaseResponse;
 
 @RestControllerAdvice
