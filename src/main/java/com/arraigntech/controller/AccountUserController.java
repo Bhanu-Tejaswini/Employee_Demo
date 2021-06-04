@@ -24,6 +24,7 @@ import com.arraigntech.service.AccountSettingService;
 import com.arraigntech.service.DocumentS3Service;
 import com.arraigntech.service.impl.UserServiceImpl;
 import com.arraigntech.utility.MessageConstants;
+import com.arraigntech.utility.UtilEnum;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -172,6 +173,9 @@ public class AccountUserController {
 		if(file.getSize() > (multiPartFileSize * 1024 * 1024)) {
 			throw new AppException(MessageConstants.FILE_SIZE_ERROR);
 		}
+		if(!UtilEnum.BRANDLOGO.name().equalsIgnoreCase(type)) {
+			throw new AppException(MessageConstants.INVALID_REQUEST);
+		}
 		String documentPath = s3Service.uploadFile(file);
 		s3Service.saveAWSDocumentDetails(type, documentPath);
 		return documentPath != null ? response.withSuccess(true)
@@ -182,7 +186,7 @@ public class AccountUserController {
 	
     @ApiOperation(value = "delete image file")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-    @RequestMapping(value = "delete/file/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/delete/file/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<String> deleteFile(@PathVariable String id) {
 		BaseResponse<String> response = new BaseResponse<>();
 		Boolean documentPath = s3Service.deleteFileFromS3Bucket(id);
