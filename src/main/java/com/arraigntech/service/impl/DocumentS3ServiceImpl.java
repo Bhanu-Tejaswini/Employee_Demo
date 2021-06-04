@@ -2,7 +2,6 @@ package com.arraigntech.service.impl;
 
 import java.io.File;
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -21,10 +20,8 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
@@ -44,7 +41,7 @@ public class DocumentS3ServiceImpl implements DocumentS3Service {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(DocumentS3ServiceImpl.class);
 
-	public static final String VSTREEM_IMAGE = "https://vstreem-images.s3.us-east-2.amazonaws.com/app-default-logo/watermark-logo.png";
+	public static final String VSTREEM_IMAGE = "https://vstreem-images.s3.us-east-2.amazonaws.com/app-default-logo/default-vstreem.png";
 	public static final String BRANDLOG_S3_FOLDER_NAME = "brandlogo/";
 
 	@Value("${document.s3storage.bucketName}")
@@ -146,7 +143,6 @@ public class DocumentS3ServiceImpl implements DocumentS3Service {
 
 	public S3UIResponse getDocumentImageURL() {
 		UserEntity newUser = userService.getUser();
-		String documentURL = null;
 		AwsDocument document = documentRepository.findByUser_EmailIgnoreCase(newUser.getEmail());
 		if (Objects.nonNull(document) && Objects.nonNull(document.getDocumentURL())) {
 			return new S3UIResponse(document.getDocumentURL(), document.getId());
@@ -154,19 +150,4 @@ public class DocumentS3ServiceImpl implements DocumentS3Service {
 			return new S3UIResponse(VSTREEM_IMAGE);
 		}
 	}
-//	public S3Object downLoadFileFromS3Bucket(String fileUrl) throws Exception {
-//		try {
-//			S3Object object = client.getObject(new GetObjectRequest(bucketName,fileUrl));
-//			return object;
-//		} catch (Exception e) {
-//			LOGGER.error("Exception in Downloading the file from S3", e);
-//			throw new Exception(e);
-//		}
-//	}
-//	
-//	public byte[] getLogoUrl() throws Exception {
-//		String documentImageURL = getDocumentImageURL();
-//		S3Object object = downLoadFileFromS3Bucket(documentImageURL);
-//		return IOUtils.toByteArray(object.getObjectContent());
-//	}
 }

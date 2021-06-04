@@ -287,12 +287,12 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		}
 
 		CompletableFuture.runAsync(() -> youtubeStream(youtubeChannels, streamId, webrtcList));
-		CompletableFuture.runAsync(() -> facebookStream(facebookChannels, streamId, webrtcList.get(2).getOutput_id()))
+		CompletableFuture.runAsync(() -> facebookStream(facebookChannels, streamId, webrtcList.get(3).getOutput_id()))
 				.handle((res, e) -> {
 					throw new AppException(e.getMessage());
 				});
 		CompletableFuture
-				.runAsync(() -> instagramStream(instagramChannels, streamId, webrtcList.get(2).getOutput_id()));
+				.runAsync(() -> instagramStream(instagramChannels, streamId, webrtcList.get(3).getOutput_id()));
 		return true;
 	}
 
@@ -369,7 +369,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			String streamTargetId = createStreamTarget(new StreamTargetVO("YOUTUBE_" + RandomIdGenerator.generate(5),
 					RTMP, channel.getPrimaryUrl(), channel.getStreamName(), channel.getBackupUrl()), streamId);
 			CompletableFuture
-					.runAsync(() -> addStreamTarget(streamId, webrtcList.get(3).getOutput_id(), streamTargetId));
+					.runAsync(() -> addStreamTarget(streamId, webrtcList.get(2).getOutput_id(), streamTargetId));
 		});
 	}
 

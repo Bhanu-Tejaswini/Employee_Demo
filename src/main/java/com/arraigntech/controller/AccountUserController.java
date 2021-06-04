@@ -5,26 +5,19 @@ import java.net.HttpURLConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.arraigntech.exceptions.AppException;
 import com.arraigntech.request.vo.EmailSettingsVO;
 import com.arraigntech.request.vo.IVSPasswordVO;
 import com.arraigntech.request.vo.IVSResetPasswordVO;
 import com.arraigntech.request.vo.UserSettingsVO;
 import com.arraigntech.response.vo.BaseResponse;
-import com.arraigntech.response.vo.S3UIResponse;
 import com.arraigntech.service.AccountSettingService;
-import com.arraigntech.service.DocumentS3Service;
 import com.arraigntech.service.impl.UserServiceImpl;
 import com.arraigntech.utility.MessageConstants;
-import com.arraigntech.utility.UtilEnum;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -41,13 +34,6 @@ public class AccountUserController {
 
 	@Autowired
 	protected AccountSettingService accountSettingService;
-	
-	@Value("${mutlipartfile.size}")
-	private int multiPartFileSize;
-	
-	@Autowired
-	private DocumentS3Service s3Service;
-	
 
 	@ApiOperation(value = "Update password")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
@@ -163,43 +149,5 @@ public class AccountUserController {
 		Boolean result = accountSettingService.verifyMobileNumber();
 		return result ? response.withSuccess(true).withResponseMessage(MessageConstants.KEY_SUCCESS, "true")
 				: response.withSuccess(true).withResponseMessage(MessageConstants.KEY_SUCCESS, "false");
-	}
-
-	@ApiOperation(value = "upload image file")
-	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-    @RequestMapping(method = RequestMethod.POST, value = "/upload/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public BaseResponse<String> uploadFile(@RequestParam("file") MultipartFile file, String type) {
-		BaseResponse<String> response = new BaseResponse<>();
-		if(file.getSize() > (multiPartFileSize * 1024 * 1024)) {
-			throw new AppException(MessageConstants.FILE_SIZE_ERROR);
-		}
-		if(!UtilEnum.BRANDLOGO.name().equalsIgnoreCase(type)) {
-			throw new AppException(MessageConstants.INVALID_REQUEST);
-		}
-		String documentPath = s3Service.uploadFile(file);
-		s3Service.saveAWSDocumentDetails(type, documentPath);
-		return documentPath != null ? response.withSuccess(true)
-				.withResponseMessage(MessageConstants.KEY_SUCCESS, "file uploaded successfully") :
-					response.withSuccess(true)
-					.withResponseMessage(MessageConstants.KEY_SUCCESS, "Exception in uploading the file to S3");
-	}
-	
-    @ApiOperation(value = "delete image file")
-	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-    @RequestMapping(value = "/delete/file/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<String> deleteFile(@PathVariable String id) {
-		BaseResponse<String> response = new BaseResponse<>();
-		Boolean documentPath = s3Service.deleteFileFromS3Bucket(id);
-		return documentPath ? response.withSuccess(true)
-				.withResponseMessage(MessageConstants.KEY_SUCCESS, "file deleted successfully") :
-					response.withSuccess(true)
-					.withResponseMessage(MessageConstants.KEY_SUCCESS, "Exception in deleting the file to S3");
-	}
-	
-	@ApiOperation(value = "get image file")
-	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
-	@RequestMapping(value = "/get/file", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<S3UIResponse> getFile() {
-		return new BaseResponse<S3UIResponse>(s3Service.getDocumentImageURL()).withSuccess(true);
 	}
 }
