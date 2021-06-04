@@ -40,8 +40,6 @@ public class AwsDocument extends VSBaseModel{
 		this.documentURL = documentURL;
 	}
 
-    
-
 	public MongoUserVO getUser() {
 		return user;
 	}
@@ -56,6 +54,17 @@ public class AwsDocument extends VSBaseModel{
 		this.documentType = documentType;
 		this.documentURL = documentURL;
 		this.user = user;
+	}
+	
+	public AwsDocument(String bucketName, String documentType, String documentURL) {
+		super();
+		this.bucketName = bucketName;
+		this.documentType = documentType;
+		this.documentURL = documentURL;
+	}
+	
+	public AwsDocument() {
+		
 	}
 
 }

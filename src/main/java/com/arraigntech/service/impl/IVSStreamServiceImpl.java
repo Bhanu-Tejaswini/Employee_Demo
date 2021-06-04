@@ -1,9 +1,15 @@
 package com.arraigntech.service.impl;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +24,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.arraigntech.entity.ChannelEntity;
-import com.arraigntech.entity.StreamTargetEntity;
 import com.arraigntech.entity.StreamEntity;
+import com.arraigntech.entity.StreamTargetEntity;
 import com.arraigntech.entity.UserEntity;
 import com.arraigntech.exceptions.AppException;
 import com.arraigntech.mongorepos.MongoStreamResponseRepository;
@@ -27,8 +33,12 @@ import com.arraigntech.mongorepos.MongoStreamTargetRepository;
 import com.arraigntech.mongorepos.OutputStreamTargetRepository;
 import com.arraigntech.repository.StreamRepository;
 import com.arraigntech.repository.StreamTargetRepository;
+import com.arraigntech.request.vo.TranscoderRootVO;
+import com.arraigntech.request.vo.TranscoderVO;
 import com.arraigntech.response.vo.MongoUserVO;
+import com.arraigntech.response.vo.S3UIResponse;
 import com.arraigntech.service.ChannelService;
+import com.arraigntech.service.DocumentS3Service;
 import com.arraigntech.service.IVSStreamService;
 import com.arraigntech.service.UserService;
 import com.arraigntech.utility.ChannelTypeProvider;
@@ -71,9 +81,10 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	private static final String STATUS = "status";
 	private static final String LIVE_NOW = "LIVE_NOW";
 	private static final String ACCESS_TOKEN = "access_token";
-	public static final String RTMPS = "rtmps";
-	public static final String RTMP = "rtmp";
+	private static final String RTMPS = "rtmps";
+	private static final String RTMP = "rtmp";
 	private static final String STOPPED = "stopped";
+	private static final String TOP_RIGHT = "top-right";
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -111,6 +122,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	@Autowired
 	private StreamTargetRepository streamTargetRepo;
 
+	@Autowired
+	private DocumentS3Service s3Service;
+
 	/**
 	 * Gets the header.
 	 *
@@ -136,6 +150,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	@Override
 	public StreamUIResponseVO createStream(StreamUIRequestVO streamRequest) {
 		UserEntity newUser = userService.getUser();
+		addLogoToTranscoder("String");
 		IVSLiveStreamVO liveStream = populateStreamData(streamRequest);
 		String url = baseUrl + "/live_streams";
 		MultiValueMap<String, String> headers = getHeader();
@@ -151,7 +166,6 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			}
 			throw new AppException(e.getMessage());
 		}
-
 		// saving the response data to mongodb
 		liveStreamResponse.setUser(new MongoUserVO(newUser.getId(), newUser.getEmail(), newUser.getUsername()));
 		streamResponseRepo.save(liveStreamResponse);
@@ -164,6 +178,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		List<WebrtcVO> webrtcList = liveStreamResponse.getLiveStreamResponse().getDirect_playback_urls().getWebrtc();
 		// adds youtube channels in the target
 		channelsStream(streamId, webrtcList);
+		CompletableFuture.runAsync(() -> addLogoToTranscoder(streamId));
 		CompletableFuture.runAsync(() -> startStream(streamId));
 		CompletableFuture.runAsync(() -> deleteOutputTargetAll(webrtcList, streamId));
 		StreamSourceConnectionInformationVO response = liveStreamResponse.getLiveStreamResponse()
@@ -175,6 +190,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	/**
 	 * @param streamRequest
 	 * @return
+	 * @throws IOException
 	 */
 	private IVSLiveStreamVO populateStreamData(StreamUIRequestVO streamRequest) {
 		IVSLiveStreamVO ivsLiveStream = new IVSLiveStreamVO();
@@ -192,6 +208,32 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		liveStream.setTranscoder_type(TRANSCODER_TYPE);
 		ivsLiveStream.setLiveStream(liveStream);
 		return ivsLiveStream;
+	}
+
+	public void addLogoToTranscoder(String streamId) {
+		S3UIResponse s3uiResponse = s3Service.getDocumentImageURL();
+		byte[] byteArray = null;
+		try {
+			URL url = new URL(s3uiResponse.getImageUrl());
+			byteArray = IOUtils.toByteArray(url.openConnection());
+		} catch (IOException e1) {
+			throw new AppException("Error occured while adding the image");
+		}
+		String encodeToString = Base64.getEncoder().encodeToString(byteArray);
+		String url = baseUrl + "/transcoders/" + streamId;
+		MultiValueMap<String, String> headers = getHeader();
+
+		TranscoderVO transcoder = new TranscoderVO(true, 26, encodeToString, 100, TOP_RIGHT, 88);
+		TranscoderRootVO transcoderRoot = new TranscoderRootVO(transcoder);
+		HttpEntity<TranscoderRootVO> request = new HttpEntity<>(transcoderRoot, headers);
+		try {
+			restTemplate.exchange(url, HttpMethod.PATCH, request, TranscoderRootVO.class);
+		} catch (Exception e) {
+			if (log.isDebugEnabled()) {
+				log.error(e.getMessage());
+			}
+			throw new AppException(e.getMessage());
+		}
 	}
 
 	/**

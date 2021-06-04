@@ -5,17 +5,17 @@ package com.arraigntech.wowza.request.vo;
  *
  */
 public class LiveStreamVO {
-	public int aspect_ratio_height;
-	public int aspect_ratio_width;
-	public String billing_mode;
-	public String broadcast_location;
-	public String encoder;
-	public String name;
-	public String transcoder_type;
-	public String delivery_method;
-	public String delivery_type;
-	public boolean player_responsive;
-	public boolean recording;
+	private int aspect_ratio_height;
+	private int aspect_ratio_width;
+	private String billing_mode;
+	private String broadcast_location;
+	private String encoder;
+	private String name;
+	private String transcoder_type;
+	private String delivery_method;
+	private String delivery_type;
+	private boolean player_responsive;
+	private boolean recording;
 
 	public int getAspect_ratio_height() {
 		return aspect_ratio_height;
@@ -107,10 +107,11 @@ public class LiveStreamVO {
 
 	@Override
 	public String toString() {
-		return "LiveStream [aspect_ratio_height=" + aspect_ratio_height + ", aspect_ratio_width=" + aspect_ratio_width
+		return "LiveStreamVO [aspect_ratio_height=" + aspect_ratio_height + ", aspect_ratio_width=" + aspect_ratio_width
 				+ ", billing_mode=" + billing_mode + ", broadcast_location=" + broadcast_location + ", encoder="
 				+ encoder + ", name=" + name + ", transcoder_type=" + transcoder_type + ", delivery_method="
 				+ delivery_method + ", delivery_type=" + delivery_type + ", player_responsive=" + player_responsive
 				+ ", recording=" + recording + "]";
 	}
+
 }
