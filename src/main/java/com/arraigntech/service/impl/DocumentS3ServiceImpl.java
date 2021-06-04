@@ -25,6 +25,7 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.arraigntech.entity.UserEntity;
@@ -97,9 +98,13 @@ public class DocumentS3ServiceImpl implements DocumentS3Service {
 		String fileName = document.get().getDocumentURL().substring(document.get().getDocumentURL().lastIndexOf("/") + 1);
 		try {
 			LOGGER.debug("bucketName: " + bucketName + " file url :" + bucketName);
-//			ObjectListing objects = client.listObjects(bucketName + BRANDLOG_S3_FOLDER_NAME);
-			client.deleteObject(bucketName,BRANDLOG_S3_FOLDER_NAME+fileName);
-			System.out.println(fileName);
+			ObjectListing objects = client.listObjects(bucketName, BRANDLOG_S3_FOLDER_NAME);
+			for(S3ObjectSummary os : objects.getObjectSummaries()) {
+				if(os.getKey().contains(fileName)) {
+					fileName = os.getKey();
+				}
+			}
+			client.deleteObject(bucketName, fileName);
 		} catch (Exception e) {
 			LOGGER.error("Exception in deleting the file from S3", e);
 		}

@@ -6,7 +6,7 @@ package com.arraigntech.utility;
  */
 public enum UtilEnum {
 	
-	ENGLISH("English");
+	ENGLISH("English"), BRANDLOGO("brandlogo");
 	
 	private final String Name;
 	
