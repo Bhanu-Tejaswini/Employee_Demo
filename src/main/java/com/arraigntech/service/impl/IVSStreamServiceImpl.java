@@ -1,8 +1,6 @@
 package com.arraigntech.service.impl;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Base64;
 import java.util.List;
@@ -17,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -150,7 +149,6 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	@Override
 	public StreamUIResponseVO createStream(StreamUIRequestVO streamRequest) {
 		UserEntity newUser = userService.getUser();
-		addLogoToTranscoder("String");
 		IVSLiveStreamVO liveStream = populateStreamData(streamRequest);
 		String url = baseUrl + "/live_streams";
 		MultiValueMap<String, String> headers = getHeader();
@@ -226,8 +224,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		TranscoderVO transcoder = new TranscoderVO(true, 26, encodeToString, 100, TOP_RIGHT, 88);
 		TranscoderRootVO transcoderRoot = new TranscoderRootVO(transcoder);
 		HttpEntity<TranscoderRootVO> request = new HttpEntity<>(transcoderRoot, headers);
+		RestTemplate template = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
 		try {
-			restTemplate.exchange(url, HttpMethod.PATCH, request, TranscoderRootVO.class);
+			template.exchange(url, HttpMethod.PATCH, request, TranscoderRootVO.class);
 		} catch (Exception e) {
 			if (log.isDebugEnabled()) {
 				log.error(e.getMessage());
