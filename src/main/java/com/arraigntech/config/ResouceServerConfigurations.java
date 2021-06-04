@@ -2,6 +2,7 @@
 package com.arraigntech.config;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,9 @@ import org.springframework.web.filter.CorsFilter;
 @EnableResourceServer
 public class ResouceServerConfigurations extends ResourceServerConfigurerAdapter {
 	public final static String CSRF_HEADER_NAME = "Access-Control-Allow-Origin";
+	
+	private List<String> allowedUrls = Arrays.asList("/actuator/**", "v2/api-docs/**", "/swagger-ui.html", "/oauth/**", "/oauth2/**",
+						"/auth/**", "/timezonelist", "/images/**");
 
 	@Value("${security.jwt.resource-ids}")
 	private String resourceIds;
@@ -45,8 +49,7 @@ public class ResouceServerConfigurations extends ResourceServerConfigurerAdapter
 	public void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.cors().and().requestMatchers().and().authorizeRequests()
-				.antMatchers("/actuator/**", "v2/api-docs/**", "/swagger-ui.html", "/oauth/**", "/oauth2/**",
-						"/auth/**", "/timezonelist", "/images/**")
+				.antMatchers(allowedUrls.toArray(new String[] {}))
 				.permitAll().anyRequest().authenticated().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
