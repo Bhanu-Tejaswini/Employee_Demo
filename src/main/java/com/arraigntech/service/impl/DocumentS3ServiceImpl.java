@@ -72,11 +72,9 @@ public class DocumentS3ServiceImpl implements DocumentS3Service {
 		String documentPath = null;
 		String fileName = null;
 		try {
-			LOGGER.debug("uploadFile method started");
 			File file = FileUtils.convertMultipartFileToFile(multipartFile);
 			fileName = uploadFileToS3Bucket(bucketName, file);
 			documentPath = client.getResourceUrl(bucketName,BRANDLOG_S3_FOLDER_NAME+fileName);
-			LOGGER.debug("uploadFile method ended");
 		} catch (Exception e) {
 			LOGGER.error("Exception in uploading the file to S3", e);
 		}
@@ -94,7 +92,6 @@ public class DocumentS3ServiceImpl implements DocumentS3Service {
 		}
 		String fileName = document.get().getDocumentURL().substring(document.get().getDocumentURL().lastIndexOf("/") + 1);
 		try {
-			LOGGER.debug("bucketName: " + bucketName + " file url :" + bucketName);
 			ObjectListing objects = client.listObjects(bucketName, BRANDLOG_S3_FOLDER_NAME);
 			for(S3ObjectSummary os : objects.getObjectSummaries()) {
 				if(os.getKey().contains(fileName)) {
@@ -120,19 +117,17 @@ public class DocumentS3ServiceImpl implements DocumentS3Service {
 
 	private String uploadFileToS3Bucket(String bucketName, File file) {
 		String uniqueFileName = file.getName();
-		LOGGER.info("Uploading file with name= " + uniqueFileName);
 		client.putObject(new PutObjectRequest(bucketName, BRANDLOG_S3_FOLDER_NAME+uniqueFileName, file)
 				.withCannedAcl(CannedAccessControlList.PublicRead));
 		return uniqueFileName;
 	}
 
 	public Boolean saveAWSDocumentDetails(String documentType, String documentURL) {
-		LOGGER.debug("Uploading file with name= " + documentType);
 		UserEntity newUser = userService.getUser();
 		AwsDocument document = documentRepository.findByUser_EmailIgnoreCase(newUser.getEmail());
 		if (Objects.isNull(document)) {
 			MongoUserVO user = new MongoUserVO(newUser.getId(), newUser.getEmail(), newUser.getUsername());
-			document = new AwsDocument(bucketName, documentType, documentURL, user);
+			document = new AwsDocument(bucketName, documentType, documentURL,false, user);
 		} else {
 			document.setDocumentType(documentType);
 			document.setDocumentURL(documentURL);
@@ -150,4 +145,6 @@ public class DocumentS3ServiceImpl implements DocumentS3Service {
 			return new S3UIResponse(VSTREEM_IMAGE);
 		}
 	}
+	
+	
 }

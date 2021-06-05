@@ -35,4 +35,5 @@ public interface ChannelService {
 	public boolean addUpdateTitle(UpdateTitleVO updateTitleDTO);
 	public UpdateTitleVO getUpdateTitle(String channelId);
 	public boolean updateAllTitles(UpdateAllTitleVO updateAllTitleDTO);
+	public boolean addYoutubeManually(CustomChannelVO customChannelVO);
 }

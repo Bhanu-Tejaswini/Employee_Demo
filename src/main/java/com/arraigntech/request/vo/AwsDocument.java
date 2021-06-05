@@ -6,14 +6,16 @@ import com.arraigntech.entity.VSBaseModel;
 import com.arraigntech.response.vo.MongoUserVO;
 
 @Document(collection = "aws_document")
-public class AwsDocument extends VSBaseModel{
-	
+public class AwsDocument extends VSBaseModel {
+
 	private String bucketName;
-	
+
 	private String documentType;
-	
+
 	private String documentURL;
-	
+
+	private boolean active;
+
 	private MongoUserVO user;
 
 	public String getBucketName() {
@@ -48,23 +50,25 @@ public class AwsDocument extends VSBaseModel{
 		this.user = user;
 	}
 
-	public AwsDocument(String bucketName, String documentType, String documentURL, MongoUserVO user) {
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public AwsDocument(String bucketName, String documentType, String documentURL, boolean active, MongoUserVO user) {
 		super();
 		this.bucketName = bucketName;
 		this.documentType = documentType;
 		this.documentURL = documentURL;
+		this.active = active;
 		this.user = user;
 	}
-	
-	public AwsDocument(String bucketName, String documentType, String documentURL) {
-		super();
-		this.bucketName = bucketName;
-		this.documentType = documentType;
-		this.documentURL = documentURL;
-	}
-	
+
 	public AwsDocument() {
-		
+
 	}
 
 }

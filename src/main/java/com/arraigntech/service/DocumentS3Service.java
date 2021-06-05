@@ -14,4 +14,6 @@ public interface DocumentS3Service {
 	Boolean saveAWSDocumentDetails(String documentType, String documentURL);
 
 	S3UIResponse getDocumentImageURL();
+	
+
 }

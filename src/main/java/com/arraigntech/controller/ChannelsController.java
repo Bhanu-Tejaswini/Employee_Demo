@@ -64,6 +64,20 @@ public class ChannelsController {
 
 	}
 	
+	@ApiOperation(value = "Adding youtube channel manually")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/youtube/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<Boolean> addYoutubeManually(@RequestBody CustomChannelVO customChannelDTO) {
+		Boolean result = channelService.addYoutubeManually(customChannelDTO);
+		BaseResponse<Boolean> response = new BaseResponse<>();
+		return result
+				? response.withSuccess(true)
+						.withResponseMessage(MessageConstants.KEY_SUCCESS, MessageConstants.CHANNEL_SUCCESS).build()
+				: response.withSuccess(false)
+						.withResponseMessage(MessageConstants.KEY_FAIL, MessageConstants.CHANNEL_FAIL)
+						.build();
+	}
+	
 	@ApiOperation(value = "Enabling channel")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/enable", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

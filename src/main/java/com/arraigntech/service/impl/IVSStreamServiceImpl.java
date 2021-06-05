@@ -306,7 +306,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 		instagramChannels.stream().forEach(channel -> {
 			String streamTargetId = createStreamTarget(new StreamTargetVO("INSTGRAM_" + RandomIdGenerator.generate(5),
 					RTMPS, channel.getPrimaryUrl(), channel.getStreamName(), channel.getBackupUrl()), streamId);
-			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId));
+			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId, true));
 		});
 	}
 
@@ -321,7 +321,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 			String streamTargetId = createStreamTarget(new StreamTargetVO("FACEBOOK_" + RandomIdGenerator.generate(5),
 					RTMPS, facebookStreamRequest.getPrimaryUrl(), facebookStreamRequest.getStreamName(),
 					facebookStreamRequest.getPrimaryUrl()), streamId);
-			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId));
+			CompletableFuture.runAsync(() -> addStreamTarget(streamId, outputId, streamTargetId, true));
 		});
 	}
 
@@ -367,9 +367,9 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	public void youtubeStream(List<ChannelEntity> youtubeChannels, String streamId, List<WebrtcVO> webrtcList) {
 		youtubeChannels.stream().forEach(channel -> {
 			String streamTargetId = createStreamTarget(new StreamTargetVO("YOUTUBE_" + RandomIdGenerator.generate(5),
-					RTMP, channel.getPrimaryUrl(), channel.getStreamName(), channel.getBackupUrl()), streamId);
+					RTMP, channel.getPrimaryUrl(), channel.getStreamName()), streamId);
 			CompletableFuture
-					.runAsync(() -> addStreamTarget(streamId, webrtcList.get(2).getOutput_id(), streamTargetId));
+					.runAsync(() -> addStreamTarget(streamId, webrtcList.get(2).getOutput_id(), streamTargetId, false));
 		});
 	}
 
@@ -528,11 +528,11 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	 * @return true, if successful
 	 */
 	@Override
-	public boolean addStreamTarget(String streamId, String outputId, String streamTargetId) {
+	public boolean addStreamTarget(String streamId, String outputId, String streamTargetId, boolean addBackupUrl) {
 		String url = baseUrl + "/transcoders/" + streamId + "/outputs/" + outputId + "/output_stream_targets";
 		MultiValueMap<String, String> headers = getHeader();
 
-		OutputStreamTargetVO outputStreamTarget = new OutputStreamTargetVO(streamTargetId, true);
+		OutputStreamTargetVO outputStreamTarget = new OutputStreamTargetVO(streamTargetId, addBackupUrl);
 		OutputStreamTargetRootVO outputStreamTargetDTO = new OutputStreamTargetRootVO(outputStreamTarget);
 		HttpEntity<OutputStreamTargetRootVO> request = new HttpEntity<>(outputStreamTargetDTO, headers);
 		OutputStreamTargetRootVO response;

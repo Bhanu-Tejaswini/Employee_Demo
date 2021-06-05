@@ -151,7 +151,7 @@ public class ChannelServiceImpl implements ChannelService {
 		}
 		if (!(customChannelDTO.getRtmpUrl().startsWith("rtmps://")
 				&& customChannelDTO.getRtmpUrl().endsWith("/rtmp/"))) {
-			throw new AppException(MessageConstants.WRONG_INSTAGRAM_RTMPSURL);
+			throw new AppException(MessageConstants.WRONG_RTMPSURL);
 		}
 		UserEntity newUser = userService.getUser();
 		List<ChannelEntity> channelsList = channelRepo.findByUserAndType(newUser, ChannelTypeProvider.INSTAGRAM);
@@ -174,6 +174,27 @@ public class ChannelServiceImpl implements ChannelService {
 			channel.setActive(true);
 		}
 		channelRepo.save(channel);
+		return true;
+	}
+	
+	@Override
+	public boolean addYoutubeManually(CustomChannelVO customChannelVO) {
+		if (Objects.isNull(customChannelVO) || !StringUtils.hasText(customChannelVO.getRtmpUrl())
+				|| !StringUtils.hasText(customChannelVO.getStreamKey())) {
+			throw new AppException(MessageConstants.DETAILS_MISSING);
+		}
+		if (!(customChannelVO.getRtmpUrl().startsWith("rtmp://"))) {
+			throw new AppException(MessageConstants.WRONG_RTMPSURL);
+		}
+		ChannelEntity channels = new ChannelEntity();
+		UserEntity newUser = userService.getUser();
+		channels.setType(ChannelTypeProvider.YOUTUBE);
+		channels.setChannelId(RandomIdGenerator.generate(10));
+		channels.setStreamName(customChannelVO.getStreamKey());
+		channels.setPrimaryUrl(customChannelVO.getRtmpUrl());
+		channels.setActive(true);
+		channels.setUser(newUser);
+		channelRepo.save(channels);
 		return true;
 	}
 
