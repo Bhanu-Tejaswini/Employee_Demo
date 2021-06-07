@@ -150,6 +150,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	@Override
 	public StreamUIResponseVO createStream(StreamUIRequestVO streamRequest) {
 		UserEntity newUser = userService.getUser();
+		addLogoToTranscoder("string");
 		IVSLiveStreamVO liveStream = populateStreamData(streamRequest);
 		String url = baseUrl + "/live_streams";
 		MultiValueMap<String, String> headers = getHeader();
@@ -210,15 +211,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	}
 
 	public void addLogoToTranscoder(String streamId) {
-		List<S3UIResponse> documentList = s3Service.getDocumentImageURL();
-		String documentURL = null;
-		for(S3UIResponse document : documentList) {
-			if(document.isActive()) {
-				documentURL = document.getImageUrl();
-			} else if(document.getImageId() == null) {
-				documentURL = document.getImageUrl();
-			}
-		}
+		String documentURL = s3Service.getLogoImage();
 		byte[] byteArray = null;
 		try {
 			URL url = new URL(documentURL);

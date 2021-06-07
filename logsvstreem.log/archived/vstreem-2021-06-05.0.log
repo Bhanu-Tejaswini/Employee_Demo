@@ -1,0 +1,1168 @@
+2021-06-05 09:03:31.476  INFO [vstreem,,] 13160 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Starting AuthServerApplication using Java 15.0.1 on DESKTOP-RSB7OUJ with PID 13160 (E:\vstreem\vstreem-backend\target\classes started by admin in E:\vstreem\vstreem-backend)
+2021-06-05 09:03:31.488 DEBUG [vstreem,,] 13160 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Running with Spring Boot v2.5.0, Spring v5.3.7
+2021-06-05 09:03:31.489  INFO [vstreem,,] 13160 --- [  restartedMain] com.arraigntech.AuthServerApplication    : No active profile set, falling back to default profiles: default
+2021-06-05 09:03:31.737  INFO [vstreem,,] 13160 --- [  restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\admin\.m2\repository\com\sun\xml\bind\jaxb-core\2.3.0.1\jaxb-core-2.3.0.1.jar referenced one or more files that do not exist: file:/C:/Users/admin/.m2/repository/com/sun/xml/bind/jaxb-core/2.3.0.1/jaxb-api.jar
+2021-06-05 09:03:31.741  INFO [vstreem,,] 13160 --- [  restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\admin\.m2\repository\com\sun\xml\bind\jaxb-impl\2.3.0.1\jaxb-impl-2.3.0.1.jar referenced one or more files that do not exist: file:/C:/Users/admin/.m2/repository/com/sun/xml/bind/jaxb-impl/2.3.0.1/jaxb-core.jar
+2021-06-05 09:03:31.742  INFO [vstreem,,] 13160 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-06-05 09:03:31.742  INFO [vstreem,,] 13160 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-06-05 09:03:31.904  WARN [vstreem,,] 13160 --- [kground-preinit] o.s.h.c.j.Jackson2ObjectMapperBuilder    : For Jackson Kotlin classes support please add "com.fasterxml.jackson.module:jackson-module-kotlin" to the classpath
+2021-06-05 09:03:34.022  INFO [vstreem,,] 13160 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-06-05 09:03:34.022  INFO [vstreem,,] 13160 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2021-06-05 09:03:34.139  INFO [vstreem,,] 13160 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 107 ms. Found 4 MongoDB repository interfaces.
+2021-06-05 09:03:34.143  INFO [vstreem,,] 13160 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-06-05 09:03:34.144  INFO [vstreem,,] 13160 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-06-05 09:03:34.239  INFO [vstreem,,] 13160 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 86 ms. Found 9 JPA repository interfaces.
+2021-06-05 09:03:35.759  INFO [vstreem,,] 13160 --- [  restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=5b2f15af-7086-3aae-a8ce-fa0133d87d1f
+2021-06-05 09:03:36.730  INFO [vstreem,,] 13160 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@41cc02b8' of type [org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-06-05 09:03:36.771  INFO [vstreem,,] 13160 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-06-05 09:03:38.461  INFO [vstreem,,] 13160 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-06-05 09:03:38.485  INFO [vstreem,,] 13160 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-06-05 09:03:38.486  INFO [vstreem,,] 13160 --- [  restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.46]
+2021-06-05 09:03:38.843  INFO [vstreem,,] 13160 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-06-05 09:03:38.846  INFO [vstreem,,] 13160 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 7102 ms
+2021-06-05 09:03:39.624 DEBUG [vstreem,,] 13160 --- [  restartedMain] com.arraigntech.config.TraccerFilter     : Filter 'traccerFilter' configured for use
+2021-06-05 09:03:40.283  INFO [vstreem,,] 13160 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-06-05 09:03:40.423  INFO [vstreem,,] 13160 --- [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.31.Final
+2021-06-05 09:03:40.740  INFO [vstreem,,] 13160 --- [  restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-06-05 09:03:41.008  INFO [vstreem,,] 13160 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-06-05 09:03:41.517  INFO [vstreem,,] 13160 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-06-05 09:03:41.591  INFO [vstreem,,] 13160 --- [  restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2021-06-05 09:03:42.919  WARN [vstreem,,] 13160 --- [  restartedMain] org.hibernate.id.UUIDHexGenerator        : HHH000409: Using org.hibernate.id.UUIDHexGenerator which does not generate IETF RFC 4122 compliant UUID values; consider using org.hibernate.id.UUIDGenerator instead
+2021-06-05 09:03:45.296  WARN [vstreem,,] 13160 --- [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists email_settings add constraint FK4oiv3hgbtvsey171ubogtwuy3 foreign key (user_id) references app_user" via JDBC Statement
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists email_settings add constraint FK4oiv3hgbtvsey171ubogtwuy3 foreign key (user_id) references app_user" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:318)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:468)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1845)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1154)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:908)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:758)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:438)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:337)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1336)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1325)
+	at com.arraigntech.AuthServerApplication.main(AuthServerApplication.java:25)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "email_settings" violates foreign key constraint "fk4oiv3hgbtvsey171ubogtwuy3"
+  Detail: Key (user_id)=(2c9d408178e3cb9a0178e3d63f3a0001) is not present in table "app_user".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:322)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:308)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:284)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:279)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 38 common frames omitted
+
+2021-06-05 09:03:45.409  WARN [vstreem,,] 13160 --- [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists role_user add constraint FKfhbmfntjddrc0h05a0feowune foreign key (user_id) references app_user" via JDBC Statement
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists role_user add constraint FKfhbmfntjddrc0h05a0feowune foreign key (user_id) references app_user" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:318)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:468)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1845)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1154)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:908)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:758)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:438)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:337)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1336)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1325)
+	at com.arraigntech.AuthServerApplication.main(AuthServerApplication.java:25)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "role_user" violates foreign key constraint "fkfhbmfntjddrc0h05a0feowune"
+  Detail: Key (user_id)=(2c9d408178e3cb9a0178e3d63f3a0001) is not present in table "app_user".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:322)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:308)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:284)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:279)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 38 common frames omitted
+
+2021-06-05 09:03:45.497  INFO [vstreem,,] 13160 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-06-05 09:03:45.513  INFO [vstreem,,] 13160 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-06-05 09:03:47.022  WARN [vstreem,,] 13160 --- [  restartedMain] o.s.s.o.p.t.s.JwtAccessTokenConverter    : Unable to create an RSA verifier from verifierKey (ignoreable if using MAC)
+2021-06-05 09:03:48.910  INFO [vstreem,,] 13160 --- [  restartedMain] org.mongodb.driver.cluster               : Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2021-06-05 09:03:49.085  INFO [vstreem,,] 13160 --- [localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:1, serverValue:1118}] to localhost:27017
+2021-06-05 09:03:49.087  INFO [vstreem,,] 13160 --- [localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=9, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=68610200}
+2021-06-05 09:03:49.091  INFO [vstreem,,] 13160 --- [localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:2, serverValue:1119}] to localhost:27017
+2021-06-05 09:03:49.263  WARN [vstreem,,] 13160 --- [  restartedMain] o.s.data.convert.CustomConversions       : Registering converter from class java.time.LocalDateTime to class org.joda.time.LocalDateTime as reading converter although it doesn't convert from a store-supported type! You might want to check your annotation setup at the converter implementation.
+2021-06-05 09:03:49.421  INFO [vstreem,,] 13160 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2021-06-05 09:03:49.550  WARN [vstreem,,] 13160 --- [  restartedMain] o.s.data.convert.CustomConversions       : Registering converter from class java.time.LocalDateTime to class org.joda.time.LocalDateTime as reading converter although it doesn't convert from a store-supported type! You might want to check your annotation setup at the converter implementation.
+2021-06-05 09:03:54.359  INFO [vstreem,,] 13160 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/v2/api-docs'] with []
+2021-06-05 09:03:54.359  INFO [vstreem,,] 13160 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/configuration/ui'] with []
+2021-06-05 09:03:54.360  INFO [vstreem,,] 13160 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/swagger-resources/**'] with []
+2021-06-05 09:03:54.360  INFO [vstreem,,] 13160 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/configuration/security'] with []
+2021-06-05 09:03:54.360  INFO [vstreem,,] 13160 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/swagger-ui.html'] with []
+2021-06-05 09:03:54.360  INFO [vstreem,,] 13160 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/webjars/**'] with []
+2021-06-05 09:03:54.592  INFO [vstreem,,] 13160 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Or [Ant [pattern='/oauth/token'], Ant [pattern='/oauth/token_key'], Ant [pattern='/oauth/check_token']] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@598051f0, org.springframework.security.web.context.SecurityContextPersistenceFilter@4f1c1b33, org.springframework.security.web.header.HeaderWriterFilter@622a6d5a, org.springframework.security.web.authentication.logout.LogoutFilter@61186ce, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@5e1a301f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@543d9430, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5d3a111f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@dcb16bb, org.springframework.security.web.session.SessionManagementFilter@160362ff, org.springframework.security.web.access.ExceptionTranslationFilter@47cfd7ab, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@d7100ef]
+2021-06-05 09:03:54.762  INFO [vstreem,,] 13160 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration$NotOAuthRequestMatcher@116354f6 with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3c1b1fc5, org.springframework.security.web.context.SecurityContextPersistenceFilter@38089801, org.springframework.security.web.header.HeaderWriterFilter@5d577d62, org.springframework.web.filter.CorsFilter@2e112270, org.springframework.security.web.authentication.logout.LogoutFilter@8c03776, org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter@778375f5, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1b1a273b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7d40e557, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3422e16f, org.springframework.security.web.session.SessionManagementFilter@6c8cb620, org.springframework.security.web.access.ExceptionTranslationFilter@67789932, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@571f47cf]
+2021-06-05 09:03:54.862  INFO [vstreem,,] 13160 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1ca55b6d, org.springframework.security.web.context.SecurityContextPersistenceFilter@1c6969b9, org.springframework.security.web.header.HeaderWriterFilter@4c2a9fc5, org.springframework.security.web.csrf.CsrfFilter@1a3bdfb3, org.springframework.security.web.authentication.logout.LogoutFilter@40b7215a, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@2b2565db, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@6f09a551, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@523603bb, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@1349bd54, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@46d8c187, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5e14aa2e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@624e0880, org.springframework.security.web.session.SessionManagementFilter@75288095, org.springframework.security.web.access.ExceptionTranslationFilter@1c28c863, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@600acab6]
+2021-06-05 09:03:55.163  INFO [vstreem,,] 13160 --- [  restartedMain] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2021-06-05 09:03:55.963  WARN [vstreem,,] 13160 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-06-05 09:03:57.512  WARN [vstreem,,] 13160 --- [  restartedMain] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2021-06-05 09:03:59.347  INFO [vstreem,,] 13160 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-06-05 09:03:59.748  INFO [vstreem,,] 13160 --- [  restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Context refreshed
+2021-06-05 09:03:59.814  INFO [vstreem,,] 13160 --- [  restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+2021-06-05 09:03:59.972  INFO [vstreem,,] 13160 --- [  restartedMain] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2021-06-05 09:04:01.276  INFO [vstreem,,] 13160 --- [  restartedMain] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: resetPasswordUsingPOST_1
+2021-06-05 09:04:01.471  INFO [vstreem,,] 13160 --- [  restartedMain] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: addChannelUsingPOST_1
+2021-06-05 09:04:01.714  INFO [vstreem,,] 13160 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Started AuthServerApplication in 31.606 seconds (JVM running for 33.426)
+2021-06-05 09:04:01.719  INFO [vstreem,,] 13160 --- [  restartedMain] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
+2021-06-05 09:04:01.733  INFO [vstreem,,] 13160 --- [  restartedMain] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
+2021-06-05 09:04:01.733  INFO [vstreem,,] 13160 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Application Started
+2021-06-05 09:05:18.316  INFO [vstreem,,] 13160 --- [nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-06-05 09:05:18.318  INFO [vstreem,,] 13160 --- [nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-06-05 09:05:18.320  INFO [vstreem,,] 13160 --- [nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2021-06-05 09:05:18.426 DEBUG [vstreem,76c1a2ac99ad5198,76c1a2ac99ad5198] 13160 --- [nio-8080-exec-2] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.controller.AuthController.login() with argument[s] = [LoginDetails [email=bhaskaras1999@gmail.com, password=Bhaskar123]]
+2021-06-05 09:05:18.453 DEBUG [vstreem,76c1a2ac99ad5198,76c1a2ac99ad5198] 13160 --- [nio-8080-exec-2] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.UserServiceImpl.generateToken() with argument[s] = [LoginDetails [email=bhaskaras1999@gmail.com, password=Bhaskar123]]
+2021-06-05 09:05:19.010 DEBUG [vstreem,76c1a2ac99ad5198,76c1a2ac99ad5198] 13160 --- [nio-8080-exec-2] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.SocialLoginServiceImpl.getAccessToken() with argument[s] = [com.arraigntech.entity.UserEntity@3d348753]
+2021-06-05 09:05:19.019 DEBUG [vstreem,76c1a2ac99ad5198,76c1a2ac99ad5198] 13160 --- [nio-8080-exec-2] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.UserDetailServiceImpl.loadUserByUsername() with argument[s] = [bhaskaras1999@gmail.com]
+2021-06-05 09:05:19.075 DEBUG [vstreem,76c1a2ac99ad5198,76c1a2ac99ad5198] 13160 --- [nio-8080-exec-2] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.UserDetailServiceImpl.loadUserByUsername() with result = com.arraigntech.request.vo.AuthUserDetailVO@63b04806
+2021-06-05 09:05:19.159 DEBUG [vstreem,76c1a2ac99ad5198,76c1a2ac99ad5198] 13160 --- [nio-8080-exec-2] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.SocialLoginServiceImpl.getAccessToken() with result = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJiaGFza2FyYXMxOTk5QGdtYWlsLmNvbSIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdLCJleHAiOjE2MjI5MDczMTksImF1dGhvcml0aWVzIjpbImRlbGV0ZV9wcm9maWxlIiwidXBkYXRlX3Byb2ZpbGUiLCJyZWFkX3Byb2ZpbGUiXSwianRpIjoiMDdmYzUzNDAtN2FkYi00MTNjLWJiZjItNTVkNDA2ODZkN2I2IiwiZW1haWwiOiJiaGFza2FyYXMxOTk5QGdtYWlsLmNvbSIsImNsaWVudF9pZCI6Im1vYmlsZSIsInJlc291cmNlaWRzIjpbXX0.YBUN6cXAMPSCXqk0zzHWKGBOmGFE9v9k9cmdvOPqufY
+2021-06-05 09:05:19.160 DEBUG [vstreem,76c1a2ac99ad5198,76c1a2ac99ad5198] 13160 --- [nio-8080-exec-2] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.UserServiceImpl.generateToken() with result = LoginResponseDTO [result=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJiaGFza2FyYXMxOTk5QGdtYWlsLmNvbSIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdLCJleHAiOjE2MjI5MDczMTksImF1dGhvcml0aWVzIjpbImRlbGV0ZV9wcm9maWxlIiwidXBkYXRlX3Byb2ZpbGUiLCJyZWFkX3Byb2ZpbGUiXSwianRpIjoiMDdmYzUzNDAtN2FkYi00MTNjLWJiZjItNTVkNDA2ODZkN2I2IiwiZW1haWwiOiJiaGFza2FyYXMxOTk5QGdtYWlsLmNvbSIsImNsaWVudF9pZCI6Im1vYmlsZSIsInJlc291cmNlaWRzIjpbXX0.YBUN6cXAMPSCXqk0zzHWKGBOmGFE9v9k9cmdvOPqufY, flag=true]
+2021-06-05 09:05:19.161 DEBUG [vstreem,76c1a2ac99ad5198,76c1a2ac99ad5198] 13160 --- [nio-8080-exec-2] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.controller.AuthController.login() with result = BaseResponse [responseMessages={Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJiaGFza2FyYXMxOTk5QGdtYWlsLmNvbSIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdLCJleHAiOjE2MjI5MDczMTksImF1dGhvcml0aWVzIjpbImRlbGV0ZV9wcm9maWxlIiwidXBkYXRlX3Byb2ZpbGUiLCJyZWFkX3Byb2ZpbGUiXSwianRpIjoiMDdmYzUzNDAtN2FkYi00MTNjLWJiZjItNTVkNDA2ODZkN2I2IiwiZW1haWwiOiJiaGFza2FyYXMxOTk5QGdtYWlsLmNvbSIsImNsaWVudF9pZCI6Im1vYmlsZSIsInJlc291cmNlaWRzIjpbXX0.YBUN6cXAMPSCXqk0zzHWKGBOmGFE9v9k9cmdvOPqufY}, success=true, results=null, isCustomErrorHandling=false]
+2021-06-05 09:06:49.739 DEBUG [vstreem,4de9ab5eeefac14b,4de9ab5eeefac14b] 13160 --- [nio-8080-exec-3] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.controller.ChannelsController.addYoutubeManually() with argument[s] = [CustomChannelDTO [channelType=youtube, streamKey=wy95-70u5-we8j-pb4e-3v9r, rtmpUrl=rtmp://a.rtmp.youtube.com/live2]]
+2021-06-05 09:06:49.748 DEBUG [vstreem,4de9ab5eeefac14b,4de9ab5eeefac14b] 13160 --- [nio-8080-exec-3] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.ChannelServiceImpl.addYoutubeManually() with argument[s] = [CustomChannelDTO [channelType=youtube, streamKey=wy95-70u5-we8j-pb4e-3v9r, rtmpUrl=rtmp://a.rtmp.youtube.com/live2]]
+2021-06-05 09:06:49.756 DEBUG [vstreem,4de9ab5eeefac14b,4de9ab5eeefac14b] 13160 --- [nio-8080-exec-3] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.UserServiceImpl.getUser() with argument[s] = []
+2021-06-05 09:06:49.774 DEBUG [vstreem,4de9ab5eeefac14b,4de9ab5eeefac14b] 13160 --- [nio-8080-exec-3] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.UserServiceImpl.getUser() with result = com.arraigntech.entity.UserEntity@32b042b
+2021-06-05 09:06:49.850 DEBUG [vstreem,4de9ab5eeefac14b,4de9ab5eeefac14b] 13160 --- [nio-8080-exec-3] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.ChannelServiceImpl.addYoutubeManually() with result = true
+2021-06-05 09:06:49.850 DEBUG [vstreem,4de9ab5eeefac14b,4de9ab5eeefac14b] 13160 --- [nio-8080-exec-3] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.controller.ChannelsController.addYoutubeManually() with result = BaseResponse [responseMessages={Success=Channel added successfully}, success=true, results=null, isCustomErrorHandling=false]
+2021-06-05 09:07:21.685 DEBUG [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.controller.IVSStreamController.createStream() with argument[s] = [StreamUIRequest [aspectRatioHeight=1082, aspectRatioWidth=1922]]
+2021-06-05 09:07:21.693 DEBUG [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.IVSStreamServiceImpl.createStream() with argument[s] = [StreamUIRequest [aspectRatioHeight=1082, aspectRatioWidth=1922]]
+2021-06-05 09:07:21.701 DEBUG [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.UserServiceImpl.getUser() with argument[s] = []
+2021-06-05 09:07:21.710 DEBUG [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.UserServiceImpl.getUser() with result = com.arraigntech.entity.UserEntity@261370b
+2021-06-05 09:07:21.711 DEBUG [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:07:27.971  INFO [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:3, serverValue:1120}] to localhost:27017
+2021-06-05 09:07:28.035 DEBUG [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.UserServiceImpl.getUser() with argument[s] = []
+2021-06-05 09:07:28.045 DEBUG [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.UserServiceImpl.getUser() with result = com.arraigntech.entity.UserEntity@35b6a9bd
+2021-06-05 09:07:28.074 DEBUG [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.UserServiceImpl.getUser() with argument[s] = []
+2021-06-05 09:07:28.081 DEBUG [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.UserServiceImpl.getUser() with result = com.arraigntech.entity.UserEntity@38456879
+2021-06-05 09:07:28.082 DEBUG [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.ChannelServiceImpl.findByUserAndTypeAndActive() with argument[s] = [com.arraigntech.entity.UserEntity@38456879, YOUTUBE, true]
+2021-06-05 09:07:28.317 DEBUG [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.ChannelServiceImpl.findByUserAndTypeAndActive() with result = [com.arraigntech.entity.ChannelEntity@467ee750, com.arraigntech.entity.ChannelEntity@44f6c53c]
+2021-06-05 09:07:28.318 DEBUG [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.ChannelServiceImpl.findByUserAndTypeAndActive() with argument[s] = [com.arraigntech.entity.UserEntity@38456879, FACEBOOK, true]
+2021-06-05 09:07:28.334 DEBUG [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.ChannelServiceImpl.findByUserAndTypeAndActive() with result = [com.arraigntech.entity.ChannelEntity@683bc33a]
+2021-06-05 09:07:28.334 DEBUG [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.ChannelServiceImpl.findByUserAndTypeAndActive() with argument[s] = [com.arraigntech.entity.UserEntity@38456879, INSTAGRAM, true]
+2021-06-05 09:07:28.336 DEBUG [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.ChannelServiceImpl.findByUserAndTypeAndActive() with result = []
+2021-06-05 09:07:28.341 DEBUG [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.IVSStreamServiceImpl.createStream() with result = StreamUIResponse [sdpUrl=wss://5ef09c.entrypoint.cloud.wowza.com/webrtc-session.json, applicationName=app-994hd636, streamName=Wjh4NnVB, streamId=bpjjtmrv, streamStatus=starting]
+2021-06-05 09:07:28.341 DEBUG [vstreem,7ef3e6bb36d2120a,7ef3e6bb36d2120a] 13160 --- [nio-8080-exec-4] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.controller.IVSStreamController.createStream() with result = BaseResponse [responseMessages={}, success=true, results=StreamUIResponse [sdpUrl=wss://5ef09c.entrypoint.cloud.wowza.com/webrtc-session.json, applicationName=app-994hd636, streamName=Wjh4NnVB, streamId=bpjjtmrv, streamStatus=starting], isCustomErrorHandling=false]
+2021-06-05 09:07:28.368 DEBUG [vstreem,,] 13160 --- [onPool-worker-3] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:07:28.369 DEBUG [vstreem,,] 13160 --- [onPool-worker-5] c.a.service.impl.IVSStreamServiceImpl    : getFacebookStreamData start
+2021-06-05 09:07:28.379 DEBUG [vstreem,,] 13160 --- [onPool-worker-7] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.DocumentS3ServiceImpl.getDocumentImageURL() with argument[s] = []
+2021-06-05 09:07:28.392 DEBUG [vstreem,,] 13160 --- [onPool-worker-7] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.UserServiceImpl.getUser() with argument[s] = []
+2021-06-05 09:07:28.400 DEBUG [vstreem,,] 13160 --- [onPool-worker-7] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.UserServiceImpl.getUser() with result = com.arraigntech.entity.UserEntity@4f9320bd
+2021-06-05 09:07:28.497 DEBUG [vstreem,,] 13160 --- [onPool-worker-7] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.DocumentS3ServiceImpl.getDocumentImageURL() with result = com.arraigntech.response.vo.S3UIResponse@765f9428
+2021-06-05 09:07:29.861 DEBUG [vstreem,,] 13160 --- [onPool-worker-3] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:07:29.958 DEBUG [vstreem,,] 13160 --- [onPool-worker-5] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:07:30.117 DEBUG [vstreem,,] 13160 --- [onPool-worker-7] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:07:31.365 DEBUG [vstreem,,] 13160 --- [onPool-worker-3] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:07:31.649 DEBUG [vstreem,,] 13160 --- [onPool-worker-7] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:07:31.849 DEBUG [vstreem,,] 13160 --- [onPool-worker-5] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:07:32.499 DEBUG [vstreem,,] 13160 --- [onPool-worker-3] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:07:33.015 DEBUG [vstreem,,] 13160 --- [onPool-worker-5] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:07:33.894 DEBUG [vstreem,,] 13160 --- [onPool-worker-5] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:07:34.218 DEBUG [vstreem,,] 13160 --- [onPool-worker-5] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:07:34.556 DEBUG [vstreem,,] 13160 --- [onPool-worker-5] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:07:34.899 DEBUG [vstreem,,] 13160 --- [onPool-worker-5] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:14:26.060 DEBUG [vstreem,c993d182bb17c008,c993d182bb17c008] 13160 --- [nio-8080-exec-7] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.controller.IVSStreamController.deleteStream() with argument[s] = [bpjjtmrv]
+2021-06-05 09:14:26.061 DEBUG [vstreem,c993d182bb17c008,c993d182bb17c008] 13160 --- [nio-8080-exec-7] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.IVSStreamServiceImpl.deleteStream() with argument[s] = [bpjjtmrv]
+2021-06-05 09:14:26.093 DEBUG [vstreem,c993d182bb17c008,c993d182bb17c008] 13160 --- [nio-8080-exec-7] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:14:28.095 DEBUG [vstreem,c993d182bb17c008,c993d182bb17c008] 13160 --- [nio-8080-exec-7] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:14:28.532 DEBUG [vstreem,c993d182bb17c008,c993d182bb17c008] 13160 --- [nio-8080-exec-7] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:14:28.861 DEBUG [vstreem,c993d182bb17c008,c993d182bb17c008] 13160 --- [nio-8080-exec-7] c.a.service.impl.IVSStreamServiceImpl    : wowza header {Content-Type=[application/json], wsc-api-key=[byEHoa53Vsttei5gZcOrQQNXzb0VrfKdZBxMD5M8qK6zHKEcfzaR02cQSh3G3362], wsc-access-key=[lg6fV4eWbZ6pRCNwMXFOYX3xRyBuOhaI4mruJCx3x9n7OrJiTxDHWX82xRCj340c]}.
+2021-06-05 09:14:29.186 DEBUG [vstreem,c993d182bb17c008,c993d182bb17c008] 13160 --- [nio-8080-exec-7] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.IVSStreamServiceImpl.deleteStream() with result = true
+2021-06-05 09:14:29.187 DEBUG [vstreem,c993d182bb17c008,c993d182bb17c008] 13160 --- [nio-8080-exec-7] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.controller.IVSStreamController.deleteStream() with result = BaseResponse [responseMessages={Success=Stream has been deleted successfully.}, success=true, results=null, isCustomErrorHandling=false]
+2021-06-05 13:47:48.017  INFO [vstreem,,] 25836 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Starting AuthServerApplication using Java 15.0.1 on DESKTOP-RSB7OUJ with PID 25836 (E:\vstreem\vstreem-backend\target\classes started by admin in E:\vstreem\vstreem-backend)
+2021-06-05 13:47:48.020 DEBUG [vstreem,,] 25836 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Running with Spring Boot v2.5.0, Spring v5.3.7
+2021-06-05 13:47:48.020  INFO [vstreem,,] 25836 --- [  restartedMain] com.arraigntech.AuthServerApplication    : No active profile set, falling back to default profiles: default
+2021-06-05 13:47:48.268  INFO [vstreem,,] 25836 --- [  restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\admin\.m2\repository\com\sun\xml\bind\jaxb-core\2.3.0.1\jaxb-core-2.3.0.1.jar referenced one or more files that do not exist: file:/C:/Users/admin/.m2/repository/com/sun/xml/bind/jaxb-core/2.3.0.1/jaxb-api.jar
+2021-06-05 13:47:48.268  INFO [vstreem,,] 25836 --- [  restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\admin\.m2\repository\com\sun\xml\bind\jaxb-impl\2.3.0.1\jaxb-impl-2.3.0.1.jar referenced one or more files that do not exist: file:/C:/Users/admin/.m2/repository/com/sun/xml/bind/jaxb-impl/2.3.0.1/jaxb-core.jar
+2021-06-05 13:47:48.269  INFO [vstreem,,] 25836 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-06-05 13:47:48.269  INFO [vstreem,,] 25836 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-06-05 13:47:48.471  WARN [vstreem,,] 25836 --- [kground-preinit] o.s.h.c.j.Jackson2ObjectMapperBuilder    : For Jackson Kotlin classes support please add "com.fasterxml.jackson.module:jackson-module-kotlin" to the classpath
+2021-06-05 13:47:51.996  INFO [vstreem,,] 25836 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-06-05 13:47:51.999  INFO [vstreem,,] 25836 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2021-06-05 13:47:52.255  INFO [vstreem,,] 25836 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 239 ms. Found 4 MongoDB repository interfaces.
+2021-06-05 13:47:52.258  INFO [vstreem,,] 25836 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-06-05 13:47:52.259  INFO [vstreem,,] 25836 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-06-05 13:47:52.331  INFO [vstreem,,] 25836 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 66 ms. Found 9 JPA repository interfaces.
+2021-06-05 13:47:53.593  INFO [vstreem,,] 25836 --- [  restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=5b2f15af-7086-3aae-a8ce-fa0133d87d1f
+2021-06-05 13:47:54.236  INFO [vstreem,,] 25836 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@7df8ad8e' of type [org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-06-05 13:47:54.255  INFO [vstreem,,] 25836 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-06-05 13:47:56.494  INFO [vstreem,,] 25836 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-06-05 13:47:56.512  INFO [vstreem,,] 25836 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-06-05 13:47:56.512  INFO [vstreem,,] 25836 --- [  restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.46]
+2021-06-05 13:47:56.932  INFO [vstreem,,] 25836 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-06-05 13:47:56.933  INFO [vstreem,,] 25836 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 8662 ms
+2021-06-05 13:47:57.489 DEBUG [vstreem,,] 25836 --- [  restartedMain] com.arraigntech.config.TraccerFilter     : Filter 'traccerFilter' configured for use
+2021-06-05 13:47:58.032  INFO [vstreem,,] 25836 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-06-05 13:47:58.162  INFO [vstreem,,] 25836 --- [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.31.Final
+2021-06-05 13:47:58.403  INFO [vstreem,,] 25836 --- [  restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-06-05 13:47:58.590  INFO [vstreem,,] 25836 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-06-05 13:47:58.918  INFO [vstreem,,] 25836 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-06-05 13:47:58.999  INFO [vstreem,,] 25836 --- [  restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2021-06-05 13:48:00.076  WARN [vstreem,,] 25836 --- [  restartedMain] org.hibernate.id.UUIDHexGenerator        : HHH000409: Using org.hibernate.id.UUIDHexGenerator which does not generate IETF RFC 4122 compliant UUID values; consider using org.hibernate.id.UUIDGenerator instead
+2021-06-05 13:48:02.031  WARN [vstreem,,] 25836 --- [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists email_settings add constraint FK4oiv3hgbtvsey171ubogtwuy3 foreign key (user_id) references app_user" via JDBC Statement
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists email_settings add constraint FK4oiv3hgbtvsey171ubogtwuy3 foreign key (user_id) references app_user" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:318)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:468)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1845)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1154)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:908)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:758)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:438)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:337)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1336)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1325)
+	at com.arraigntech.AuthServerApplication.main(AuthServerApplication.java:25)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "email_settings" violates foreign key constraint "fk4oiv3hgbtvsey171ubogtwuy3"
+  Detail: Key (user_id)=(2c9d408178e3cb9a0178e3d63f3a0001) is not present in table "app_user".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:322)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:308)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:284)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:279)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 38 common frames omitted
+
+2021-06-05 13:48:02.128  WARN [vstreem,,] 25836 --- [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists role_user add constraint FKfhbmfntjddrc0h05a0feowune foreign key (user_id) references app_user" via JDBC Statement
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists role_user add constraint FKfhbmfntjddrc0h05a0feowune foreign key (user_id) references app_user" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:318)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:468)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1845)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1154)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:908)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:758)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:438)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:337)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1336)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1325)
+	at com.arraigntech.AuthServerApplication.main(AuthServerApplication.java:25)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "role_user" violates foreign key constraint "fkfhbmfntjddrc0h05a0feowune"
+  Detail: Key (user_id)=(2c9d408178e3cb9a0178e3d63f3a0001) is not present in table "app_user".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:322)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:308)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:284)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:279)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 38 common frames omitted
+
+2021-06-05 13:48:02.205  INFO [vstreem,,] 25836 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-06-05 13:48:02.218  INFO [vstreem,,] 25836 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-06-05 13:48:03.362  WARN [vstreem,,] 25836 --- [  restartedMain] o.s.s.o.p.t.s.JwtAccessTokenConverter    : Unable to create an RSA verifier from verifierKey (ignoreable if using MAC)
+2021-06-05 13:48:04.918  INFO [vstreem,,] 25836 --- [  restartedMain] org.mongodb.driver.cluster               : Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2021-06-05 13:48:05.015  INFO [vstreem,,] 25836 --- [localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:1, serverValue:1122}] to localhost:27017
+2021-06-05 13:48:05.016  INFO [vstreem,,] 25836 --- [localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=9, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=34633300}
+2021-06-05 13:48:05.028  INFO [vstreem,,] 25836 --- [localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:2, serverValue:1123}] to localhost:27017
+2021-06-05 13:48:05.147  WARN [vstreem,,] 25836 --- [  restartedMain] o.s.data.convert.CustomConversions       : Registering converter from class java.time.LocalDateTime to class org.joda.time.LocalDateTime as reading converter although it doesn't convert from a store-supported type! You might want to check your annotation setup at the converter implementation.
+2021-06-05 13:48:05.387  INFO [vstreem,,] 25836 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2021-06-05 13:48:05.556  WARN [vstreem,,] 25836 --- [  restartedMain] o.s.data.convert.CustomConversions       : Registering converter from class java.time.LocalDateTime to class org.joda.time.LocalDateTime as reading converter although it doesn't convert from a store-supported type! You might want to check your annotation setup at the converter implementation.
+2021-06-05 13:48:08.617  INFO [vstreem,,] 25836 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/v2/api-docs'] with []
+2021-06-05 13:48:08.617  INFO [vstreem,,] 25836 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/configuration/ui'] with []
+2021-06-05 13:48:08.617  INFO [vstreem,,] 25836 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/swagger-resources/**'] with []
+2021-06-05 13:48:08.618  INFO [vstreem,,] 25836 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/configuration/security'] with []
+2021-06-05 13:48:08.618  INFO [vstreem,,] 25836 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/swagger-ui.html'] with []
+2021-06-05 13:48:08.618  INFO [vstreem,,] 25836 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/webjars/**'] with []
+2021-06-05 13:48:08.746  INFO [vstreem,,] 25836 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Or [Ant [pattern='/oauth/token'], Ant [pattern='/oauth/token_key'], Ant [pattern='/oauth/check_token']] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@569f2e3d, org.springframework.security.web.context.SecurityContextPersistenceFilter@22ed91ee, org.springframework.security.web.header.HeaderWriterFilter@70e171e8, org.springframework.security.web.authentication.logout.LogoutFilter@50eb66cc, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@4fabec65, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@625fda5a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@24800280, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@747ab935, org.springframework.security.web.session.SessionManagementFilter@59115506, org.springframework.security.web.access.ExceptionTranslationFilter@2a091b59, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3df5749e]
+2021-06-05 13:48:08.777  INFO [vstreem,,] 25836 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration$NotOAuthRequestMatcher@489a7331 with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@636c7b84, org.springframework.security.web.context.SecurityContextPersistenceFilter@4ff046fe, org.springframework.security.web.header.HeaderWriterFilter@11600f40, org.springframework.web.filter.CorsFilter@250b627d, org.springframework.security.web.authentication.logout.LogoutFilter@29760315, org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter@29806c24, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7f0ac181, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6e81db2f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1700c70c, org.springframework.security.web.session.SessionManagementFilter@6c8ccf72, org.springframework.security.web.access.ExceptionTranslationFilter@53ac6cc5, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4057f68d]
+2021-06-05 13:48:08.819  INFO [vstreem,,] 25836 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1205092c, org.springframework.security.web.context.SecurityContextPersistenceFilter@1d381fdd, org.springframework.security.web.header.HeaderWriterFilter@26b06507, org.springframework.security.web.csrf.CsrfFilter@ac70a96, org.springframework.security.web.authentication.logout.LogoutFilter@226f6375, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@7a503587, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@3cccbeb0, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@4f703064, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@274eba1e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7f4db6e7, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5af07c54, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4e81ee31, org.springframework.security.web.session.SessionManagementFilter@7883db29, org.springframework.security.web.access.ExceptionTranslationFilter@17febd20, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7d30ebc8]
+2021-06-05 13:48:09.063  INFO [vstreem,,] 25836 --- [  restartedMain] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2021-06-05 13:48:09.555  WARN [vstreem,,] 25836 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-06-05 13:48:10.172  WARN [vstreem,,] 25836 --- [  restartedMain] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2021-06-05 13:48:10.837  INFO [vstreem,,] 25836 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-06-05 13:48:11.107  INFO [vstreem,,] 25836 --- [  restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Context refreshed
+2021-06-05 13:48:11.133  INFO [vstreem,,] 25836 --- [  restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+2021-06-05 13:48:11.207  INFO [vstreem,,] 25836 --- [  restartedMain] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2021-06-05 13:48:11.639  INFO [vstreem,,] 25836 --- [  restartedMain] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: resetPasswordUsingPOST_1
+2021-06-05 13:48:11.717  INFO [vstreem,,] 25836 --- [  restartedMain] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: addChannelUsingPOST_1
+2021-06-05 13:48:11.899  INFO [vstreem,,] 25836 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Started AuthServerApplication in 25.324 seconds (JVM running for 27.502)
+2021-06-05 13:48:11.902  INFO [vstreem,,] 25836 --- [  restartedMain] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
+2021-06-05 13:48:11.906  INFO [vstreem,,] 25836 --- [  restartedMain] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
+2021-06-05 13:48:11.907  INFO [vstreem,,] 25836 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Application Started
+2021-06-05 19:59:46.192  INFO [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Starting AuthServerApplication using Java 15.0.1 on DESKTOP-RSB7OUJ with PID 17060 (E:\vstreem\vstreem-backend\target\classes started by admin in E:\vstreem\vstreem-backend)
+2021-06-05 19:59:46.196 DEBUG [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Running with Spring Boot v2.5.0, Spring v5.3.7
+2021-06-05 19:59:46.196  INFO [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : No active profile set, falling back to default profiles: default
+2021-06-05 19:59:46.358  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\admin\.m2\repository\com\sun\xml\bind\jaxb-core\2.3.0.1\jaxb-core-2.3.0.1.jar referenced one or more files that do not exist: file:/C:/Users/admin/.m2/repository/com/sun/xml/bind/jaxb-core/2.3.0.1/jaxb-api.jar
+2021-06-05 19:59:46.358  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\admin\.m2\repository\com\sun\xml\bind\jaxb-impl\2.3.0.1\jaxb-impl-2.3.0.1.jar referenced one or more files that do not exist: file:/C:/Users/admin/.m2/repository/com/sun/xml/bind/jaxb-impl/2.3.0.1/jaxb-core.jar
+2021-06-05 19:59:46.359  INFO [vstreem,,] 17060 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-06-05 19:59:46.359  INFO [vstreem,,] 17060 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-06-05 19:59:46.536  WARN [vstreem,,] 17060 --- [kground-preinit] o.s.h.c.j.Jackson2ObjectMapperBuilder    : For Jackson Kotlin classes support please add "com.fasterxml.jackson.module:jackson-module-kotlin" to the classpath
+2021-06-05 19:59:48.149  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-06-05 19:59:48.151  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2021-06-05 19:59:48.227  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 67 ms. Found 4 MongoDB repository interfaces.
+2021-06-05 19:59:48.229  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-06-05 19:59:48.230  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-06-05 19:59:48.294  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 59 ms. Found 9 JPA repository interfaces.
+2021-06-05 19:59:49.432  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=5b2f15af-7086-3aae-a8ce-fa0133d87d1f
+2021-06-05 19:59:50.079  INFO [vstreem,,] 17060 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@4ce1f1d1' of type [org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-06-05 19:59:50.113  INFO [vstreem,,] 17060 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-06-05 19:59:51.420  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-06-05 19:59:51.439  INFO [vstreem,,] 17060 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-06-05 19:59:51.448  INFO [vstreem,,] 17060 --- [  restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.46]
+2021-06-05 19:59:51.775  INFO [vstreem,,] 17060 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-06-05 19:59:51.776  INFO [vstreem,,] 17060 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5414 ms
+2021-06-05 19:59:52.363 DEBUG [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.config.TraccerFilter     : Filter 'traccerFilter' configured for use
+2021-06-05 19:59:52.840  INFO [vstreem,,] 17060 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-06-05 19:59:52.943  INFO [vstreem,,] 17060 --- [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.31.Final
+2021-06-05 19:59:53.210  INFO [vstreem,,] 17060 --- [  restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-06-05 19:59:53.430  INFO [vstreem,,] 17060 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-06-05 19:59:53.838  INFO [vstreem,,] 17060 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-06-05 19:59:53.895  INFO [vstreem,,] 17060 --- [  restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2021-06-05 19:59:55.063  WARN [vstreem,,] 17060 --- [  restartedMain] org.hibernate.id.UUIDHexGenerator        : HHH000409: Using org.hibernate.id.UUIDHexGenerator which does not generate IETF RFC 4122 compliant UUID values; consider using org.hibernate.id.UUIDGenerator instead
+2021-06-05 19:59:57.097  WARN [vstreem,,] 17060 --- [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists email_settings add constraint FK4oiv3hgbtvsey171ubogtwuy3 foreign key (user_id) references app_user" via JDBC Statement
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists email_settings add constraint FK4oiv3hgbtvsey171ubogtwuy3 foreign key (user_id) references app_user" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:318)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:468)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1845)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1154)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:908)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:758)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:438)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:337)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1336)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1325)
+	at com.arraigntech.AuthServerApplication.main(AuthServerApplication.java:25)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "email_settings" violates foreign key constraint "fk4oiv3hgbtvsey171ubogtwuy3"
+  Detail: Key (user_id)=(2c9d408178e3cb9a0178e3d63f3a0001) is not present in table "app_user".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:322)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:308)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:284)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:279)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 38 common frames omitted
+
+2021-06-05 19:59:57.216  WARN [vstreem,,] 17060 --- [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists role_user add constraint FKfhbmfntjddrc0h05a0feowune foreign key (user_id) references app_user" via JDBC Statement
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists role_user add constraint FKfhbmfntjddrc0h05a0feowune foreign key (user_id) references app_user" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:318)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:468)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1845)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1154)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:908)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:758)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:438)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:337)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1336)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1325)
+	at com.arraigntech.AuthServerApplication.main(AuthServerApplication.java:25)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "role_user" violates foreign key constraint "fkfhbmfntjddrc0h05a0feowune"
+  Detail: Key (user_id)=(2c9d408178e3cb9a0178e3d63f3a0001) is not present in table "app_user".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:322)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:308)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:284)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:279)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 38 common frames omitted
+
+2021-06-05 19:59:57.296  INFO [vstreem,,] 17060 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-06-05 19:59:57.309  INFO [vstreem,,] 17060 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-06-05 19:59:58.618  WARN [vstreem,,] 17060 --- [  restartedMain] o.s.s.o.p.t.s.JwtAccessTokenConverter    : Unable to create an RSA verifier from verifierKey (ignoreable if using MAC)
+2021-06-05 20:00:01.675  INFO [vstreem,,] 17060 --- [  restartedMain] org.mongodb.driver.cluster               : Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2021-06-05 20:00:01.897  INFO [vstreem,,] 17060 --- [localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:2, serverValue:1126}] to localhost:27017
+2021-06-05 20:00:01.897  INFO [vstreem,,] 17060 --- [localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:1, serverValue:1125}] to localhost:27017
+2021-06-05 20:00:01.898  INFO [vstreem,,] 17060 --- [localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=9, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=87086800}
+2021-06-05 20:00:02.061  WARN [vstreem,,] 17060 --- [  restartedMain] o.s.data.convert.CustomConversions       : Registering converter from class java.time.LocalDateTime to class org.joda.time.LocalDateTime as reading converter although it doesn't convert from a store-supported type! You might want to check your annotation setup at the converter implementation.
+2021-06-05 20:00:02.307  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2021-06-05 20:00:02.571  WARN [vstreem,,] 17060 --- [  restartedMain] o.s.data.convert.CustomConversions       : Registering converter from class java.time.LocalDateTime to class org.joda.time.LocalDateTime as reading converter although it doesn't convert from a store-supported type! You might want to check your annotation setup at the converter implementation.
+2021-06-05 20:00:08.938  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/v2/api-docs'] with []
+2021-06-05 20:00:08.942  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/configuration/ui'] with []
+2021-06-05 20:00:08.943  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/swagger-resources/**'] with []
+2021-06-05 20:00:08.944  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/configuration/security'] with []
+2021-06-05 20:00:08.945  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/swagger-ui.html'] with []
+2021-06-05 20:00:08.946  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/webjars/**'] with []
+2021-06-05 20:00:09.233  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Or [Ant [pattern='/oauth/token'], Ant [pattern='/oauth/token_key'], Ant [pattern='/oauth/check_token']] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@afdc5d3, org.springframework.security.web.context.SecurityContextPersistenceFilter@66682916, org.springframework.security.web.header.HeaderWriterFilter@66c9c6f5, org.springframework.security.web.authentication.logout.LogoutFilter@4fb02bba, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@6fcd1e53, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@29ede159, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3d325dd2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3993d02b, org.springframework.security.web.session.SessionManagementFilter@369265e4, org.springframework.security.web.access.ExceptionTranslationFilter@4a413a54, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@160270d5]
+2021-06-05 20:00:09.354  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration$NotOAuthRequestMatcher@1a9df393 with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5679f699, org.springframework.security.web.context.SecurityContextPersistenceFilter@da8fd69, org.springframework.security.web.header.HeaderWriterFilter@440728f1, org.springframework.web.filter.CorsFilter@1bd0f344, org.springframework.security.web.authentication.logout.LogoutFilter@13e797b, org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter@7ed8aaf5, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@42fe92d4, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@bd3823c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@67ad41ac, org.springframework.security.web.session.SessionManagementFilter@4a967fea, org.springframework.security.web.access.ExceptionTranslationFilter@2b60650, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@39a4844c]
+2021-06-05 20:00:09.411  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@28cbf862, org.springframework.security.web.context.SecurityContextPersistenceFilter@9b5d37d, org.springframework.security.web.header.HeaderWriterFilter@3d024294, org.springframework.security.web.csrf.CsrfFilter@64dbcc17, org.springframework.security.web.authentication.logout.LogoutFilter@3775c695, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@28374855, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@3954df94, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@400262da, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@52f858dd, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6260aa37, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4d59420d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@65f4069d, org.springframework.security.web.session.SessionManagementFilter@6cd3054f, org.springframework.security.web.access.ExceptionTranslationFilter@378b86aa, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@1d8f1a42]
+2021-06-05 20:00:09.575  INFO [vstreem,,] 17060 --- [  restartedMain] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2021-06-05 20:00:10.071  WARN [vstreem,,] 17060 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-06-05 20:00:10.996  WARN [vstreem,,] 17060 --- [  restartedMain] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2021-06-05 20:00:12.095  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-06-05 20:00:12.430  INFO [vstreem,,] 17060 --- [  restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Context refreshed
+2021-06-05 20:00:12.475  INFO [vstreem,,] 17060 --- [  restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+2021-06-05 20:00:12.587  INFO [vstreem,,] 17060 --- [  restartedMain] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2021-06-05 20:00:13.347  INFO [vstreem,,] 17060 --- [  restartedMain] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: resetPasswordUsingPOST_1
+2021-06-05 20:00:13.485  INFO [vstreem,,] 17060 --- [  restartedMain] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: addChannelUsingPOST_1
+2021-06-05 20:00:13.848  INFO [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Started AuthServerApplication in 28.816 seconds (JVM running for 30.429)
+2021-06-05 20:00:13.854  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
+2021-06-05 20:00:13.863  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
+2021-06-05 20:00:13.865  INFO [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Application Started
+2021-06-05 20:00:20.720  INFO [vstreem,,] 17060 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-06-05 20:00:20.721  INFO [vstreem,,] 17060 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-06-05 20:00:20.723  INFO [vstreem,,] 17060 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2021-06-05 20:00:20.822 DEBUG [vstreem,22d986a6596b3a3c,22d986a6596b3a3c] 17060 --- [nio-8080-exec-1] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.controller.AuthController.login() with argument[s] = [LoginDetails [email=bhaskaras1999@gmail.com, password=Bhaskar123]]
+2021-06-05 20:00:20.838 DEBUG [vstreem,22d986a6596b3a3c,22d986a6596b3a3c] 17060 --- [nio-8080-exec-1] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.UserServiceImpl.generateToken() with argument[s] = [LoginDetails [email=bhaskaras1999@gmail.com, password=Bhaskar123]]
+2021-06-05 20:00:21.281 DEBUG [vstreem,22d986a6596b3a3c,22d986a6596b3a3c] 17060 --- [nio-8080-exec-1] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.SocialLoginServiceImpl.getAccessToken() with argument[s] = [com.arraigntech.entity.UserEntity@57ff1db2]
+2021-06-05 20:00:21.301 DEBUG [vstreem,22d986a6596b3a3c,22d986a6596b3a3c] 17060 --- [nio-8080-exec-1] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.UserDetailServiceImpl.loadUserByUsername() with argument[s] = [bhaskaras1999@gmail.com]
+2021-06-05 20:00:21.317 DEBUG [vstreem,22d986a6596b3a3c,22d986a6596b3a3c] 17060 --- [nio-8080-exec-1] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.UserDetailServiceImpl.loadUserByUsername() with result = com.arraigntech.request.vo.AuthUserDetailVO@e8e6e18
+2021-06-05 20:00:21.380 DEBUG [vstreem,22d986a6596b3a3c,22d986a6596b3a3c] 17060 --- [nio-8080-exec-1] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.SocialLoginServiceImpl.getAccessToken() with result = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJiaGFza2FyYXMxOTk5QGdtYWlsLmNvbSIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdLCJleHAiOjE2MjI5NDY2MjEsImF1dGhvcml0aWVzIjpbImRlbGV0ZV9wcm9maWxlIiwidXBkYXRlX3Byb2ZpbGUiLCJyZWFkX3Byb2ZpbGUiXSwianRpIjoiNzA4ZjhiYTAtMjFjOC00YzgxLWFiNDQtZmY2ZWIyYzE2MDU0IiwiZW1haWwiOiJiaGFza2FyYXMxOTk5QGdtYWlsLmNvbSIsImNsaWVudF9pZCI6Im1vYmlsZSIsInJlc291cmNlaWRzIjpbXX0.Vte_7hoGYaeBWTPd0LJygL9V4XUO5VuuqhQRir3hFHM
+2021-06-05 20:00:21.380 DEBUG [vstreem,22d986a6596b3a3c,22d986a6596b3a3c] 17060 --- [nio-8080-exec-1] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.UserServiceImpl.generateToken() with result = LoginResponseDTO [result=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJiaGFza2FyYXMxOTk5QGdtYWlsLmNvbSIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdLCJleHAiOjE2MjI5NDY2MjEsImF1dGhvcml0aWVzIjpbImRlbGV0ZV9wcm9maWxlIiwidXBkYXRlX3Byb2ZpbGUiLCJyZWFkX3Byb2ZpbGUiXSwianRpIjoiNzA4ZjhiYTAtMjFjOC00YzgxLWFiNDQtZmY2ZWIyYzE2MDU0IiwiZW1haWwiOiJiaGFza2FyYXMxOTk5QGdtYWlsLmNvbSIsImNsaWVudF9pZCI6Im1vYmlsZSIsInJlc291cmNlaWRzIjpbXX0.Vte_7hoGYaeBWTPd0LJygL9V4XUO5VuuqhQRir3hFHM, flag=true]
+2021-06-05 20:00:21.385 DEBUG [vstreem,22d986a6596b3a3c,22d986a6596b3a3c] 17060 --- [nio-8080-exec-1] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.controller.AuthController.login() with result = BaseResponse [responseMessages={Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJiaGFza2FyYXMxOTk5QGdtYWlsLmNvbSIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdLCJleHAiOjE2MjI5NDY2MjEsImF1dGhvcml0aWVzIjpbImRlbGV0ZV9wcm9maWxlIiwidXBkYXRlX3Byb2ZpbGUiLCJyZWFkX3Byb2ZpbGUiXSwianRpIjoiNzA4ZjhiYTAtMjFjOC00YzgxLWFiNDQtZmY2ZWIyYzE2MDU0IiwiZW1haWwiOiJiaGFza2FyYXMxOTk5QGdtYWlsLmNvbSIsImNsaWVudF9pZCI6Im1vYmlsZSIsInJlc291cmNlaWRzIjpbXX0.Vte_7hoGYaeBWTPd0LJygL9V4XUO5VuuqhQRir3hFHM}, success=true, results=null, isCustomErrorHandling=false]
+2021-06-05 20:00:58.696  INFO [vstreem,,] 17060 --- [nio-8080-exec-3] o.apache.coyote.http11.Http11Processor   : Error parsing HTTP request header
+ Note: further occurrences of HTTP request parsing errors will be logged at DEBUG level.
+
+java.lang.IllegalArgumentException: Invalid character found in method name [0x160x030x010x000xf70x010x000x000xf30x030x030x030xfd0xf80xb00xfd0x02(uU0xf90xb90xbc0xda,D0xaa0xf60xa60xe00xbe0x06p0xcc0xfa|0xe90xe90xc3V0xdaIt ]. HTTP method names must be tokens
+	at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:417)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:261)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:893)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1707)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:630)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:832)
+
+2021-06-05 20:01:04.974 DEBUG [vstreem,436fe8994b7292e8,436fe8994b7292e8] 17060 --- [nio-8080-exec-5] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.controller.IVSStreamController.uploadFile() with argument[s] = [org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile@6779b3fe, BRANDLOGO]
+2021-06-05 20:01:04.980 DEBUG [vstreem,436fe8994b7292e8,436fe8994b7292e8] 17060 --- [nio-8080-exec-5] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.DocumentS3ServiceImpl.uploadFile() with argument[s] = [org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile@6779b3fe]
+2021-06-05 20:01:09.082 DEBUG [vstreem,436fe8994b7292e8,436fe8994b7292e8] 17060 --- [nio-8080-exec-5] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.DocumentS3ServiceImpl.uploadFile() with result = https://vstreem-staging-images.s3.us-east-2.amazonaws.com/brandlogo/p1.jpg
+2021-06-05 20:01:09.083 DEBUG [vstreem,436fe8994b7292e8,436fe8994b7292e8] 17060 --- [nio-8080-exec-5] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.DocumentS3ServiceImpl.saveAWSDocumentDetails() with argument[s] = [BRANDLOGO, https://vstreem-staging-images.s3.us-east-2.amazonaws.com/brandlogo/p1.jpg]
+2021-06-05 20:01:09.083 DEBUG [vstreem,436fe8994b7292e8,436fe8994b7292e8] 17060 --- [nio-8080-exec-5] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.UserServiceImpl.getUser() with argument[s] = []
+2021-06-05 20:01:09.090 DEBUG [vstreem,436fe8994b7292e8,436fe8994b7292e8] 17060 --- [nio-8080-exec-5] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.UserServiceImpl.getUser() with result = com.arraigntech.entity.UserEntity@7ba99402
+2021-06-05 20:01:09.165  INFO [vstreem,436fe8994b7292e8,436fe8994b7292e8] 17060 --- [nio-8080-exec-5] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:3, serverValue:1127}] to localhost:27017
+2021-06-05 20:01:09.260 DEBUG [vstreem,436fe8994b7292e8,436fe8994b7292e8] 17060 --- [nio-8080-exec-5] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.DocumentS3ServiceImpl.saveAWSDocumentDetails() with result = 60bb8aad8b9f50623038d07e
+2021-06-05 20:01:09.260 DEBUG [vstreem,436fe8994b7292e8,436fe8994b7292e8] 17060 --- [nio-8080-exec-5] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.controller.IVSStreamController.uploadFile() with result = BaseResponse [responseMessages={ImageId=60bb8aad8b9f50623038d07e}, success=true, results=null, isCustomErrorHandling=false]
+2021-06-05 20:13:07.092  INFO [vstreem,,] 17060 --- [       Thread-6] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed from ACCEPTING_TRAFFIC to REFUSING_TRAFFIC
+2021-06-05 20:13:07.140  INFO [vstreem,,] 17060 --- [       Thread-6] org.mongodb.driver.connection            : Closed connection [connectionId{localValue:3, serverValue:1127}] to localhost:27017 because the pool has been closed.
+2021-06-05 20:13:07.148  INFO [vstreem,,] 17060 --- [       Thread-6] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-06-05 20:13:07.152  INFO [vstreem,,] 17060 --- [       Thread-6] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-06-05 20:13:07.163  INFO [vstreem,,] 17060 --- [       Thread-6] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2021-06-05 20:13:07.587  INFO [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Starting AuthServerApplication using Java 15.0.1 on DESKTOP-RSB7OUJ with PID 17060 (E:\vstreem\vstreem-backend\target\classes started by admin in E:\vstreem\vstreem-backend)
+2021-06-05 20:13:07.587 DEBUG [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Running with Spring Boot v2.5.0, Spring v5.3.7
+2021-06-05 20:13:07.588  INFO [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : No active profile set, falling back to default profiles: default
+2021-06-05 20:13:08.405  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-06-05 20:13:08.405  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2021-06-05 20:13:08.418  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12 ms. Found 4 MongoDB repository interfaces.
+2021-06-05 20:13:08.419  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-06-05 20:13:08.419  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-06-05 20:13:08.459  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 40 ms. Found 9 JPA repository interfaces.
+2021-06-05 20:13:08.973  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=5b2f15af-7086-3aae-a8ce-fa0133d87d1f
+2021-06-05 20:13:09.183  INFO [vstreem,,] 17060 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@696fd540' of type [org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-06-05 20:13:09.218  INFO [vstreem,,] 17060 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-06-05 20:13:09.476  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-06-05 20:13:09.478  INFO [vstreem,,] 17060 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-06-05 20:13:09.478  INFO [vstreem,,] 17060 --- [  restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.46]
+2021-06-05 20:13:09.574  INFO [vstreem,,] 17060 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-06-05 20:13:09.575  INFO [vstreem,,] 17060 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1981 ms
+2021-06-05 20:13:09.856 DEBUG [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.config.TraccerFilter     : Filter 'traccerFilter' configured for use
+2021-06-05 20:13:10.026  INFO [vstreem,,] 17060 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-06-05 20:13:10.042  INFO [vstreem,,] 17060 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2021-06-05 20:13:10.127  INFO [vstreem,,] 17060 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2021-06-05 20:13:10.127  INFO [vstreem,,] 17060 --- [  restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2021-06-05 20:13:11.997  WARN [vstreem,,] 17060 --- [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists email_settings add constraint FK4oiv3hgbtvsey171ubogtwuy3 foreign key (user_id) references app_user" via JDBC Statement
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists email_settings add constraint FK4oiv3hgbtvsey171ubogtwuy3 foreign key (user_id) references app_user" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:318)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:468)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1845)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1154)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:908)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:758)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:438)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:337)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1336)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1325)
+	at com.arraigntech.AuthServerApplication.main(AuthServerApplication.java:25)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "email_settings" violates foreign key constraint "fk4oiv3hgbtvsey171ubogtwuy3"
+  Detail: Key (user_id)=(2c9d408178e3cb9a0178e3d63f3a0001) is not present in table "app_user".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:322)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:308)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:284)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:279)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 38 common frames omitted
+
+2021-06-05 20:13:12.079  WARN [vstreem,,] 17060 --- [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists role_user add constraint FKfhbmfntjddrc0h05a0feowune foreign key (user_id) references app_user" via JDBC Statement
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists role_user add constraint FKfhbmfntjddrc0h05a0feowune foreign key (user_id) references app_user" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:318)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:468)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1845)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1154)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:908)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:758)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:438)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:337)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1336)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1325)
+	at com.arraigntech.AuthServerApplication.main(AuthServerApplication.java:25)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "role_user" violates foreign key constraint "fkfhbmfntjddrc0h05a0feowune"
+  Detail: Key (user_id)=(2c9d408178e3cb9a0178e3d63f3a0001) is not present in table "app_user".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:322)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:308)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:284)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:279)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 38 common frames omitted
+
+2021-06-05 20:13:12.285  INFO [vstreem,,] 17060 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-06-05 20:13:12.286  INFO [vstreem,,] 17060 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-06-05 20:13:14.065  WARN [vstreem,,] 17060 --- [  restartedMain] o.s.s.o.p.t.s.JwtAccessTokenConverter    : Unable to create an RSA verifier from verifierKey (ignoreable if using MAC)
+2021-06-05 20:13:15.436  INFO [vstreem,,] 17060 --- [  restartedMain] org.mongodb.driver.cluster               : Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2021-06-05 20:13:15.540  WARN [vstreem,,] 17060 --- [  restartedMain] o.s.data.convert.CustomConversions       : Registering converter from class java.time.LocalDateTime to class org.joda.time.LocalDateTime as reading converter although it doesn't convert from a store-supported type! You might want to check your annotation setup at the converter implementation.
+2021-06-05 20:13:15.569  INFO [vstreem,,] 17060 --- [localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:4, serverValue:1128}] to localhost:27017
+2021-06-05 20:13:15.570  INFO [vstreem,,] 17060 --- [localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=9, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=50636500}
+2021-06-05 20:13:15.572  INFO [vstreem,,] 17060 --- [localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:5, serverValue:1129}] to localhost:27017
+2021-06-05 20:13:15.607  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2021-06-05 20:13:15.684  WARN [vstreem,,] 17060 --- [  restartedMain] o.s.data.convert.CustomConversions       : Registering converter from class java.time.LocalDateTime to class org.joda.time.LocalDateTime as reading converter although it doesn't convert from a store-supported type! You might want to check your annotation setup at the converter implementation.
+2021-06-05 20:13:16.571  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/v2/api-docs'] with []
+2021-06-05 20:13:16.572  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/configuration/ui'] with []
+2021-06-05 20:13:16.572  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/swagger-resources/**'] with []
+2021-06-05 20:13:16.572  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/configuration/security'] with []
+2021-06-05 20:13:16.572  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/swagger-ui.html'] with []
+2021-06-05 20:13:16.572  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/webjars/**'] with []
+2021-06-05 20:13:16.619  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Or [Ant [pattern='/oauth/token'], Ant [pattern='/oauth/token_key'], Ant [pattern='/oauth/check_token']] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@67b78bf6, org.springframework.security.web.context.SecurityContextPersistenceFilter@6796f2dc, org.springframework.security.web.header.HeaderWriterFilter@6d0a1fe9, org.springframework.security.web.authentication.logout.LogoutFilter@23ff0234, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@afd3198, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6b11423f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@11df88d4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@491b23aa, org.springframework.security.web.session.SessionManagementFilter@5c11fb69, org.springframework.security.web.access.ExceptionTranslationFilter@6331727d, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@588a75ae]
+2021-06-05 20:13:16.646  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration$NotOAuthRequestMatcher@746fa029 with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@d4ba0a6, org.springframework.security.web.context.SecurityContextPersistenceFilter@5e71e3d8, org.springframework.security.web.header.HeaderWriterFilter@7c89c976, org.springframework.web.filter.CorsFilter@332370e4, org.springframework.security.web.authentication.logout.LogoutFilter@2e3dfe97, org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter@3f09e9e6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@11cde06b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@233d495d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4c2f05d8, org.springframework.security.web.session.SessionManagementFilter@61f7a2b4, org.springframework.security.web.access.ExceptionTranslationFilter@352f5b96, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@8680a32]
+2021-06-05 20:13:16.672  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4e256623, org.springframework.security.web.context.SecurityContextPersistenceFilter@4b2171d3, org.springframework.security.web.header.HeaderWriterFilter@2cc25c84, org.springframework.security.web.csrf.CsrfFilter@6335657e, org.springframework.security.web.authentication.logout.LogoutFilter@5e1b604b, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@1bef344f, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@49b47905, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@5bc3fc51, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@594a66e7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@60c01909, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5e585fe9, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5a58be90, org.springframework.security.web.session.SessionManagementFilter@750c5ef1, org.springframework.security.web.access.ExceptionTranslationFilter@3f529305, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@6763bbda]
+2021-06-05 20:13:16.722  INFO [vstreem,,] 17060 --- [  restartedMain] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2021-06-05 20:13:16.981  WARN [vstreem,,] 17060 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-06-05 20:13:17.341  WARN [vstreem,,] 17060 --- [  restartedMain] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2021-06-05 20:13:17.844  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-06-05 20:13:18.122  INFO [vstreem,,] 17060 --- [  restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Context refreshed
+2021-06-05 20:13:18.123  INFO [vstreem,,] 17060 --- [  restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+2021-06-05 20:13:18.145  INFO [vstreem,,] 17060 --- [  restartedMain] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2021-06-05 20:13:18.307  INFO [vstreem,,] 17060 --- [  restartedMain] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: resetPasswordUsingPOST_1
+2021-06-05 20:13:18.348  INFO [vstreem,,] 17060 --- [  restartedMain] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: addChannelUsingPOST_1
+2021-06-05 20:13:18.440  INFO [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Started AuthServerApplication in 11.142 seconds (JVM running for 814.937)
+2021-06-05 20:13:18.441  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
+2021-06-05 20:13:18.445  INFO [vstreem,,] 17060 --- [  restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2021-06-05 20:13:18.445  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
+2021-06-05 20:13:18.445  INFO [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Application Started
+2021-06-05 20:13:18.891  INFO [vstreem,,] 17060 --- [      Thread-11] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed from ACCEPTING_TRAFFIC to REFUSING_TRAFFIC
+2021-06-05 20:13:18.943  INFO [vstreem,,] 17060 --- [      Thread-11] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-06-05 20:13:18.944  INFO [vstreem,,] 17060 --- [      Thread-11] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2021-06-05 20:13:18.964  INFO [vstreem,,] 17060 --- [      Thread-11] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+2021-06-05 20:13:19.382  INFO [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Starting AuthServerApplication using Java 15.0.1 on DESKTOP-RSB7OUJ with PID 17060 (E:\vstreem\vstreem-backend\target\classes started by admin in E:\vstreem\vstreem-backend)
+2021-06-05 20:13:19.382 DEBUG [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Running with Spring Boot v2.5.0, Spring v5.3.7
+2021-06-05 20:13:19.382  INFO [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : No active profile set, falling back to default profiles: default
+2021-06-05 20:13:20.086  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-06-05 20:13:20.086  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2021-06-05 20:13:20.100  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12 ms. Found 4 MongoDB repository interfaces.
+2021-06-05 20:13:20.100  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-06-05 20:13:20.100  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-06-05 20:13:20.139  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 38 ms. Found 9 JPA repository interfaces.
+2021-06-05 20:13:20.450  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=5b2f15af-7086-3aae-a8ce-fa0133d87d1f
+2021-06-05 20:13:20.542  INFO [vstreem,,] 17060 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@1ef1e21b' of type [org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-06-05 20:13:20.548  INFO [vstreem,,] 17060 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-06-05 20:13:20.715  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-06-05 20:13:20.717  INFO [vstreem,,] 17060 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-06-05 20:13:20.720  INFO [vstreem,,] 17060 --- [  restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.46]
+2021-06-05 20:13:20.808  INFO [vstreem,,] 17060 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-06-05 20:13:20.808  INFO [vstreem,,] 17060 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1422 ms
+2021-06-05 20:13:21.146 DEBUG [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.config.TraccerFilter     : Filter 'traccerFilter' configured for use
+2021-06-05 20:13:21.586  INFO [vstreem,,] 17060 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-06-05 20:13:21.603  INFO [vstreem,,] 17060 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2021-06-05 20:13:21.675  INFO [vstreem,,] 17060 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2021-06-05 20:13:21.675  INFO [vstreem,,] 17060 --- [  restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2021-06-05 20:13:23.600  WARN [vstreem,,] 17060 --- [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists email_settings add constraint FK4oiv3hgbtvsey171ubogtwuy3 foreign key (user_id) references app_user" via JDBC Statement
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists email_settings add constraint FK4oiv3hgbtvsey171ubogtwuy3 foreign key (user_id) references app_user" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:318)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:468)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1845)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1154)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:908)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:758)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:438)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:337)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1336)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1325)
+	at com.arraigntech.AuthServerApplication.main(AuthServerApplication.java:25)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "email_settings" violates foreign key constraint "fk4oiv3hgbtvsey171ubogtwuy3"
+  Detail: Key (user_id)=(2c9d408178e3cb9a0178e3d63f3a0001) is not present in table "app_user".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:322)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:308)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:284)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:279)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 38 common frames omitted
+
+2021-06-05 20:13:23.685  WARN [vstreem,,] 17060 --- [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists role_user add constraint FKfhbmfntjddrc0h05a0feowune foreign key (user_id) references app_user" via JDBC Statement
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists role_user add constraint FKfhbmfntjddrc0h05a0feowune foreign key (user_id) references app_user" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:318)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:468)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1845)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1154)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:908)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:758)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:438)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:337)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1336)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1325)
+	at com.arraigntech.AuthServerApplication.main(AuthServerApplication.java:25)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "role_user" violates foreign key constraint "fkfhbmfntjddrc0h05a0feowune"
+  Detail: Key (user_id)=(2c9d408178e3cb9a0178e3d63f3a0001) is not present in table "app_user".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:322)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:308)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:284)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:279)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 38 common frames omitted
+
+2021-06-05 20:13:23.760  INFO [vstreem,,] 17060 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-06-05 20:13:23.760  INFO [vstreem,,] 17060 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-06-05 20:13:24.046  WARN [vstreem,,] 17060 --- [  restartedMain] o.s.s.o.p.t.s.JwtAccessTokenConverter    : Unable to create an RSA verifier from verifierKey (ignoreable if using MAC)
+2021-06-05 20:13:24.814  INFO [vstreem,,] 17060 --- [  restartedMain] org.mongodb.driver.cluster               : Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2021-06-05 20:13:24.830  WARN [vstreem,,] 17060 --- [  restartedMain] o.s.data.convert.CustomConversions       : Registering converter from class java.time.LocalDateTime to class org.joda.time.LocalDateTime as reading converter although it doesn't convert from a store-supported type! You might want to check your annotation setup at the converter implementation.
+2021-06-05 20:13:24.861  INFO [vstreem,,] 17060 --- [localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:6, serverValue:1130}] to localhost:27017
+2021-06-05 20:13:24.862  INFO [vstreem,,] 17060 --- [localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=9, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=20546000}
+2021-06-05 20:13:24.881  INFO [vstreem,,] 17060 --- [localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:7, serverValue:1131}] to localhost:27017
+2021-06-05 20:13:24.908  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2021-06-05 20:13:24.989  WARN [vstreem,,] 17060 --- [  restartedMain] o.s.data.convert.CustomConversions       : Registering converter from class java.time.LocalDateTime to class org.joda.time.LocalDateTime as reading converter although it doesn't convert from a store-supported type! You might want to check your annotation setup at the converter implementation.
+2021-06-05 20:13:25.975  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/v2/api-docs'] with []
+2021-06-05 20:13:25.976  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/configuration/ui'] with []
+2021-06-05 20:13:25.976  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/swagger-resources/**'] with []
+2021-06-05 20:13:25.976  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/configuration/security'] with []
+2021-06-05 20:13:25.976  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/swagger-ui.html'] with []
+2021-06-05 20:13:25.976  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/webjars/**'] with []
+2021-06-05 20:13:26.022  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Or [Ant [pattern='/oauth/token'], Ant [pattern='/oauth/token_key'], Ant [pattern='/oauth/check_token']] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6902565b, org.springframework.security.web.context.SecurityContextPersistenceFilter@4a09986e, org.springframework.security.web.header.HeaderWriterFilter@18a20f7d, org.springframework.security.web.authentication.logout.LogoutFilter@1a55163c, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@47cfc82, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7f8f1b25, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@14844492, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6a253b50, org.springframework.security.web.session.SessionManagementFilter@79ce19b9, org.springframework.security.web.access.ExceptionTranslationFilter@3ea81c49, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@86cdd9d]
+2021-06-05 20:13:26.037  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration$NotOAuthRequestMatcher@3749c5bb with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@71a540ed, org.springframework.security.web.context.SecurityContextPersistenceFilter@4bf3dc42, org.springframework.security.web.header.HeaderWriterFilter@ac74ccb, org.springframework.web.filter.CorsFilter@49c10311, org.springframework.security.web.authentication.logout.LogoutFilter@659389df, org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter@2a8353d2, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@8990880, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3808ac4c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2bd1e50f, org.springframework.security.web.session.SessionManagementFilter@3b267e28, org.springframework.security.web.access.ExceptionTranslationFilter@3a0f34c8, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@c71ea69]
+2021-06-05 20:13:26.058  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1ab25e7, org.springframework.security.web.context.SecurityContextPersistenceFilter@4429f9b0, org.springframework.security.web.header.HeaderWriterFilter@55a35a5b, org.springframework.security.web.csrf.CsrfFilter@116a90be, org.springframework.security.web.authentication.logout.LogoutFilter@28e27ca4, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@6344626, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@173d6199, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@2ec28cc1, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@2621fff1, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1ffa8ccd, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@50447ceb, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@18b6e909, org.springframework.security.web.session.SessionManagementFilter@66342143, org.springframework.security.web.access.ExceptionTranslationFilter@5f609d0d, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7351edaa]
+2021-06-05 20:13:26.095  INFO [vstreem,,] 17060 --- [  restartedMain] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2021-06-05 20:13:26.266  WARN [vstreem,,] 17060 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-06-05 20:13:26.654  WARN [vstreem,,] 17060 --- [  restartedMain] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2021-06-05 20:13:27.115  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-06-05 20:13:27.342  INFO [vstreem,,] 17060 --- [  restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Context refreshed
+2021-06-05 20:13:27.344  INFO [vstreem,,] 17060 --- [  restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+2021-06-05 20:13:27.355  INFO [vstreem,,] 17060 --- [  restartedMain] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2021-06-05 20:13:27.488  INFO [vstreem,,] 17060 --- [  restartedMain] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: resetPasswordUsingPOST_1
+2021-06-05 20:13:27.530  INFO [vstreem,,] 17060 --- [  restartedMain] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: addChannelUsingPOST_1
+2021-06-05 20:13:27.654  INFO [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Started AuthServerApplication in 8.536 seconds (JVM running for 824.15)
+2021-06-05 20:13:27.655  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
+2021-06-05 20:13:27.657  INFO [vstreem,,] 17060 --- [  restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2021-06-05 20:13:27.658  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
+2021-06-05 20:13:27.659  INFO [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Application Started
+2021-06-05 20:14:04.598  INFO [vstreem,,] 17060 --- [      Thread-18] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed from ACCEPTING_TRAFFIC to REFUSING_TRAFFIC
+2021-06-05 20:14:04.636  INFO [vstreem,,] 17060 --- [      Thread-18] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-06-05 20:14:04.638  INFO [vstreem,,] 17060 --- [      Thread-18] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
+2021-06-05 20:14:04.644  INFO [vstreem,,] 17060 --- [      Thread-18] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
+2021-06-05 20:14:05.048  INFO [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Starting AuthServerApplication using Java 15.0.1 on DESKTOP-RSB7OUJ with PID 17060 (E:\vstreem\vstreem-backend\target\classes started by admin in E:\vstreem\vstreem-backend)
+2021-06-05 20:14:05.048 DEBUG [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Running with Spring Boot v2.5.0, Spring v5.3.7
+2021-06-05 20:14:05.048  INFO [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : No active profile set, falling back to default profiles: default
+2021-06-05 20:14:05.593  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-06-05 20:14:05.593  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2021-06-05 20:14:05.603  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 4 MongoDB repository interfaces.
+2021-06-05 20:14:05.603  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-06-05 20:14:05.604  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-06-05 20:14:05.635  INFO [vstreem,,] 17060 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 30 ms. Found 9 JPA repository interfaces.
+2021-06-05 20:14:05.878  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=5b2f15af-7086-3aae-a8ce-fa0133d87d1f
+2021-06-05 20:14:05.947  INFO [vstreem,,] 17060 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@733f4c06' of type [org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-06-05 20:14:05.960  INFO [vstreem,,] 17060 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-06-05 20:14:06.186  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-06-05 20:14:06.187  INFO [vstreem,,] 17060 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-06-05 20:14:06.188  INFO [vstreem,,] 17060 --- [  restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.46]
+2021-06-05 20:14:06.265  INFO [vstreem,,] 17060 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-06-05 20:14:06.265  INFO [vstreem,,] 17060 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1213 ms
+2021-06-05 20:14:06.408 DEBUG [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.config.TraccerFilter     : Filter 'traccerFilter' configured for use
+2021-06-05 20:14:06.537  INFO [vstreem,,] 17060 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-06-05 20:14:06.551  INFO [vstreem,,] 17060 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Starting...
+2021-06-05 20:14:06.619  INFO [vstreem,,] 17060 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Start completed.
+2021-06-05 20:14:06.620  INFO [vstreem,,] 17060 --- [  restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2021-06-05 20:14:08.007  WARN [vstreem,,] 17060 --- [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists email_settings add constraint FK4oiv3hgbtvsey171ubogtwuy3 foreign key (user_id) references app_user" via JDBC Statement
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists email_settings add constraint FK4oiv3hgbtvsey171ubogtwuy3 foreign key (user_id) references app_user" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:318)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:468)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1845)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1154)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:908)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:758)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:438)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:337)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1336)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1325)
+	at com.arraigntech.AuthServerApplication.main(AuthServerApplication.java:25)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "email_settings" violates foreign key constraint "fk4oiv3hgbtvsey171ubogtwuy3"
+  Detail: Key (user_id)=(2c9d408178e3cb9a0178e3d63f3a0001) is not present in table "app_user".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:322)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:308)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:284)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:279)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 38 common frames omitted
+
+2021-06-05 20:14:08.070  WARN [vstreem,,] 17060 --- [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists role_user add constraint FKfhbmfntjddrc0h05a0feowune foreign key (user_id) references app_user" via JDBC Statement
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists role_user add constraint FKfhbmfntjddrc0h05a0feowune foreign key (user_id) references app_user" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:318)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:468)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1845)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1154)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:908)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:758)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:438)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:337)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1336)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1325)
+	at com.arraigntech.AuthServerApplication.main(AuthServerApplication.java:25)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "role_user" violates foreign key constraint "fkfhbmfntjddrc0h05a0feowune"
+  Detail: Key (user_id)=(2c9d408178e3cb9a0178e3d63f3a0001) is not present in table "app_user".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:322)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:308)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:284)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:279)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 38 common frames omitted
+
+2021-06-05 20:14:08.128  INFO [vstreem,,] 17060 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-06-05 20:14:08.128  INFO [vstreem,,] 17060 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-06-05 20:14:08.410  WARN [vstreem,,] 17060 --- [  restartedMain] o.s.s.o.p.t.s.JwtAccessTokenConverter    : Unable to create an RSA verifier from verifierKey (ignoreable if using MAC)
+2021-06-05 20:14:09.034  INFO [vstreem,,] 17060 --- [  restartedMain] org.mongodb.driver.cluster               : Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2021-06-05 20:14:09.061  WARN [vstreem,,] 17060 --- [  restartedMain] o.s.data.convert.CustomConversions       : Registering converter from class java.time.LocalDateTime to class org.joda.time.LocalDateTime as reading converter although it doesn't convert from a store-supported type! You might want to check your annotation setup at the converter implementation.
+2021-06-05 20:14:09.078  INFO [vstreem,,] 17060 --- [localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:9, serverValue:1132}] to localhost:27017
+2021-06-05 20:14:09.078  INFO [vstreem,,] 17060 --- [localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:8, serverValue:1133}] to localhost:27017
+2021-06-05 20:14:09.078  INFO [vstreem,,] 17060 --- [localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=9, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=27598000}
+2021-06-05 20:14:09.120  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2021-06-05 20:14:09.255  WARN [vstreem,,] 17060 --- [  restartedMain] o.s.data.convert.CustomConversions       : Registering converter from class java.time.LocalDateTime to class org.joda.time.LocalDateTime as reading converter although it doesn't convert from a store-supported type! You might want to check your annotation setup at the converter implementation.
+2021-06-05 20:14:09.952  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/v2/api-docs'] with []
+2021-06-05 20:14:09.954  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/configuration/ui'] with []
+2021-06-05 20:14:09.954  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/swagger-resources/**'] with []
+2021-06-05 20:14:09.961  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/configuration/security'] with []
+2021-06-05 20:14:09.961  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/swagger-ui.html'] with []
+2021-06-05 20:14:09.961  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/webjars/**'] with []
+2021-06-05 20:14:09.995  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Or [Ant [pattern='/oauth/token'], Ant [pattern='/oauth/token_key'], Ant [pattern='/oauth/check_token']] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1252b5f6, org.springframework.security.web.context.SecurityContextPersistenceFilter@6d96da29, org.springframework.security.web.header.HeaderWriterFilter@56308420, org.springframework.security.web.authentication.logout.LogoutFilter@385d73a4, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@1e96838a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2979d0ed, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@37936a87, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@34b4b240, org.springframework.security.web.session.SessionManagementFilter@6d63bc8d, org.springframework.security.web.access.ExceptionTranslationFilter@50237979, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@65a9a4d1]
+2021-06-05 20:14:10.011  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration$NotOAuthRequestMatcher@1ada04c8 with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@17538d51, org.springframework.security.web.context.SecurityContextPersistenceFilter@15d691a8, org.springframework.security.web.header.HeaderWriterFilter@2283878a, org.springframework.web.filter.CorsFilter@7712a24c, org.springframework.security.web.authentication.logout.LogoutFilter@573de72f, org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter@6062448a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@725c3ced, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4cdd5afb, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6ad86554, org.springframework.security.web.session.SessionManagementFilter@5a7f0fe, org.springframework.security.web.access.ExceptionTranslationFilter@2bcba2d, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@75b2c294]
+2021-06-05 20:14:10.026  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7220a759, org.springframework.security.web.context.SecurityContextPersistenceFilter@4179d387, org.springframework.security.web.header.HeaderWriterFilter@7b22591b, org.springframework.security.web.csrf.CsrfFilter@4e3ed0c5, org.springframework.security.web.authentication.logout.LogoutFilter@f9ed17b, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@4b10215c, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@5e9cdd56, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@648e4d5b, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@278d9162, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6208831a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@b0be4c1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5176b0e9, org.springframework.security.web.session.SessionManagementFilter@45920a1c, org.springframework.security.web.access.ExceptionTranslationFilter@1d07cab8, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4940cf84]
+2021-06-05 20:14:10.052  INFO [vstreem,,] 17060 --- [  restartedMain] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2021-06-05 20:14:10.159  WARN [vstreem,,] 17060 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-06-05 20:14:10.343  WARN [vstreem,,] 17060 --- [  restartedMain] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2021-06-05 20:14:10.640  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-06-05 20:14:10.812  INFO [vstreem,,] 17060 --- [  restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Context refreshed
+2021-06-05 20:14:10.813  INFO [vstreem,,] 17060 --- [  restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+2021-06-05 20:14:10.823  INFO [vstreem,,] 17060 --- [  restartedMain] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2021-06-05 20:14:10.926  INFO [vstreem,,] 17060 --- [  restartedMain] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: resetPasswordUsingPOST_1
+2021-06-05 20:14:10.960  INFO [vstreem,,] 17060 --- [  restartedMain] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: addChannelUsingPOST_1
+2021-06-05 20:14:11.030  INFO [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Started AuthServerApplication in 6.224 seconds (JVM running for 867.521)
+2021-06-05 20:14:11.031  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
+2021-06-05 20:14:11.033  INFO [vstreem,,] 17060 --- [  restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2021-06-05 20:14:11.034  INFO [vstreem,,] 17060 --- [  restartedMain] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
+2021-06-05 20:14:11.034  INFO [vstreem,,] 17060 --- [  restartedMain] com.arraigntech.AuthServerApplication    : Application Started
+2021-06-05 20:14:21.814  INFO [vstreem,,] 17060 --- [nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-06-05 20:14:21.814  INFO [vstreem,,] 17060 --- [nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-06-05 20:14:21.817  INFO [vstreem,,] 17060 --- [nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2021-06-05 20:14:21.833 DEBUG [vstreem,e160004ed0d4dcb2,e160004ed0d4dcb2] 17060 --- [nio-8080-exec-2] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.controller.IVSStreamController.uploadFile() with argument[s] = [org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile@6410050, BRANDLOGO]
+2021-06-05 20:14:21.838 DEBUG [vstreem,e160004ed0d4dcb2,e160004ed0d4dcb2] 17060 --- [nio-8080-exec-2] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.DocumentS3ServiceImpl.uploadFile() with argument[s] = [org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile@6410050]
+2021-06-05 20:14:24.814 DEBUG [vstreem,e160004ed0d4dcb2,e160004ed0d4dcb2] 17060 --- [nio-8080-exec-2] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.DocumentS3ServiceImpl.uploadFile() with result = https://vstreem-staging-images.s3.us-east-2.amazonaws.com/brandlogo/p1.jpg
+2021-06-05 20:14:24.815 DEBUG [vstreem,e160004ed0d4dcb2,e160004ed0d4dcb2] 17060 --- [nio-8080-exec-2] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.DocumentS3ServiceImpl.saveAWSDocumentDetails() with argument[s] = [BRANDLOGO, https://vstreem-staging-images.s3.us-east-2.amazonaws.com/brandlogo/p1.jpg]
+2021-06-05 20:14:24.816 DEBUG [vstreem,e160004ed0d4dcb2,e160004ed0d4dcb2] 17060 --- [nio-8080-exec-2] com.arraigntech.aop.LoggingAspect        : Enter: com.arraigntech.service.impl.UserServiceImpl.getUser() with argument[s] = []
+2021-06-05 20:14:24.872 DEBUG [vstreem,e160004ed0d4dcb2,e160004ed0d4dcb2] 17060 --- [nio-8080-exec-2] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.UserServiceImpl.getUser() with result = com.arraigntech.entity.UserEntity@533eff52
+2021-06-05 20:14:24.880  INFO [vstreem,e160004ed0d4dcb2,e160004ed0d4dcb2] 17060 --- [nio-8080-exec-2] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:10, serverValue:1134}] to localhost:27017
+2021-06-05 20:14:24.929 DEBUG [vstreem,e160004ed0d4dcb2,e160004ed0d4dcb2] 17060 --- [nio-8080-exec-2] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.service.impl.DocumentS3ServiceImpl.saveAWSDocumentDetails() with result = {ImageId=60bb8aad8b9f50623038d07e}
+2021-06-05 20:14:24.929 DEBUG [vstreem,e160004ed0d4dcb2,e160004ed0d4dcb2] 17060 --- [nio-8080-exec-2] com.arraigntech.aop.LoggingAspect        : Exit: com.arraigntech.controller.IVSStreamController.uploadFile() with result = BaseResponse [responseMessages={}, success=true, results={ImageId=60bb8aad8b9f50623038d07e}, isCustomErrorHandling=false]

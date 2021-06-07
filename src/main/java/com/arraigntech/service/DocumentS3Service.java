@@ -12,7 +12,7 @@ public interface DocumentS3Service {
 	
 	String uploadFile(MultipartFile file) throws AppException;
 
-	public Boolean deleteFileFromS3Bucket(String id);
+	Boolean deleteFileFromS3Bucket(String id);
 	
 	Map<String, String> saveAWSDocumentDetails(String documentType, String documentURL);
 
@@ -20,5 +20,7 @@ public interface DocumentS3Service {
 	
 	Boolean updateSelectedImage(String documentId);
 	
-
+	String getLogoImage();
+	
+	Boolean useDefaultImage();
 }

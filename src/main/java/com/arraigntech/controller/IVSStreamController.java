@@ -120,5 +120,18 @@ public class IVSStreamController {
 	public BaseResponse<Boolean> updateSelectedImage(@PathVariable String id) {
 		return new BaseResponse<Boolean>(s3Service.updateSelectedImage(id)).withSuccess(true);
 	}
+	
+	@ApiOperation(value = "delete image file")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/update/file", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<String> setDefaultImage() {
+		BaseResponse<String> response = new BaseResponse<>();
+		Boolean result = s3Service.useDefaultImage();
+		return result
+				? response.withSuccess(true).withResponseMessage(MessageConstants.KEY_SUCCESS,
+						"Logo set to Default image")
+				: response.withSuccess(true).withResponseMessage(MessageConstants.KEY_SUCCESS,
+						"Exception in setting the image to default");
+	}
 
 }
