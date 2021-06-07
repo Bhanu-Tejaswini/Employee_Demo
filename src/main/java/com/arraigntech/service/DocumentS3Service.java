@@ -1,5 +1,6 @@
 package com.arraigntech.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +16,9 @@ public interface DocumentS3Service {
 	
 	Map<String, String> saveAWSDocumentDetails(String documentType, String documentURL);
 
-	S3UIResponse getDocumentImageURL();
+	List<S3UIResponse> getDocumentImageURL();
+	
+	Boolean updateSelectedImage(String documentId);
 	
 
 }

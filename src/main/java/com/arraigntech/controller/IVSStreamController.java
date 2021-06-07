@@ -1,6 +1,7 @@
 package com.arraigntech.controller;
 
 import java.net.HttpURLConnection;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,8 +110,15 @@ public class IVSStreamController {
 	@ApiOperation(value = "get image file")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/get/file", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BaseResponse<S3UIResponse> getFile() {
-		return new BaseResponse<S3UIResponse>(s3Service.getDocumentImageURL()).withSuccess(true);
+	public BaseResponse<List<S3UIResponse>> getFile() {
+		return new BaseResponse<List<S3UIResponse>>(s3Service.getDocumentImageURL()).withSuccess(true);
+	}
+	
+	@ApiOperation(value = "update image file")
+	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
+	@RequestMapping(value = "/update/file/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public BaseResponse<Boolean> updateSelectedImage(@PathVariable String id) {
+		return new BaseResponse<Boolean>(s3Service.updateSelectedImage(id)).withSuccess(true);
 	}
 
 }

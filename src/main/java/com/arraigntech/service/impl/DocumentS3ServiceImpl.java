@@ -2,7 +2,9 @@ package com.arraigntech.service.impl;
 
 import java.io.File;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -126,28 +128,38 @@ public class DocumentS3ServiceImpl implements DocumentS3Service {
 
 	public Map<String, String> saveAWSDocumentDetails(String documentType, String documentURL) {
 		UserEntity newUser = userService.getUser();
-		AwsDocument document = documentRepository.findByUser_EmailIgnoreCase(newUser.getEmail());
-		if (Objects.isNull(document)) {
-			MongoUserVO user = new MongoUserVO(newUser.getId(), newUser.getEmail(), newUser.getUsername());
-			document = new AwsDocument(bucketName, documentType, documentURL,false, user);
-		} else {
-			document.setDocumentType(documentType);
-			document.setDocumentURL(documentURL);
-		}
+		AwsDocument document = new AwsDocument(bucketName, documentType, documentURL,false, new MongoUserVO(newUser.getId(), newUser.getEmail(), newUser.getUsername()));
 		AwsDocument savedDocument = documentRepository.save(document);
 		Map<String,String> resultMap = new HashMap<>();
 		resultMap.put("ImageId", savedDocument.getId());
 		return resultMap;
 	}
 
-	public S3UIResponse getDocumentImageURL() {
+	public List<S3UIResponse> getDocumentImageURL() {
 		UserEntity newUser = userService.getUser();
-		AwsDocument document = documentRepository.findByUser_EmailIgnoreCase(newUser.getEmail());
-		if (Objects.nonNull(document) && Objects.nonNull(document.getDocumentURL())) {
-			return new S3UIResponse(document.getDocumentURL(), document.getId());
-		} else {
-			return new S3UIResponse(VSTREEM_IMAGE);
+		List<S3UIResponse> listRespose = new ArrayList<>();
+		List<AwsDocument> imageList = documentRepository.findByUser_EmailIgnoreCase(newUser.getEmail());
+		imageList.stream().forEach(image -> {
+			listRespose.add(new S3UIResponse(image.getDocumentURL(), image.getId(), image.isActive()));
+		});
+		if(imageList.size() == 0) {
+			listRespose.add(new S3UIResponse(VSTREEM_IMAGE));
 		}
+		return listRespose;
+	}
+	
+	public Boolean updateSelectedImage(String imageId) {
+		UserEntity newUser = userService.getUser();
+		List<AwsDocument> imageList = documentRepository.findByUser_EmailIgnoreCase(newUser.getEmail());
+		imageList.stream().forEach(image -> {
+			if(image.getId().equalsIgnoreCase(imageId)) {
+				image.setActive(true);
+			} else {
+				image.setActive(false);
+			}
+		});
+		documentRepository.saveAll(imageList);
+		return true;
 	}
 	
 	
