@@ -121,7 +121,7 @@ public class IVSStreamController {
 		return new BaseResponse<Boolean>(s3Service.updateSelectedImage(id)).withSuccess(true);
 	}
 	
-	@ApiOperation(value = "delete image file")
+	@ApiOperation(value = "update default image file")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(value = "/update/file", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public BaseResponse<String> setDefaultImage() {

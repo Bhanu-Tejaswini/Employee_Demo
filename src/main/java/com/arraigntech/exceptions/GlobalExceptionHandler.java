@@ -22,13 +22,4 @@ public class GlobalExceptionHandler {
 		response.withSuccess(false);
 		return response;
 	}
-	
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(FileSizeLimitExceededException.class)
-	public BaseResponse<ErrorResponse> handleFileSizeLimitExceededException(AppException e) {
-		BaseResponse<ErrorResponse> response = new BaseResponse<ErrorResponse>();
-		response.withResponseMessage(MESSAGE, e.getMessage());
-		response.withSuccess(false);
-		return response;
-	}
 }
