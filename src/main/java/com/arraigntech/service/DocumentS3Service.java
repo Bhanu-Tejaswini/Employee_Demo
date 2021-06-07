@@ -1,5 +1,7 @@
 package com.arraigntech.service;
 
+import java.util.Map;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.arraigntech.exceptions.AppException;
@@ -11,7 +13,7 @@ public interface DocumentS3Service {
 
 	public Boolean deleteFileFromS3Bucket(String id);
 	
-	Boolean saveAWSDocumentDetails(String documentType, String documentURL);
+	Map<String, String> saveAWSDocumentDetails(String documentType, String documentURL);
 
 	S3UIResponse getDocumentImageURL();
 	

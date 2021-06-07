@@ -1,6 +1,7 @@
 package com.arraigntech.controller;
 
 import java.net.HttpURLConnection;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -81,8 +82,7 @@ public class IVSStreamController {
 	@ApiOperation(value = "upload image file")
 	@ApiResponses({ @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "On success response") })
 	@RequestMapping(method = RequestMethod.POST, value = "/upload/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public BaseResponse<String> uploadFile(@RequestParam("file") MultipartFile file, String type) {
-		BaseResponse<String> response = new BaseResponse<>();
+	public BaseResponse<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file, String type) {
 		if (file.getSize() > (multiPartFileSize * 1024 * 1024)) {
 			throw new AppException(MessageConstants.FILE_SIZE_ERROR);
 		}
@@ -90,12 +90,7 @@ public class IVSStreamController {
 			throw new AppException(MessageConstants.INVALID_REQUEST);
 		}
 		String documentPath = s3Service.uploadFile(file);
-		s3Service.saveAWSDocumentDetails(type, documentPath);
-		return documentPath != null
-				? response.withSuccess(true).withResponseMessage(MessageConstants.KEY_SUCCESS,
-						"file uploaded successfully")
-				: response.withSuccess(true).withResponseMessage(MessageConstants.KEY_SUCCESS,
-						"Exception in uploading the file to S3");
+		return new BaseResponse<Map<String, String>>(s3Service.saveAWSDocumentDetails(type, documentPath)).withSuccess(true);
 	}
 
 	@ApiOperation(value = "delete image file")

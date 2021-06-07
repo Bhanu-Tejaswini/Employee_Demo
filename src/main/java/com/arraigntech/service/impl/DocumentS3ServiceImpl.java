@@ -2,6 +2,8 @@ package com.arraigntech.service.impl;
 
 import java.io.File;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -122,7 +124,7 @@ public class DocumentS3ServiceImpl implements DocumentS3Service {
 		return uniqueFileName;
 	}
 
-	public Boolean saveAWSDocumentDetails(String documentType, String documentURL) {
+	public Map<String, String> saveAWSDocumentDetails(String documentType, String documentURL) {
 		UserEntity newUser = userService.getUser();
 		AwsDocument document = documentRepository.findByUser_EmailIgnoreCase(newUser.getEmail());
 		if (Objects.isNull(document)) {
@@ -132,8 +134,10 @@ public class DocumentS3ServiceImpl implements DocumentS3Service {
 			document.setDocumentType(documentType);
 			document.setDocumentURL(documentURL);
 		}
-		documentRepository.save(document);
-		return true;
+		AwsDocument savedDocument = documentRepository.save(document);
+		Map<String,String> resultMap = new HashMap<>();
+		resultMap.put("ImageId", savedDocument.getId());
+		return resultMap;
 	}
 
 	public S3UIResponse getDocumentImageURL() {
