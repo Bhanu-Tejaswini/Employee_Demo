@@ -134,6 +134,7 @@ public class DocumentS3ServiceImpl implements DocumentS3Service {
 		AwsDocument savedDocument = documentRepository.save(document);
 		Map<String, String> resultMap = new HashMap<>();
 		resultMap.put("ImageId", savedDocument.getId());
+		resultMap.put("imageUrl", documentURL);
 		return resultMap;
 	}
 
