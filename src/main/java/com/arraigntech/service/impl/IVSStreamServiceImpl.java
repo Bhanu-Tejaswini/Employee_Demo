@@ -22,6 +22,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.arraigntech.entity.AwsDocument;
 import com.arraigntech.entity.ChannelEntity;
 import com.arraigntech.entity.StreamEntity;
 import com.arraigntech.entity.StreamTargetEntity;
@@ -149,6 +150,7 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	@Override
 	public StreamUIResponseVO createStream(StreamUIRequestVO streamRequest) {
 		UserEntity newUser = userService.getUser();
+		addLogoToTranscoder("string");
 		IVSLiveStreamVO liveStream = populateStreamData(streamRequest);
 		String url = baseUrl + "/live_streams";
 		MultiValueMap<String, String> headers = getHeader();
@@ -209,10 +211,10 @@ public class IVSStreamServiceImpl implements IVSStreamService {
 	}
 
 	public void addLogoToTranscoder(String streamId) {
-		S3UIResponse s3uiResponse = s3Service.getDocumentImageURL();
+		String documentURL = s3Service.getLogoImage();
 		byte[] byteArray = null;
 		try {
-			URL url = new URL(s3uiResponse.getImageUrl());
+			URL url = new URL(documentURL);
 			byteArray = IOUtils.toByteArray(url.openConnection());
 		} catch (IOException e1) {
 			throw new AppException("Error occured while adding the image");

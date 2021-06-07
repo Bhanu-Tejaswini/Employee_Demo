@@ -1,5 +1,6 @@
 package com.arraigntech.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -11,11 +12,15 @@ public interface DocumentS3Service {
 	
 	String uploadFile(MultipartFile file) throws AppException;
 
-	public Boolean deleteFileFromS3Bucket(String id);
+	Boolean deleteFileFromS3Bucket(String id);
 	
 	Map<String, String> saveAWSDocumentDetails(String documentType, String documentURL);
 
-	S3UIResponse getDocumentImageURL();
+	List<S3UIResponse> getDocumentImageURL();
 	
-
+	Boolean updateSelectedImage(String documentId);
+	
+	String getLogoImage();
+	
+	Boolean useDefaultImage();
 }
