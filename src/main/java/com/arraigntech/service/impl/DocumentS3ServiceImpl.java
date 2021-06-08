@@ -145,9 +145,8 @@ public class DocumentS3ServiceImpl implements DocumentS3Service {
 		imageList.stream().forEach(image -> {
 			listRespose.add(new S3UIResponse(image.getDocumentURL(), image.getId(), image.isActive()));
 		});
-		if (imageList.size() == 0) {
-			listRespose.add(new S3UIResponse(VSTREEM_IMAGE));
-		}
+		listRespose.add(new S3UIResponse(VSTREEM_IMAGE));
+		
 		return listRespose;
 	}
 
